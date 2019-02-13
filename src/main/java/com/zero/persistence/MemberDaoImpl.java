@@ -20,4 +20,10 @@ public class MemberDaoImpl implements MemberDAO {
 		
 	}
 
+	@Override
+	public void insertMember(MemberVO vo) {
+		// TODO Auto-generated method stub
+		sqlSession.insert(namespace + ".insertMember",vo);
+	}
+
 }

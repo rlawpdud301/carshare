@@ -20,13 +20,24 @@ public class DaoTest {
 		
 	@Test
 	public void testselectMemberById() {
-		System.out.println("aaaa");
-		MemberVO m = dao.selectMemberById("test");
+		MemberVO m = dao.selectMemberById("test2");
 		
 		System.out.println(m);
 	}
 	
-	
+	/*@Test
+	public void testinsert() {
+		MemberVO vo = new MemberVO();
+		vo.setId("test2");
+		vo.setJumin("00000000000");
+		vo.setName("이름");
+		vo.setPhone("010-9999-9999");
+		vo.setName("닉네임");
+		
+		dao.insertMember(vo);
+		
+		System.out.println(vo);
+	}*/
 	
 	
 	

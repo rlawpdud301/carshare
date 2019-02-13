@@ -7,6 +7,8 @@ CREATE SCHEMA carshare;
 -- 회원
 CREATE TABLE carshare.member (
 	id       VARCHAR(50)  NOT NULL COMMENT '카카오아이디', -- 아이디
+	jumin    VARCHAR(15)  NULL     COMMENT '주민등록번호', -- 주민등록번호
+	name     VARCHAR(50)  NULL     COMMENT '이름', -- 이름
 	u_intro  TEXT(200)    NULL     COMMENT '사용자간단한자기소개', -- 사용자간단한자기소개
 	d_intro  TEXT(200)    NULL     COMMENT '운전자간단한자기소개', -- 운전자간단한자기소개
 	phone    VARCHAR(15)  NULL     COMMENT '전화번호', -- 전화번호
@@ -299,8 +301,6 @@ ALTER TABLE carshare.Own_coupons
 		REFERENCES carshare.coupons ( -- 쿠폰
 			coupon_no -- 쿠폰번호
 		);
-		
-	
 	
 CREATE USER 'user_carshare'@'%';
 ALTER USER 'user_carshare'@'%'
