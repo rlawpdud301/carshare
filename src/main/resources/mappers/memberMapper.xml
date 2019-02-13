@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zero.mapper.MemberMapper">
+<!-- 	<resultMap type="MemberOV" id="selectMember">
+		<result property="id" column="id" />
+		<result property="uInfo" column="u_intro" />
+		<result property="dInfo" column="d_intro" />
+		<result property="phone" column="phone" />
+		<result property="nikname" column="nikname" />
+		<result property="photo" column="photo" />
+		<result property="jop" column="jop" />
+		<result property="driver" column="driver" />
+		<result property="gradeNo" column="grade_no" />
+		<result property="myFee" column="my_fee" />
+	</resultMap> -->
+	
+	<select id="selectMemberById" resultType="MemberVO">
+		SELECT id, u_intro, d_intro, phone, nikname, photo,
+			jop, driver, grade_no, my_fee
+		FROM member
+		WHERE id=#{id}
+	</select>
+</mapper>
