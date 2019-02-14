@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zero.mapper.LocationMapper">
+
+	<insert id="insertLocation">
+		INSERT INTO carshare.location
+		(address, latitude,
+		hardness)
+		VALUES(#{address}, #{latitude}, #{hardness})
+	</insert>
+
+	<sql id="whereSql">
+		<where>
+			<if test="locationNo != 0">
+				location_no =#{locationNo}
+			</if>
+			<if test="address != null">
+				and address =#{address}
+			</if>
+		</where>
+	</sql>
+
+	<select id="selectLocation" resultType="LocationVO">
+		SELECT location_no, address, latitude, hardness
+		FROM carshare.location
+		<include refid="whereSql"></include>
+	</select>
+
+</mapper>

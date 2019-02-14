@@ -15,14 +15,6 @@
 		WHERE id=#{id}
 	</select>
 
-	<sql id="forinsert">
-		<if test="u_intro != null">
-			u_intro,
-		</if>
-		<if test="photo != null">
-			photo,
-		</if>
-	</sql>
 	
 	<insert id="insertMember">
 		INSERT INTO carshare.`member`
