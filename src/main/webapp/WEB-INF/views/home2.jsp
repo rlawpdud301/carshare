@@ -16,6 +16,9 @@
 
 </head>
 <body>
+	<form action="">
+		
+	</form>
 	<a id="custom-login-btn" href="javascript:loginWithKakao()"> 
 		<img src="//mud-kage.kakao.com/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg"
 		width="300" />
@@ -35,6 +38,7 @@
 							  alert(res.id);
 							  alert(res.properties['nickname']);
 							  alert(res.kaccount_email);
+							  location.href = "http://www.naver.com";
 						}
 					})
 				},
