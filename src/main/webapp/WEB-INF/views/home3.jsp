@@ -3,6 +3,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="include/header.jsp"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
@@ -18,10 +20,11 @@
 	width: 300px;
 }
 
-#condition {
+#condition ,#condition2{
 	width: 100%;
 	background: black;
 	color: white;
+	
 }
 .div-info{
 	
@@ -32,7 +35,13 @@
 	top: 0px;
 	right: 1px; 
 } 
-#placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
+
+#condition{
+	display: none;
+}
+
+
+/* #placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
 #placesList .item .marker_1 {background-position: 0 -10px;}
 #placesList .item .marker_2 {background-position: 0 -56px;}
 #placesList .item .marker_3 {background-position: 0 -102px}
@@ -47,17 +56,19 @@
 #placesList .item .marker_12 {background-position: 0 -516px;}
 #placesList .item .marker_13 {background-position: 0 -562px;}
 #placesList .item .marker_14 {background-position: 0 -608px;}
-#placesList .item .marker_15 {background-position: 0 -654px;} 
+#placesList .item .marker_15 {background-position: 0 -654px;}  */
 </style>
 
 <!-- class="hidden-xs" -->
 <div id="map" style="width: 100%; height: 400px;"></div>
-<label id="condition">출발지 선택중 . . .</label>
+<label id="condition">지도에서 직접 선택중 . . .<span>(드레그후 클릭 하시면 상새정보를확인하실수있습니다.)</span></label>
+<label id="condition2"><span>깃발은 직접이동 하실수도있습니다.</span></label>
 <div id="menu_wrap" class="bg_white">
 	<div class="option">
 		<div>		
 			키워드 : <input type="text" value="사월역" id="keyword" size="15">
-			<button type="button" id="keywordsrch">검색하기</button>			
+			<button type="button" id="keywordsrch">검색하기</button>
+			<button id="selectMap" type="button">지도에서 직접 선택</button>			
 		</div>
 	</div>
 	<hr>
@@ -67,20 +78,20 @@
 
 <button id="myloc" type="button">내위치</button>
 <p>
-	<button id="selectStart" type="button">출발지선택</button>
-	<label>출발지</label> <input type="text" id="startSpot" name="startSpot" readonly="">
+	<!-- <button id="selectStart" type="button">출발지 지도에서 선택</button> -->
+	<label>출발지</label> <input type="text" id="startSpot" name="startSpot" readonly="readonly">
 	<input type="hidden" name="startAddress" id="startAddress">
 	<input type="hidden" name="startLatitude" id="startLatitude">
 	<input type="hidden" name="startHardness" id="startHardness">
 </p>
 <p>
-	<button id="selectEnd" type="button">도착지선택</button>
-	<label>도착지</label> <input type="text" id="endSpot" name="endSpot" readonly="">
+	<!-- <button id="selectEnd" type="button">도착지 지도에서 선택</button> -->
+	<label>도착지</label> <input type="text" id="endSpot" name="endSpot" readonly="readonly">
 	<input type="hidden" name="endAddress" id="endAddress">
 	<input type="hidden" name="endLatitude" id="endLatitude">
 	<input type="hidden" name="endHardness" id="endHardness">
 </p>
-<p id="result"></p>
+<button id="selectDone" type="button">선택 완료</button>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?96466e1526b35b59aaba41206905a93d&libraries=services"></script>
 <script>
 getMyLocation();
@@ -172,6 +183,11 @@ function displayPlaces(places) {
         // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
         // LatLngBounds 객체에 좌표를 추가합니다
         bounds.extend(placePosition);
+        
+		$("#selectMap").text("지도에서 직접 선택");
+		
+		moveMarker.setMap(null);
+            
 
         (function(marker, title) {
             daum.maps.event.addListener(marker, 'click', function() {
@@ -235,7 +251,7 @@ function getListItem(index, places) {
     }
                  
       itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-                '</div><button type="button" class="places" data-address="'+ places.address_name +'" data-latitude="'+ places.y +'" data-hardness="' + places.x + '" class="forStrat">출발지로</button><button type="button" data-address="'+ places.address_name +'" data-latitude="'+ places.y +'" data-hardness="' + places.x + '" class="forEnd">도착지로</button>';           
+                '</div><button type="button" class="forStrat" data-address="'+ places.address_name +'" data-latitude="'+ places.y +'" data-hardness="' + places.x + '">출발지로</button><button type="button" data-address="'+ places.address_name +'" data-latitude="'+ places.y +'" data-hardness="' + places.x + '" class="forEnd">도착지로</button>';           
 
     el.innerHTML = itemStr;
     el.className = 'item';
@@ -331,11 +347,23 @@ $("#myloc").click(function() {
 	infowindow.close();
 })
 
+	
 
 
 	var myMarker = new daum.maps.Marker({
-		map : map
+		map : map,
+		clickable: true
 	});
+
+var geocoder = new daum.maps.services.Geocoder();
+function searchDetailAddrFromCoords(coords, callback) {
+    // 좌표로 법정동 상세 주소 정보를 요청합니다
+    geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);
+}
+
+var myInfowindow = new daum.maps.InfoWindow({
+	removable : true
+});
 
 function getMyLocation() {
 		// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
@@ -349,15 +377,33 @@ function getMyLocation() {
 
 				var locPosition = new daum.maps.LatLng(lat, lon);// 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
 
-				// 마커를 표시합니다
+				
+				
+				var address;
+				searchDetailAddrFromCoords(locPosition,
+						function(result, status) {
+							if (status === daum.maps.services.Status.OK) {
+								address = result[0].road_address.address_name;
+								var iwContent = '<div style="padding:5px;"><b>내위치</b> : '+ address +'<p><button type="button" data-address="'+address+'" data-latitude="'+ lat +'" data-hardness="' + lon + '" class="forStrat">출발지로</button><button type="button" data-address="'+address+'" data-latitude="'+ lat +'" data-hardness="' + lon + '" class="forEnd">도착지로</button></p></div>';
+								myInfowindow.close();
+								myInfowindow.setContent(iwContent); 
+						
+								myMarker.setPosition(locPosition);
+								myMarker.setMap(map);
+								map.setLevel(2);
+								// 지도 중심좌표를 접속위치로 변경합니다
+								map.setCenter(locPosition);
+								myInfowindow.open(map, myMarker); 
+								/* displayMarker(locPosition); */
+								daum.maps.event.addListener(myMarker, 'click', function() {
+								    // 마커 위에 인포윈도우를 표시합니다
+								    myInfowindow.open(map, myMarker);  
+								});
+							}
+						});
 
-				myMarker.setPosition(locPosition);
-				myMarker.setMap(map);
-				map.setLevel(2);
-				// 지도 중심좌표를 접속위치로 변경합니다
-				map.setCenter(locPosition);
-
-				/* displayMarker(locPosition); */
+				
+				
 			});
 
 		} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
@@ -410,9 +456,11 @@ $(document).on("click",".forStrat",function(){
 		position : markerPosition,
 		image : startImage
 	});
-	startMarker.setMap(map);
+	
 	
 	if (confirm(address+"(을)를 출발지로선택하시겠습니까")) {
+		
+		startMarker.setMap(map);
 		$("#startSpot").val(address);
 		// 검색 결과 목록에 추가된 항목들을 제거합니다
 	    removeAllChildNods(listEl);
@@ -421,6 +469,13 @@ $(document).on("click",".forStrat",function(){
 	    removeMarker();
 	    $("#pagination").empty();
 	    infowindow.close();
+	    myInfowindow.close();
+
+	    $("#selectMap").text("지도에서 직접 선택");
+		
+		moveMarker.setMap(null);
+		moveInfowindow.close();
+		$("#condition").css("display","none");
 	}
 	
 	
@@ -463,10 +518,12 @@ $(document).on("click",".forEnd",function(){
 		position : markerPosition,
 		image : arriveImage
 	});
-	endMarker.setMap(map);
+	
 	
 
 	if (confirm(address+"(을)를 도착지로선택하시겠습니까")) {
+		endMarker.setMap(map);
+		/* endMarker.setDraggable(true); */
 		$("#endSpot").val(address);
 		// 검색 결과 목록에 추가된 항목들을 제거합니다
 	    removeAllChildNods(listEl);
@@ -475,9 +532,159 @@ $(document).on("click",".forEnd",function(){
 	    removeMarker();
 	    $("#pagination").empty();
 	    infowindow.close();
+	    myInfowindow.close();
+	    
+		$("#selectMap").text("지도에서 직접 선택");
+		
+		moveMarker.setMap(null);
+		moveInfowindow.close();
+		$("#condition").css("display","none");
 	}
 	
 })
+/* daum.maps.event.addListener(endMarker, 'dragend', function() {
+	alret("aaaaaaaaaaaaaaaaaa");
+	var  latlng  = endMarker.getPosition();
+	var address;
+	searchDetailAddrFromCoords(endMarker.getPosition(),
+			function(result, status) {
+				if (status === daum.maps.services.Status.OK) {
+					address = result[0].road_address.address_name;
+										
+					$("#endSpot").val(address);
+					
+				}
+			});
+    
+}); */
+
+
+
+var moveMarker = new daum.maps.Marker();
+
+$(document).on("click","#selectMap",function(){
+	if ($("#selectMap").text() =="지도에서 선택 취소") {
+		$(this).text("지도에서 직접 선택");
+		
+		moveMarker.setMap(null);
+		moveInfowindow.close();
+		$("#condition").css("display","none");
+		
+	}else{
+		$("#map").css("height","400px");
+		$("#condition").css("display","block");
+		$(this).text("지도에서 선택 취소");
+		
+		var latlng = map.getCenter(); 
+		
+		moveMarker.setPosition(latlng);
+		moveMarker.setMap(map);
+		
+		latlng = moveMarker.getPosition();
+		// 마커가 드래그 가능하도록 설정합니다 
+		moveMarker.setDraggable(true); 
+	
+		searchDetailAddrFromCoords(moveMarker.getPosition(),
+				function(result, status) {
+					if (status === daum.maps.services.Status.OK) {
+						address = result[0].road_address.address_name;
+						var iwContent = '<div style="padding:5px;"> '+ address +'<p><button type="button" data-address="'+address+'" data-latitude="'+ latlng.getLat() +'" data-hardness="' + latlng.getLng() + '" class="forStrat">출발지로</button><button type="button" data-address="'+address+'" data-latitude="'+ latlng.getLat() +'" data-hardness="' + latlng.getLng() + '" class="forEnd">도착지로</button></p></div>';
+						moveInfowindow.close();
+						moveInfowindow.setContent(iwContent); 
+				
+						daum.maps.event.addListener(moveMarker, 'click', function() {
+						    moveInfowindow.open(map, moveMarker);  
+						});
+					}
+				});
+		
+	}
+	
+	
+})
+/* //  마커 이미지를 변경합니다
+startMarker.setImage(startDragImage); */
+
+
+
+var moveInfowindow = new daum.maps.InfoWindow({
+	removable : true
+});
+
+daum.maps.event.addListener(moveMarker, 'dragstart', function() {
+    // 출발 마커의 드래그가 시작될 때 마커 이미지를 변경합니다
+	moveInfowindow.close();
+});
+
+
+daum.maps.event.addListener(moveMarker, 'dragend', function() {
+	var  latlng  = moveMarker.getPosition();
+	var address;
+	searchDetailAddrFromCoords(moveMarker.getPosition(),
+			function(result, status) {
+				if (status === daum.maps.services.Status.OK) {
+					address = result[0].address.address_name;
+					var iwContent = '<div style="padding:5px;"> '+ address +'<p><button type="button" data-address="'+address+'" data-latitude="'+ latlng.getLat() +'" data-hardness="' + latlng.getLng() + '" class="forStrat">출발지로</button><button type="button" data-address="'+address+'" data-latitude="'+ latlng.getLat() +'" data-hardness="' + latlng.getLng() + '" class="forEnd">도착지로</button></p></div>';
+					moveInfowindow.close();
+					moveInfowindow.setContent(iwContent); 
+			
+					daum.maps.event.addListener(moveMarker, 'click', function() {
+					    moveInfowindow.open(map, moveMarker);  
+					});
+					
+					
+				}
+			});
+    
+});
+
+$(function() {
+	$(document).on("click","#selectDone",function(){
+		
+		alert(startMarker.getPosition());
+		if ($("#startSpot").val()=="") {
+			alert("출발지를 선택해주세요.");
+			return;
+		}
+		if ($("#endSpot").val()=="") {
+			alert("도착지를 선택해주세요.");
+			return;
+		}
+		
+		
+
+		var distance = calculateDistance(startMarker.getPosition().getLat(), startMarker.getPosition().getLng(), endMarker.getPosition().getLat(), endMarker.getPosition().getLng())
+		alert(distance);
+		var befor = distance + "";
+		var afterStr = befor.split('.');
+		
+		alert(afterStr);
+		var after = afterStr.join("");
+		alert(after);
+		if (distance <= 1) {
+			alert("1km 이하는 이용할수없습니다.");
+		}
+		
+	})
+})
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+		      var R = 6371; // km
+		      var dLat = (lat2-lat1).toRad();
+		      var dLon = (lon2-lon1).toRad(); 
+		      var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+		      		  Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+		              Math.sin(dLon/2) * Math.sin(dLon/2); 
+		      var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+		      var d = R * c;
+		      return d;
+}
+
+Number.prototype.toRad = function() {
+	return this * Math.PI / 180;
+}
+
+
 
 </script>
 
