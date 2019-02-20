@@ -40,7 +40,74 @@
 	display: none;
 }
 
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
 
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 80%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
 /* #placesList .item .markerbg {float:left;position:absolute;width:36px; height:37px;margin:10px 0 0 10px;background:url(http://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png) no-repeat;}
 #placesList .item .marker_1 {background-position: 0 -10px;}
 #placesList .item .marker_2 {background-position: 0 -56px;}
@@ -57,9 +124,16 @@
 #placesList .item .marker_13 {background-position: 0 -562px;}
 #placesList .item .marker_14 {background-position: 0 -608px;}
 #placesList .item .marker_15 {background-position: 0 -654px;}  */
+#alert{
+	margin: 0;
+	display: none;
+}
 </style>
 
 <!-- class="hidden-xs" -->
+<div class="alert alert-danger alert-dismissible" id="alert">
+    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+</div>
 <div id="map" style="width: 100%; height: 400px;"></div>
 <label id="condition">지도에서 직접 선택중 . . .<span>(드레그후 클릭 하시면 상새정보를확인하실수있습니다.)</span></label>
 <label id="condition2"><span>깃발은 직접이동 하실수도있습니다.</span></label>
@@ -92,7 +166,29 @@
 	<input type="hidden" name="endHardness" id="endHardness">
 </p>
 <button id="selectDone" type="button">선택 완료</button>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?96466e1526b35b59aaba41206905a93d&libraries=services"></script>
+
+<!-- Trigger/Open The Modal -->
+<button id="myBtn">Open Modal</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Modal Header</h2>
+    </div>
+    <div class="modal-body">
+      <p>Some text in the Modal Body</p>
+      <p>Some other text...</p>
+    </div>
+    <div class="modal-footer">
+      <h3>Modal Footer</h3>
+    </div>
+  </div>
+
+</div>
+
 <script>
 getMyLocation();
 
@@ -383,7 +479,7 @@ function getMyLocation() {
 				searchDetailAddrFromCoords(locPosition,
 						function(result, status) {
 							if (status === daum.maps.services.Status.OK) {
-								address = result[0].road_address.address_name;
+								address = result[0].address.address_name;
 								var iwContent = '<div style="padding:5px;"><b>내위치</b> : '+ address +'<p><button type="button" data-address="'+address+'" data-latitude="'+ lat +'" data-hardness="' + lon + '" class="forStrat">출발지로</button><button type="button" data-address="'+address+'" data-latitude="'+ lat +'" data-hardness="' + lon + '" class="forEnd">도착지로</button></p></div>';
 								myInfowindow.close();
 								myInfowindow.setContent(iwContent); 
@@ -587,7 +683,7 @@ $(document).on("click","#selectMap",function(){
 		searchDetailAddrFromCoords(moveMarker.getPosition(),
 				function(result, status) {
 					if (status === daum.maps.services.Status.OK) {
-						address = result[0].road_address.address_name;
+						address = result[0].address.address_name;
 						var iwContent = '<div style="padding:5px;"> '+ address +'<p><button type="button" data-address="'+address+'" data-latitude="'+ latlng.getLat() +'" data-hardness="' + latlng.getLng() + '" class="forStrat">출발지로</button><button type="button" data-address="'+address+'" data-latitude="'+ latlng.getLat() +'" data-hardness="' + latlng.getLng() + '" class="forEnd">도착지로</button></p></div>';
 						moveInfowindow.close();
 						moveInfowindow.setContent(iwContent); 
@@ -641,7 +737,7 @@ daum.maps.event.addListener(moveMarker, 'dragend', function() {
 $(function() {
 	$(document).on("click","#selectDone",function(){
 		
-		alert(startMarker.getPosition());
+		/* alert(startMarker.getPosition()); */
 		if ($("#startSpot").val()=="") {
 			alert("출발지를 선택해주세요.");
 			return;
@@ -654,15 +750,17 @@ $(function() {
 		
 
 		var distance = calculateDistance(startMarker.getPosition().getLat(), startMarker.getPosition().getLng(), endMarker.getPosition().getLat(), endMarker.getPosition().getLng())
-		alert(distance);
+		/* alert(distance); */
 		var befor = distance + "";
 		var afterStr = befor.split('.');
 		
-		alert(afterStr);
-		var after = afterStr.join("");
-		alert(after);
+		var first = afterStr[1].substring( 0, 3 );
+		var last = afterStr[0] + "." + afterStr[1].substring( 0, 3 );
+		
+		/* alert(last);  */
 		if (distance <= 1) {
-			alert("1km 이하는 이용할수없습니다.");
+			$("#alert").css("display","block");
+			$("#alert").append("두지점간의 거리는 "+last+"km 입니다. 1km 이하는 이용할수없습니다.");
 		}
 		
 	})
@@ -684,7 +782,33 @@ Number.prototype.toRad = function() {
 	return this * Math.PI / 180;
 }
 
+//Get the modal
+var modal = document.getElementById('myModal');
 
+//Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+//Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+//When the user clicks the button, open the modal 
+btn.onclick = function() {
+	alert("aaaaaaaaaaa");
+modal.style.display = "block";
+}
+
+//When the user clicks on <span> (x), close the modal
+/* span.onclick = function() {
+	alert("aaaaaaaaaaa");
+modal.style.display = "none";
+} */
+
+//When the user clicks anywhere outside of the modal, close it
+/* window.onclick = function(event) {
+if (event.target == modal) {
+ modal.style.display = "none";
+}
+} */
 
 </script>
 
