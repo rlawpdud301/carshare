@@ -30,14 +30,16 @@ ALTER TABLE carshare.member
 
 -- 이용평
 CREATE TABLE carshare.userating (
-	use_no   VARCHAR(50)  NOT NULL COMMENT '사용번호', -- 사용번호
-	rating   INT(1)       NOT NULL COMMENT '별5만점', -- 평점
-	content  TEXT         NULL     COMMENT '내용', -- 내용
-	img1     VARCHAR(100) NULL     COMMENT '파일이름', -- 이미지1
-	img2     VARCHAR(100) NULL     COMMENT '이미지2', -- 이미지2
-	img3     VARCHAR(100) NULL     COMMENT '이미지3', -- 이미지3
-	regdate  TIMESTAMP    NULL     COMMENT '작성일', -- 작성일
-	modedate TIMESTAMP    NULL     COMMENT '수정일' -- 수정일
+	userating_no VARCHAR(50)  NOT NULL COMMENT '평번호', -- 평번호
+	use_no       VARCHAR(50)  NOT NULL COMMENT '사용번호', -- 사용번호
+	contract_no  VARCHAR(50)  NULL     COMMENT '계약번호(신청번호)', -- 계약번호(신청번호)
+	rating       INT(1)       NOT NULL COMMENT '별5만점', -- 평점
+	content      TEXT         NULL     COMMENT '내용', -- 내용
+	img1         VARCHAR(100) NULL     COMMENT '파일이름', -- 이미지1
+	img2         VARCHAR(100) NULL     COMMENT '이미지2', -- 이미지2
+	img3         VARCHAR(100) NULL     COMMENT '이미지3', -- 이미지3
+	regdate      TIMESTAMP    NULL     COMMENT '작성일', -- 작성일
+	modedate     TIMESTAMP    NULL     COMMENT '수정일' -- 수정일
 )
 COMMENT '이용평';
 
@@ -45,7 +47,7 @@ COMMENT '이용평';
 ALTER TABLE carshare.userating
 	ADD CONSTRAINT PK_userating -- 이용평 기본키
 		PRIMARY KEY (
-			use_no -- 사용번호
+			userating_no -- 평번호
 		);
 
 -- 이용내역
@@ -70,12 +72,16 @@ ALTER TABLE carshare.use_info
 
 -- 경로
 CREATE TABLE carshare.route (
-	Route_no   VARCHAR(50) NOT NULL COMMENT '주경로 드라이버유저 구분', -- 사용자 경로번호
-	id         VARCHAR(50) NULL     COMMENT '아이디', -- 아이디
-	avg_fee    INT(11)     NULL     COMMENT '예상평균요금', -- 예상평균요금
-	process    VARCHAR(50) NULL     COMMENT '등록 대기 배차완료 ', -- 처리상태
-	start_spot INT(11)     NULL     COMMENT '출발지', -- 출발지
-	end_spot   INT(11)     NULL     COMMENT '도착지' -- 도착지
+	Route_no       VARCHAR(50)  NOT NULL COMMENT '주경로 드라이버유저 구분', -- 사용자 경로번호
+	id             VARCHAR(50)  NULL     COMMENT '아이디', -- 아이디
+	process        VARCHAR(50)  NULL     COMMENT '등록 대기 배차완료 ', -- 처리상태
+	avgFee         INT(11)      NULL     COMMENT '예상요금', -- 예상요금
+	start_address  VARCHAR(255) NULL     COMMENT '출발지주소', -- 출발지주소
+	start_latitude DOUBLE       NULL     COMMENT '출발지위도', -- 출발지위도
+	start_hardness DOUBLE       NULL     COMMENT '출발지경도', -- 출발지경도
+	end_address    VARCHAR(255) NULL     COMMENT '도착지주소', -- 도착지주소
+	end_latitude   DOUBLE       NULL     COMMENT '도착지위도', -- 도착지위도
+	end_hardness   DOUBLE       NULL     COMMENT '도착지경도' -- 도착지경도
 )
 COMMENT '경로';
 
@@ -88,9 +94,9 @@ ALTER TABLE carshare.route
 
 -- 계약
 CREATE TABLE carshare.contract (
-	use_no         VARCHAR(50) NOT NULL COMMENT '드라이버유저 구분', -- 계약번호(신청번호)
+	contract_no    VARCHAR(50) NOT NULL COMMENT '드라이버유저 구분', -- 계약번호(신청번호)
 	u_id           VARCHAR(50) NULL     COMMENT '이용자아이디', -- 이용자아이디
-	d_id           VARCHAR(50) NULL     COMMENT '드라이버아이디', -- 드라이버아이디
+	id             VARCHAR(50) NULL     COMMENT '드라이버아이디', -- 드라이버아이디
 	start_contract TIMESTAMP   NULL     COMMENT '계약 시작일', -- 계약 시작일
 	end_contract   TIMESTAMP   NULL     COMMENT '계약 종료일', -- 계약 종료일
 	cycle          CHAR(10)    NULL     COMMENT '이용요일', -- 주기
@@ -108,7 +114,7 @@ COMMENT '계약';
 ALTER TABLE carshare.contract
 	ADD CONSTRAINT PK_contract -- 계약 기본키
 		PRIMARY KEY (
-			use_no -- 계약번호(신청번호)
+			contract_no -- 계약번호(신청번호)
 		);
 
 -- 요금(관리자 관리)
@@ -202,24 +208,53 @@ CREATE TABLE carshare.Own_coupons (
 )
 COMMENT '보유 쿠폰';
 
--- 위치정보
-CREATE TABLE carshare.location (
+-- 이용내역위치정보
+CREATE TABLE carshare.use_info_location (
 	location_no INT(11)      NOT NULL COMMENT '위치번호', -- 위치번호
-	address     VARCHAR(255) NOT NULL COMMENT '주소', -- 주소
+	address     VARCHAR(255) NULL     COMMENT '주소', -- 주소
 	latitude    DOUBLE       NULL     COMMENT '위도', -- 위도
 	hardness    DOUBLE       NULL     COMMENT '경도' -- 경도
 )
-COMMENT '위치정보';
+COMMENT '이용내역위치정보';
 
--- 위치정보
-ALTER TABLE carshare.location
-	ADD CONSTRAINT PK_location -- 위치정보 기본키
+-- 이용내역위치정보
+ALTER TABLE carshare.use_info_location
+	ADD CONSTRAINT PK_use_info_location -- 이용내역위치정보 기본키
 		PRIMARY KEY (
 			location_no -- 위치번호
 		);
 
-ALTER TABLE carshare.location
+ALTER TABLE carshare.use_info_location
 	MODIFY COLUMN location_no INT(11) NOT NULL AUTO_INCREMENT COMMENT '위치번호';
+
+-- 경로위치정보
+CREATE TABLE carshare.route_location (
+	location_no INT(11) NOT NULL COMMENT '위치번호' -- 위치번호
+)
+COMMENT '경로위치정보';
+
+-- 경로위치정보
+ALTER TABLE carshare.route_location
+	ADD CONSTRAINT PK_route_location -- 경로위치정보 기본키
+		PRIMARY KEY (
+			location_no -- 위치번호
+		);
+
+-- 계약위치정보
+CREATE TABLE carshare.contract_location (
+	location_no INT(11)      NOT NULL COMMENT '위치번호', -- 위치번호
+	address     VARCHAR(255) NULL     COMMENT '주소', -- 주소
+	latitude    DOUBLE       NULL     COMMENT '위도', -- 위도
+	hardness    DOUBLE       NULL     COMMENT '경도' -- 경도
+)
+COMMENT '계약위치정보';
+
+-- 계약위치정보
+ALTER TABLE carshare.contract_location
+	ADD CONSTRAINT PK_contract_location -- 계약위치정보 기본키
+		PRIMARY KEY (
+			location_no -- 위치번호
+		);
 
 -- 회원
 ALTER TABLE carshare.member
@@ -241,6 +276,16 @@ ALTER TABLE carshare.userating
 			use_no -- 사용번호
 		);
 
+-- 이용평
+ALTER TABLE carshare.userating
+	ADD CONSTRAINT FK_contract_TO_userating -- 계약 -> 이용평
+		FOREIGN KEY (
+			contract_no -- 계약번호(신청번호)
+		)
+		REFERENCES carshare.contract ( -- 계약
+			contract_no -- 계약번호(신청번호)
+		);
+
 -- 이용내역
 ALTER TABLE carshare.use_info
 	ADD CONSTRAINT FK_member_TO_use_info -- 회원 -> 이용내역
@@ -253,22 +298,32 @@ ALTER TABLE carshare.use_info
 
 -- 이용내역
 ALTER TABLE carshare.use_info
-	ADD CONSTRAINT FK_location_TO_use_info -- 위치정보 -> 이용내역
+	ADD CONSTRAINT FK_use_info_location_TO_use_info2 -- 이용내역위치정보 -> 이용내역2
 		FOREIGN KEY (
 			start_spot -- 출발지
 		)
-		REFERENCES carshare.location ( -- 위치정보
+		REFERENCES carshare.use_info_location ( -- 이용내역위치정보
 			location_no -- 위치번호
 		);
 
 -- 이용내역
 ALTER TABLE carshare.use_info
-	ADD CONSTRAINT FK_location_TO_use_info2 -- 위치정보 -> 이용내역2
+	ADD CONSTRAINT FK_use_info_location_TO_use_info -- 이용내역위치정보 -> 이용내역
 		FOREIGN KEY (
 			end_spot -- 도착지
 		)
-		REFERENCES carshare.location ( -- 위치정보
+		REFERENCES carshare.use_info_location ( -- 이용내역위치정보
 			location_no -- 위치번호
+		);
+
+-- 이용내역
+ALTER TABLE carshare.use_info
+	ADD CONSTRAINT FK_member_TO_use_info2 -- 회원 -> 이용내역2
+		FOREIGN KEY (
+			d_id -- 드라이버 아이디
+		)
+		REFERENCES carshare.member ( -- 회원
+			id -- 아이디
 		);
 
 -- 경로
@@ -279,26 +334,6 @@ ALTER TABLE carshare.route
 		)
 		REFERENCES carshare.member ( -- 회원
 			id -- 아이디
-		);
-
--- 경로
-ALTER TABLE carshare.route
-	ADD CONSTRAINT FK_location_TO_route -- 위치정보 -> 경로
-		FOREIGN KEY (
-			start_spot -- 출발지
-		)
-		REFERENCES carshare.location ( -- 위치정보
-			location_no -- 위치번호
-		);
-
--- 경로
-ALTER TABLE carshare.route
-	ADD CONSTRAINT FK_location_TO_route2 -- 위치정보 -> 경로2
-		FOREIGN KEY (
-			end_spot -- 도착지
-		)
-		REFERENCES carshare.location ( -- 위치정보
-			location_no -- 위치번호
 		);
 
 -- 계약
@@ -313,21 +348,31 @@ ALTER TABLE carshare.contract
 
 -- 계약
 ALTER TABLE carshare.contract
-	ADD CONSTRAINT FK_location_TO_contract -- 위치정보 -> 계약
+	ADD CONSTRAINT FK_member_TO_contract2 -- 회원 -> 계약2
+		FOREIGN KEY (
+			id -- 드라이버아이디
+		)
+		REFERENCES carshare.member ( -- 회원
+			id -- 아이디
+		);
+
+-- 계약
+ALTER TABLE carshare.contract
+	ADD CONSTRAINT FK_contract_location_TO_contract -- 계약위치정보 -> 계약
 		FOREIGN KEY (
 			start_spot -- 출발지
 		)
-		REFERENCES carshare.location ( -- 위치정보
+		REFERENCES carshare.contract_location ( -- 계약위치정보
 			location_no -- 위치번호
 		);
 
 -- 계약
 ALTER TABLE carshare.contract
-	ADD CONSTRAINT FK_location_TO_contract2 -- 위치정보 -> 계약2
+	ADD CONSTRAINT FK_contract_location_TO_contract2 -- 계약위치정보 -> 계약2
 		FOREIGN KEY (
 			end_spot -- 도착지
 		)
-		REFERENCES carshare.location ( -- 위치정보
+		REFERENCES carshare.contract_location ( -- 계약위치정보
 			location_no -- 위치번호
 		);
 

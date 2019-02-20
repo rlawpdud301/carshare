@@ -21,9 +21,9 @@ public class LocationDaoImpl implements LocationDAO {
 	}
 
 	@Override
-	public LocationVO selectLocation(LocationVO vo) {
+	public LocationVO selectLocationByLocationNo(String locationNo) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(namespace + ".selectLocation",vo);
+		return sqlSession.selectOne(namespace + ".selectLocation",locationNo);
 	}
 
 }

@@ -2,7 +2,7 @@
 <%@ page session="false"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="include/header.jsp"%>
+<%@ include file="../include/header.jsp"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
@@ -51,7 +51,7 @@
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
 }
 
 /* Modal Content */
@@ -61,7 +61,7 @@
   margin: auto;
   padding: 0;
   border: 1px solid #888;
-  width: 80%;
+  width: 50%;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
@@ -136,39 +136,39 @@
 </div>
 <div id="map" style="width: 100%; height: 400px;"></div>
 <label id="condition">지도에서 직접 선택중 . . .<span>(드레그후 클릭 하시면 상새정보를확인하실수있습니다.)</span></label>
-<label id="condition2"><span>깃발은 직접이동 하실수도있습니다.</span></label>
+<form action="nowRouteUpload" method="post" id="f1">
 <div id="menu_wrap" class="bg_white">
 	<div class="option">
 		<div>		
-			키워드 : <input type="text" value="사월역" id="keyword" size="15">
-			<button type="button" id="keywordsrch">검색하기</button>
-			<button id="selectMap" type="button">지도에서 직접 선택</button>			
+			키워드 : <input type="text" id="keyword" size="15" placeholder="키워드 입력">
+			<button type="button" id="keywordsrch">검색</button>
+			<button id="selectMap" type="button">지도에서 직접 선택</button>
+			<button id="myloc" type="button">내위치</button>	
+			<input type="checkbox" name="favorites" value="favorites">즐겨찾기등록
 		</div>
 	</div>
-	<hr>
-	<ul id="placesList"></ul>
-	<div id="pagination"></div>
+	
 </div>
 
-<button id="myloc" type="button">내위치</button>
-<p>
-	<!-- <button id="selectStart" type="button">출발지 지도에서 선택</button> -->
-	<label>출발지</label> <input type="text" id="startSpot" name="startSpot" readonly="readonly">
-	<input type="hidden" name="startAddress" id="startAddress">
-	<input type="hidden" name="startLatitude" id="startLatitude">
-	<input type="hidden" name="startHardness" id="startHardness">
-</p>
-<p>
-	<!-- <button id="selectEnd" type="button">도착지 지도에서 선택</button> -->
-	<label>도착지</label> <input type="text" id="endSpot" name="endSpot" readonly="readonly">
-	<input type="hidden" name="endAddress" id="endAddress">
-	<input type="hidden" name="endLatitude" id="endLatitude">
-	<input type="hidden" name="endHardness" id="endHardness">
-</p>
-<button id="selectDone" type="button">선택 완료</button>
 
-<!-- Trigger/Open The Modal -->
-<button id="myBtn">Open Modal</button>
+	<p>
+		<!-- <button id="selectStart" type="button">출발지 지도에서 선택</button> -->
+		<label>출발지</label> <input type="text" id="startAddress" name="startAddress" readonly="readonly">
+		<input type="hidden" name="startLatitude" id="startLatitude">
+		<input type="hidden" name="startHardness" id="startHardness">
+	</p>
+	<p>
+		<!-- <button id="selectEnd" type="button">도착지 지도에서 선택</button> -->
+		<label>도착지</label> <input type="text" id="endAddress" name="endAddress" readonly="readonly">
+		<input type="hidden" name="endLatitude" id="endLatitude">
+		<input type="hidden" name="endHardness" id="endHardness">
+	</p>
+</form>	
+
+<button id="selectDone" type="button">선택 완료</button>
+<hr>
+	<ul id="placesList"></ul>
+	<div id="pagination"></div>
 
 <!-- The Modal -->
 <div id="myModal" class="modal">
@@ -176,14 +176,14 @@
   <!-- Modal content -->
   <div class="modal-content">
     <div class="modal-header">
-      <h2>Modal Header</h2>
+      <h2>이용하실 정보가 맞습니까?</h2>
     </div>
-    <div class="modal-body">
+    <div class="modal-body" id="modal-body">
       <p>Some text in the Modal Body</p>
       <p>Some other text...</p>
     </div>
     <div class="modal-footer">
-      <h3>Modal Footer</h3>
+      <h3><button id="modalOk" type="button">확인</button><button id="modalCancel" type="button">취소</button></h3>
     </div>
   </div>
 
@@ -193,7 +193,7 @@
 getMyLocation();
 
 $(document).on("click","#keywordsrch",function(){
-	$("#map").css("height","200px");
+	
 	searchPlaces();
 })
 // 마커를 담을 배열입니다
@@ -239,7 +239,7 @@ function placesSearchCB(data, status, pagination) {
 
         // 페이지 번호를 표출합니다
         displayPagination(pagination);
-
+        $("#map").css("height","200px");
     } else if (status === daum.maps.services.Status.ZERO_RESULT) {
 
         alert('검색 결과가 존재하지 않습니다.');
@@ -543,9 +543,9 @@ $(document).on("click",".forStrat",function(){
 	var address = $(this).attr("data-address");
 	var latitude = $(this).attr("data-latitude");
 	var hardness = $(this).attr("data-hardness");
-	$("#startAddress").val(address);
+	/* $("#startAddress").val(address);
 	$("#startLatitude").val(latitude);
-	$("#startHardness").val(hardness);
+	$("#startHardness").val(hardness); */
 	
 	var markerPosition = new daum.maps.LatLng(latitude,hardness);
 	startMarker = new daum.maps.Marker({
@@ -557,7 +557,10 @@ $(document).on("click",".forStrat",function(){
 	if (confirm(address+"(을)를 출발지로선택하시겠습니까")) {
 		
 		startMarker.setMap(map);
-		$("#startSpot").val(address);
+		$("#startAddress").val(address);
+		$("#startLatitude").val(latitude);
+		$("#startHardness").val(hardness);
+		
 		// 검색 결과 목록에 추가된 항목들을 제거합니다
 	    removeAllChildNods(listEl);
 
@@ -605,9 +608,8 @@ $(document).on("click",".forEnd",function(){
 	var latitude = $(this).attr("data-latitude");
 	var hardness = $(this).attr("data-hardness");
 	
-	$("#endAddress").val(address);
-	$("#endLatitude").val(latitude);
-	$("#endHardness").val(hardness);
+	
+
 		
 	var markerPosition = new daum.maps.LatLng(latitude,hardness);
 	endMarker = new daum.maps.Marker({
@@ -620,7 +622,9 @@ $(document).on("click",".forEnd",function(){
 	if (confirm(address+"(을)를 도착지로선택하시겠습니까")) {
 		endMarker.setMap(map);
 		/* endMarker.setDraggable(true); */
-		$("#endSpot").val(address);
+		$("#endAddress").val(address);
+		$("#endLatitude").val(latitude);
+		$("#endHardness").val(hardness);
 		// 검색 결과 목록에 추가된 항목들을 제거합니다
 	    removeAllChildNods(listEl);
 
@@ -761,7 +765,17 @@ $(function() {
 		if (distance <= 1) {
 			$("#alert").css("display","block");
 			$("#alert").append("두지점간의 거리는 "+last+"km 입니다. 1km 이하는 이용할수없습니다.");
+			return;
 		}
+		var startInfo = "<p>출발지 : " + $("#startAddress").val() + "</p>";
+		var endInfo = "<p>도착지 : " + $("#endAddress").val() + "</p>";
+		var betweenInfo = "<p>두지점간의 거리는 "+last+"km 입니다.</p>";
+		$("#modal-body").empty();
+		$("#modal-body").append(startInfo);
+		$("#modal-body").append(endInfo);
+		$("#modal-body").append(betweenInfo);
+		
+		modal.style.display = "block";
 		
 	})
 })
@@ -792,10 +806,13 @@ var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
 
 //When the user clicks the button, open the modal 
-btn.onclick = function() {
-	alert("aaaaaaaaaaa");
-modal.style.display = "block";
-}
+/* btn.onclick = function() {
+	modal.style.display = "block";
+} */
+
+$(document).on("click","#modalCancel",function(){
+	modal.style.display = "none";
+})
 
 //When the user clicks on <span> (x), close the modal
 /* span.onclick = function() {
@@ -810,7 +827,14 @@ if (event.target == modal) {
 }
 } */
 
+$(document).on("click","#modalOk",function(){
+		
+	$("#f1").submit();
+	
+})
+
+
 </script>
 
 
-<%@ include file="include/footer.jsp"%>
+<%@ include file="../include/footer.jsp"%>
