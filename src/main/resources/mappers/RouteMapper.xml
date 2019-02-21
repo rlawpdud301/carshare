@@ -3,14 +3,8 @@
 <mapper namespace="com.zero.mapper.RouteMapper">
 	<insert id="insertRoute">
 		INSERT INTO carshare.route
-		(Route_no, id, process, avgFee, start_address, start_latitude, start_hardness,
+		(Route_no, id, process, start_address, start_latitude, start_hardness,
 		end_address, end_latitude, end_hardness)
-		VALUES('', '', '', 0, '', 0, 0, '', 0, 0);
-
-		INSERT INTO carshare.route
-		(Route_no, id, avg_fee, process, start_spot,
-		end_spot)
-		VALUES(#{RouteNo}, #{id.id}, #{avgFee}, #{process},
-		#{startSpot.locationNo}, #{endSpot.locationNo})
+		VALUES(#{RouteNo},#{id.id}, #{process}, #{startAddress}, #{startLatitude}, #{startHardness}, #{endAddress}, #{endLatitude}, #{endHardness})
 	</insert>
 </mapper> 

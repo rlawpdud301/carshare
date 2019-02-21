@@ -10,7 +10,7 @@
 
 	<select id="selectMemberById" resultType="MemberVO">
 		SELECT id, jumin, name,
-		u_intro, d_intro, phone, nikname, photo, jop, driver, grade_no, my_fee
+		u_intro, d_intro, phone, nickname, photo, jop, driver, grade_no, my_fee
 		FROM carshare.`member`
 		WHERE id=#{id}
 	</select>
@@ -18,7 +18,7 @@
 	
 	<insert id="insertMember">
 		INSERT INTO carshare.`member`
-		(id, jumin, name, u_intro, phone, nikname, photo, jop, driver)
-		VALUES(#{id}, #{jumin}, #{name}, #{uIntro}, #{phone}, #{nikname}, #{photo}, #{jop}, false);
+		(id, jumin, name, u_intro, phone, nickname, photo, jop, driver)
+		VALUES(#{id}, #{jumin}, #{name}, #{uIntro}, #{phone}, #{nickname}, #{photo}, #{jop}, false);
 	</insert>
 </mapper>

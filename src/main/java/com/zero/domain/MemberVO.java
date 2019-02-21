@@ -7,20 +7,12 @@ public class MemberVO {
 	private String uIntro;
 	private String dIntro;
 	private String phone;
-	private String nikname;
+	private String nickname;
 	private String photo;
 	private String jop;
 	private boolean driver;
 	private String gradeNo;
 	private int myFee;
-	
-
-
-
-	public MemberVO() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 	
 	
 
@@ -85,12 +77,7 @@ public class MemberVO {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getNikname() {
-		return nikname;
-	}
-	public void setNikname(String nikname) {
-		this.nikname = nikname;
-	}
+	
 	public String getPhoto() {
 		return photo;
 	}
@@ -129,12 +116,28 @@ public class MemberVO {
 
 
 
+	public String getNickname() {
+		return nickname;
+	}
+
+
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "MemberVO [id=" + id + ", jumin=" + jumin + ", name=" + name + ", uIntro=" + uIntro + ", dIntro="
-				+ dIntro + ", phone=" + phone + ", nikname=" + nikname + ", photo=" + photo + ", jop=" + jop
+				+ dIntro + ", phone=" + phone + ", nickname=" + nickname + ", photo=" + photo + ", jop=" + jop
 				+ ", driver=" + driver + ", gradeNo=" + gradeNo + ", myFee=" + myFee + "]";
 	}
+
+
+
+	
 
 
 

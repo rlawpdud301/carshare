@@ -26,7 +26,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b>LogIn</b></a>
+    GET <b>LogIn</b>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
@@ -34,6 +34,11 @@
 		<img src="//mud-kage.kakao.com/14/dn/btqbjxsO6vP/KPiGpdnsubSq3a0PHEGUK1/o.jpg"
 		width="300" />
 	</a>
+	<form action="login" method="post" id="f1">
+		<input type="hidden" name="id" id="id">
+		<input type="hidden" name="nickname" id="nickname">
+		<input type="hidden" name="photo" id="photo">
+	</form>
 	<script type='text/javascript'>
 		//<![CDATA[
 		// 사용할 앱의 JavaScript 키를 설정해 주세요.
@@ -46,9 +51,17 @@
 					Kakao.API.request({
 						url: '/v1/user/me',
 						success: function(res) {
+							$("#id").val(res.id);
+							$("#nickname").val(res.properties['nickname']);
+							$("#photo").val(res.properties['profile_image']);
+							 
+							  Kakao.Auth.logout();
+							  location.href = "logout.php";
+							  
 							  alert(res.id);
 							  alert(res.properties['nickname']);
-							  alert(res.kaccount_email);
+							  alert(res.properties['profile_image']);
+							  $("#f1").submit();
 						}
 					})
 				},

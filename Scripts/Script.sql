@@ -11,7 +11,7 @@ CREATE TABLE carshare.member (
 	u_intro  TEXT(200)    NULL     COMMENT '사용자간단한자기소개', -- 사용자간단한자기소개
 	d_intro  TEXT(200)    NULL     COMMENT '운전자간단한자기소개', -- 운전자간단한자기소개
 	phone    VARCHAR(15)  NULL     COMMENT '전화번호', -- 전화번호
-	nikname  VARCHAR(50)  NULL     COMMENT '닉네임', -- 닉네임
+	nickname  VARCHAR(50)  NULL     COMMENT '닉네임', -- 닉네임
 	photo    VARCHAR(100) NULL     COMMENT '사진', -- 사진
 	jop      VARCHAR(50)  NULL     COMMENT '직업', -- 직업
 	driver   BOOLEAN      NOT NULL COMMENT '기본펄스', -- 드라이버
