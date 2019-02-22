@@ -2,7 +2,7 @@ package com.zero.domain;
 
 public class RouteVO {
 	private String RouteNo;
-	private MemberVO id;
+	private MemberVO memberNo;
 	private String process;
 	private int avgFee;
 	private String startAddress;
@@ -17,11 +17,12 @@ public class RouteVO {
 	public void setRouteNo(String routeNo) {
 		RouteNo = routeNo;
 	}
-	public MemberVO getId() {
-		return id;
+	
+	public MemberVO getMemberNo() {
+		return memberNo;
 	}
-	public void setId(MemberVO id) {
-		this.id = id;
+	public void setMemberNo(MemberVO memberNo) {
+		this.memberNo = memberNo;
 	}
 	public String getProcess() {
 		return process;
@@ -73,7 +74,7 @@ public class RouteVO {
 	}
 	@Override
 	public String toString() {
-		return "RouteVO [RouteNo=" + RouteNo + ", id=" + id + ", process=" + process + ", avgFee=" + avgFee
+		return "RouteVO [RouteNo=" + RouteNo + ", memberNo=" + memberNo + ", process=" + process + ", avgFee=" + avgFee
 				+ ", startAddress=" + startAddress + ", startLatitude=" + startLatitude + ", startHardness="
 				+ startHardness + ", endAddress=" + endAddress + ", endLatitude=" + endLatitude + ", endHardness="
 				+ endHardness + "]";

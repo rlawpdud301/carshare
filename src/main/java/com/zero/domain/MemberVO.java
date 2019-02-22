@@ -1,7 +1,9 @@
 package com.zero.domain;
 
 public class MemberVO {
-	private String id;
+	private int memberNo;
+	private String kakaoId;
+	private String naverId;
 	private String jumin;
 	private String name;
 	private String uIntro;
@@ -13,8 +15,25 @@ public class MemberVO {
 	private boolean driver;
 	private String gradeNo;
 	private int myFee;
+	private String email;
 	
 	
+
+	
+
+	
+
+	public String getEmail() {
+		return email;
+	}
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
 
 	public String getJumin() {
 		return jumin;
@@ -38,15 +57,48 @@ public class MemberVO {
 		this.name = name;
 	}
 
-
-
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
 	
+	
+	
+
+
+
+	public int getMemberNo() {
+		return memberNo;
+	}
+
+
+
+	public void setMemberNo(int memberNo) {
+		this.memberNo = memberNo;
+	}
+
+
+
+	public String getKakaoId() {
+		return kakaoId;
+	}
+
+
+
+	public void setKakaoId(String kakaoId) {
+		this.kakaoId = kakaoId;
+	}
+
+
+
+	public String getNaverId() {
+		return naverId;
+	}
+
+
+
+	public void setNaverId(String naverId) {
+		this.naverId = naverId;
+	}
+
+
+
 	public String getuIntro() {
 		return uIntro;
 	}
@@ -130,11 +182,25 @@ public class MemberVO {
 
 	@Override
 	public String toString() {
-		return "MemberVO [id=" + id + ", jumin=" + jumin + ", name=" + name + ", uIntro=" + uIntro + ", dIntro="
-				+ dIntro + ", phone=" + phone + ", nickname=" + nickname + ", photo=" + photo + ", jop=" + jop
-				+ ", driver=" + driver + ", gradeNo=" + gradeNo + ", myFee=" + myFee + "]";
+		return "MemberVO [memberNo=" + memberNo + ", kakaoId=" + kakaoId + ", naverId=" + naverId + ", jumin=" + jumin
+				+ ", name=" + name + ", uIntro=" + uIntro + ", dIntro=" + dIntro + ", phone=" + phone + ", nickname="
+				+ nickname + ", photo=" + photo + ", jop=" + jop + ", driver=" + driver + ", gradeNo=" + gradeNo
+				+ ", myFee=" + myFee + ", email=" + email + "]";
 	}
 
+
+
+	
+
+
+
+	
+
+
+
+
+
+	
 
 
 	

@@ -6,18 +6,21 @@ CREATE SCHEMA carshare;
 
 -- 회원
 CREATE TABLE carshare.member (
-	id       VARCHAR(50)  NOT NULL COMMENT '카카오아이디', -- 아이디
-	name     VARCHAR(50)  NULL     COMMENT '이름', -- 이름
-	u_intro  TEXT(200)    NULL     COMMENT '사용자간단한자기소개', -- 사용자간단한자기소개
-	d_intro  TEXT(200)    NULL     COMMENT '운전자간단한자기소개', -- 운전자간단한자기소개
-	phone    VARCHAR(15)  NULL     COMMENT '전화번호', -- 전화번호
+	member_no INT(11)      NOT NULL COMMENT '바꿔줘야함', -- 회원번호
+	kakao_id  VARCHAR(50)  NULL     COMMENT '카카오톡아이디', -- 카카오톡아이디
+	naver_id  VARCHAR(50)  NULL     COMMENT '네이버아이디', -- 네이버아이디
+	name      VARCHAR(50)  NULL     COMMENT '이름', -- 이름
+	u_intro   TEXT(200)    NULL     COMMENT '사용자간단한자기소개', -- 사용자간단한자기소개
+	d_intro   TEXT(200)    NULL     COMMENT '운전자간단한자기소개', -- 운전자간단한자기소개
+	phone     VARCHAR(15)  NULL     COMMENT '전화번호', -- 전화번호
 	nickname  VARCHAR(50)  NULL     COMMENT '닉네임', -- 닉네임
-	photo    VARCHAR(100) NULL     COMMENT '사진', -- 사진
-	jop      VARCHAR(50)  NULL     COMMENT '직업', -- 직업
-	driver   BOOLEAN      NOT NULL COMMENT '기본펄스', -- 드라이버
-	jumin    VARCHAR(15)  NULL     COMMENT '주민등록번호', -- 주민등록번호
-	grade_no VARCHAR(50)  NULL     COMMENT '등급번호', -- 등급번호
-	my_fee   INT(11)      NULL     COMMENT '요금' -- 요금
+	photo     VARCHAR(100) NULL     COMMENT '사진', -- 사진
+	jop       VARCHAR(50)  NULL     COMMENT '직업', -- 직업
+	driver    BOOLEAN      NOT NULL DEFAULT false COMMENT '기본펄스', -- 드라이버
+	jumin     VARCHAR(15)  NULL     COMMENT '주민등록번호', -- 주민등록번호
+	grade_no  VARCHAR(50)  NULL     COMMENT '등급번호', -- 등급번호
+	my_fee    INT(11)      NULL     COMMENT '요금', -- 요금
+	email     VARCHAR(15)  NULL     COMMENT '이메일' -- 이메일
 )
 COMMENT '회원';
 
@@ -25,8 +28,11 @@ COMMENT '회원';
 ALTER TABLE carshare.member
 	ADD CONSTRAINT PK_member -- 회원 기본키
 		PRIMARY KEY (
-			id -- 아이디
+			member_no -- 회원번호
 		);
+
+ALTER TABLE carshare.member
+	MODIFY COLUMN member_no INT(11) NOT NULL AUTO_INCREMENT COMMENT '바꿔줘야함';
 
 -- 이용평
 CREATE TABLE carshare.userating (
@@ -52,14 +58,14 @@ ALTER TABLE carshare.userating
 
 -- 이용내역
 CREATE TABLE carshare.use_info (
-	use_no     VARCHAR(50) NOT NULL COMMENT '사용번호', -- 사용번호
-	u_id       VARCHAR(50) NULL     COMMENT '사용자 아이디', -- 사용자 아이디
-	d_id       VARCHAR(50) NULL     COMMENT '드라이버 아이디', -- 드라이버 아이디
-	start_time TIMESTAMP   NULL     COMMENT '출발시간', -- 출발시간
-	end_time   TIMESTAMP   NULL     COMMENT '도착시간', -- 도착시간
-	fee        INT(11)     NULL     COMMENT '요금', -- 요금
-	start_spot INT(11)     NULL     COMMENT 'APIGPS주소정보', -- 출발지
-	end_spot   INT(11)     NULL     COMMENT '도착지' -- 도착지
+	use_no      VARCHAR(50) NOT NULL COMMENT '사용번호', -- 사용번호
+	u_member_no INT(11)     NULL     COMMENT '사용자 아이디', -- 사용자 아이디
+	d_member_no INT(11)     NULL     COMMENT '드라이버 아이디', -- 드라이버 아이디
+	start_time  TIMESTAMP   NULL     COMMENT '출발시간', -- 출발시간
+	end_time    TIMESTAMP   NULL     COMMENT '도착시간', -- 도착시간
+	fee         INT(11)     NULL     COMMENT '요금', -- 요금
+	start_spot  INT(11)     NULL     COMMENT 'APIGPS주소정보', -- 출발지
+	end_spot    INT(11)     NULL     COMMENT '도착지' -- 도착지
 )
 COMMENT '이용내역';
 
@@ -72,8 +78,8 @@ ALTER TABLE carshare.use_info
 
 -- 경로
 CREATE TABLE carshare.route (
-	Route_no       VARCHAR(50)  NOT NULL COMMENT '주경로 드라이버유저 구분', -- 사용자 경로번호
-	id             VARCHAR(50)  NULL     COMMENT '아이디', -- 아이디
+	Route_no       VARCHAR(50)  NOT NULL COMMENT '주경로 드라이버유저 구분 즐겨찾기표시', -- 사용자 경로번호
+	member_no      INT(11)      NULL     COMMENT '회원번호', -- 회원번호
 	process        VARCHAR(50)  NULL     COMMENT '등록 대기 배차완료 ', -- 처리상태
 	avgFee         INT(11)      NULL     COMMENT '예상요금', -- 예상요금
 	start_address  VARCHAR(255) NULL     COMMENT '출발지주소', -- 출발지주소
@@ -95,8 +101,8 @@ ALTER TABLE carshare.route
 -- 계약
 CREATE TABLE carshare.contract (
 	contract_no    VARCHAR(50) NOT NULL COMMENT '드라이버유저 구분', -- 계약번호(신청번호)
-	u_id           VARCHAR(50) NULL     COMMENT '이용자아이디', -- 이용자아이디
-	id             VARCHAR(50) NULL     COMMENT '드라이버아이디', -- 드라이버아이디
+	u_member_no    INT(11)     NULL     COMMENT '이용자아이디', -- 이용자아이디
+	d_member_no    INT(11)     NULL     COMMENT '드라이버아이디', -- 드라이버아이디
 	start_contract TIMESTAMP   NULL     COMMENT '계약 시작일', -- 계약 시작일
 	end_contract   TIMESTAMP   NULL     COMMENT '계약 종료일', -- 계약 종료일
 	cycle          CHAR(10)    NULL     COMMENT '이용요일', -- 주기
@@ -148,7 +154,7 @@ ALTER TABLE carshare.grade
 
 -- 차량정보
 CREATE TABLE carshare.car_info (
-	id                    VARCHAR(50)  NOT NULL COMMENT '아이디', -- 아이디
+	member_no             INT(11)      NOT NULL COMMENT '회원번호', -- 회원번호
 	car_name              VARCHAR(20)  NOT NULL COMMENT '차종', -- 차종
 	car_number            VARCHAR(50)  NOT NULL COMMENT '차량번호', -- 차량번호
 	insurance_date        DATE         NOT NULL COMMENT '보험만료일', -- 보험만료일
@@ -164,12 +170,12 @@ COMMENT '차량정보';
 ALTER TABLE carshare.car_info
 	ADD CONSTRAINT PK_car_info -- 차량정보 기본키
 		PRIMARY KEY (
-			id -- 아이디
+			member_no -- 회원번호
 		);
 
 -- 면허정보
 CREATE TABLE carshare.license_info (
-	id               VARCHAR(50)  NOT NULL COMMENT '아이디', -- 아이디
+	member_no        INT(11)      NOT NULL COMMENT '회원번호', -- 회원번호
 	license_photo    VARCHAR(100) NOT NULL COMMENT '면허사진', -- 면허사진
 	license_no       VARCHAR(50)  NOT NULL COMMENT '면허번호', -- 면허번호
 	license_kind     VARCHAR(50)  NOT NULL COMMENT '면허종류', -- 면허종류
@@ -183,7 +189,7 @@ COMMENT '면허정보';
 ALTER TABLE carshare.license_info
 	ADD CONSTRAINT PK_license_info -- 면허정보 기본키
 		PRIMARY KEY (
-			id -- 아이디
+			member_no -- 회원번호
 		);
 
 -- 쿠폰
@@ -203,7 +209,7 @@ ALTER TABLE carshare.coupons
 
 -- 보유 쿠폰
 CREATE TABLE carshare.Own_coupons (
-	id        VARCHAR(50) NULL COMMENT '아이디', -- 아이디
+	member_no INT(11)     NULL COMMENT '회원번호', -- 회원번호
 	coupon_no VARCHAR(50) NULL COMMENT '쿠폰번호' -- 쿠폰번호
 )
 COMMENT '보유 쿠폰';
@@ -227,19 +233,6 @@ ALTER TABLE carshare.use_info_location
 ALTER TABLE carshare.use_info_location
 	MODIFY COLUMN location_no INT(11) NOT NULL AUTO_INCREMENT COMMENT '위치번호';
 
--- 경로위치정보
-CREATE TABLE carshare.route_location (
-	location_no INT(11) NOT NULL COMMENT '위치번호' -- 위치번호
-)
-COMMENT '경로위치정보';
-
--- 경로위치정보
-ALTER TABLE carshare.route_location
-	ADD CONSTRAINT PK_route_location -- 경로위치정보 기본키
-		PRIMARY KEY (
-			location_no -- 위치번호
-		);
-
 -- 계약위치정보
 CREATE TABLE carshare.contract_location (
 	location_no INT(11)      NOT NULL COMMENT '위치번호', -- 위치번호
@@ -254,6 +247,21 @@ ALTER TABLE carshare.contract_location
 	ADD CONSTRAINT PK_contract_location -- 계약위치정보 기본키
 		PRIMARY KEY (
 			location_no -- 위치번호
+		);
+
+-- 피이용자
+CREATE TABLE carshare.route_user (
+	Route_no  VARCHAR(50) NOT NULL COMMENT '사용자 경로번호', -- 사용자 경로번호
+	member_no INT(11)     NULL     COMMENT '회원번호', -- 회원번호
+	time      TIMESTAMP   NULL     COMMENT '신청시간' -- 신청시간
+)
+COMMENT '피이용자';
+
+-- 피이용자
+ALTER TABLE carshare.route_user
+	ADD CONSTRAINT PK_route_user -- 피이용자 기본키
+		PRIMARY KEY (
+			Route_no -- 사용자 경로번호
 		);
 
 -- 회원
@@ -290,10 +298,10 @@ ALTER TABLE carshare.userating
 ALTER TABLE carshare.use_info
 	ADD CONSTRAINT FK_member_TO_use_info -- 회원 -> 이용내역
 		FOREIGN KEY (
-			u_id -- 사용자 아이디
+			u_member_no -- 사용자 아이디
 		)
 		REFERENCES carshare.member ( -- 회원
-			id -- 아이디
+			member_no -- 회원번호
 		);
 
 -- 이용내역
@@ -320,40 +328,40 @@ ALTER TABLE carshare.use_info
 ALTER TABLE carshare.use_info
 	ADD CONSTRAINT FK_member_TO_use_info2 -- 회원 -> 이용내역2
 		FOREIGN KEY (
-			d_id -- 드라이버 아이디
+			d_member_no -- 드라이버 아이디
 		)
 		REFERENCES carshare.member ( -- 회원
-			id -- 아이디
+			member_no -- 회원번호
 		);
 
 -- 경로
 ALTER TABLE carshare.route
 	ADD CONSTRAINT FK_member_TO_route -- 회원 -> 경로
 		FOREIGN KEY (
-			id -- 아이디
+			member_no -- 회원번호
 		)
 		REFERENCES carshare.member ( -- 회원
-			id -- 아이디
+			member_no -- 회원번호
 		);
 
 -- 계약
 ALTER TABLE carshare.contract
 	ADD CONSTRAINT FK_member_TO_contract -- 회원 -> 계약
 		FOREIGN KEY (
-			u_id -- 이용자아이디
+			u_member_no -- 이용자아이디
 		)
 		REFERENCES carshare.member ( -- 회원
-			id -- 아이디
+			member_no -- 회원번호
 		);
 
 -- 계약
 ALTER TABLE carshare.contract
 	ADD CONSTRAINT FK_member_TO_contract2 -- 회원 -> 계약2
 		FOREIGN KEY (
-			id -- 드라이버아이디
+			d_member_no -- 드라이버아이디
 		)
 		REFERENCES carshare.member ( -- 회원
-			id -- 아이디
+			member_no -- 회원번호
 		);
 
 -- 계약
@@ -390,30 +398,30 @@ ALTER TABLE carshare.fee
 ALTER TABLE carshare.car_info
 	ADD CONSTRAINT FK_member_TO_car_info -- 회원 -> 차량정보
 		FOREIGN KEY (
-			id -- 아이디
+			member_no -- 회원번호
 		)
 		REFERENCES carshare.member ( -- 회원
-			id -- 아이디
+			member_no -- 회원번호
 		);
 
 -- 면허정보
 ALTER TABLE carshare.license_info
 	ADD CONSTRAINT FK_member_TO_license_info -- 회원 -> 면허정보
 		FOREIGN KEY (
-			id -- 아이디
+			member_no -- 회원번호
 		)
 		REFERENCES carshare.member ( -- 회원
-			id -- 아이디
+			member_no -- 회원번호
 		);
 
 -- 보유 쿠폰
 ALTER TABLE carshare.Own_coupons
 	ADD CONSTRAINT FK_member_TO_Own_coupons -- 회원 -> 보유 쿠폰
 		FOREIGN KEY (
-			id -- 아이디
+			member_no -- 회원번호
 		)
 		REFERENCES carshare.member ( -- 회원
-			id -- 아이디
+			member_no -- 회원번호
 		);
 
 -- 보유 쿠폰
@@ -424,6 +432,26 @@ ALTER TABLE carshare.Own_coupons
 		)
 		REFERENCES carshare.coupons ( -- 쿠폰
 			coupon_no -- 쿠폰번호
+		);
+
+-- 피이용자
+ALTER TABLE carshare.route_user
+	ADD CONSTRAINT FK_route_TO_route_user -- 경로 -> 피이용자
+		FOREIGN KEY (
+			Route_no -- 사용자 경로번호
+		)
+		REFERENCES carshare.route ( -- 경로
+			Route_no -- 사용자 경로번호
+		);
+
+-- 피이용자
+ALTER TABLE carshare.route_user
+	ADD CONSTRAINT FK_member_TO_route_user -- 회원 -> 피이용자
+		FOREIGN KEY (
+			member_no -- 회원번호
+		)
+		REFERENCES carshare.member ( -- 회원
+			member_no -- 회원번호
 		);
 	
 CREATE USER 'user_carshare'@'%';

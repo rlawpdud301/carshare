@@ -21,6 +21,7 @@
 	<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/plugins/iCheck/square/blue.css">
  	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 	
 <body class="hold-transition login-page">
@@ -35,9 +36,11 @@
 		width="300" />
 	</a>
 	<form action="login" method="post" id="f1">
-		<input type="hidden" name="id" id="id">
+		<input type="hidden" name="kakaoId" id="kakaoId">
+		<input type="hidden" name="naverId" id="naverId">
 		<input type="hidden" name="nickname" id="nickname">
 		<input type="hidden" name="photo" id="photo">
+		<input type="hidden" name="type" id="type">
 	</form>
 	<script type='text/javascript'>
 		//<![CDATA[
@@ -51,16 +54,16 @@
 					Kakao.API.request({
 						url: '/v1/user/me',
 						success: function(res) {
-							$("#id").val(res.id);
+							$("#kakaoId").val(res.id);
+							$("#type").val("kakao");
 							$("#nickname").val(res.properties['nickname']);
 							$("#photo").val(res.properties['profile_image']);
 							 
-							  Kakao.Auth.logout();
-							  location.href = "logout.php";
+							 Kakao.Auth.logout();
 							  
-							  alert(res.id);
+							/*   alert(res.id);
 							  alert(res.properties['nickname']);
-							  alert(res.properties['profile_image']);
+							  alert(res.properties['profile_image']); */
 							  $("#f1").submit();
 						}
 					})
@@ -70,7 +73,9 @@
 				}
 			});
 		};
+		
 		//]]>
+		
 	</script>
   </div>
   <!-- /.login-box-body -->

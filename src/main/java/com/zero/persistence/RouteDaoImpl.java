@@ -21,4 +21,10 @@ public class RouteDaoImpl implements RouteDAO {
 		sqlSession.insert(namespace + ".insertRoute",vo);
 	}
 
+	@Override
+	public String selectLastNo() {
+		// TODO Auto-generated method stub		
+		return sqlSession.selectOne(namespace + ".selectLastNo");
+	}
+
 }

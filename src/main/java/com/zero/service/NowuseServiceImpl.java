@@ -14,15 +14,16 @@ public class NowuseServiceImpl implements NowuseService {
 	@Autowired
 	private RouteDAO routDao;
 	
-	@Autowired
-	private LocationDAO locationDao;
-	
-	
 	
 	@Override
 	@Transactional
 	public void insertRoute(RouteVO vo) {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub	
+		String RouteNo = routDao.selectLastNo();
+		if (RouteNo == null) {
+			RouteNo = "u0001";
+		}
+		vo.setRouteNo(RouteNo);
 		routDao.insertRoute(vo);
 	}
 

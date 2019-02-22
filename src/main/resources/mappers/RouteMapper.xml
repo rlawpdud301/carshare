@@ -3,8 +3,16 @@
 <mapper namespace="com.zero.mapper.RouteMapper">
 	<insert id="insertRoute">
 		INSERT INTO carshare.route
-		(Route_no, id, process, start_address, start_latitude, start_hardness,
-		end_address, end_latitude, end_hardness)
-		VALUES(#{RouteNo},#{id.id}, #{process}, #{startAddress}, #{startLatitude}, #{startHardness}, #{endAddress}, #{endLatitude}, #{endHardness})
+		(Route_no, member_no, process,
+		start_address, start_latitude, start_hardness,
+		end_address,
+		end_latitude, end_hardness)
+		VALUES(#{RouteNo},#{memberNo.memberNo}, #{process},
+		#{startAddress}, #{startLatitude}, #{startHardness}, #{endAddress},
+		#{endLatitude}, #{endHardness})
 	</insert>
+	
+	<select id="selectLastNo" resultType="String">
+		select max(Route_no) FROM carshare.route;
+	</select>
 </mapper> 

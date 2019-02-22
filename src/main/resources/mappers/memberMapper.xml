@@ -8,17 +8,33 @@
 		column="jop" /> <result property="driver" column="driver" /> <result property="gradeNo" 
 		column="grade_no" /> <result property="myFee" column="my_fee" /> </resultMap> -->
 
+	<sql id="whereforid">
+		<where>
+			<if test="kakaoId != null">
+				kakao_id = #{kakaoId}
+			</if>
+			<if test="naverId != null">
+				and naver_id = #{naverId}
+			</if>
+		</where>
+	</sql>
+
+
 	<select id="selectMemberById" resultType="MemberVO">
-		SELECT id, jumin, name,
-		u_intro, d_intro, phone, nickname, photo, jop, driver, grade_no, my_fee
-		FROM carshare.`member`
-		WHERE id=#{id}
+		SELECT member_no,
+		kakao_id, naver_id, name, u_intro, d_intro, phone,
+		nickname, photo,
+		jop, driver, jumin, grade_no, my_fee, email
+		FROM
+		carshare.`member`
+		<include refid="whereforid" />
+
 	</select>
 
-	
 	<insert id="insertMember">
 		INSERT INTO carshare.`member`
-		(id, jumin, name, u_intro, phone, nickname, photo, jop, driver)
-		VALUES(#{id}, #{jumin}, #{name}, #{uIntro}, #{phone}, #{nickname}, #{photo}, #{jop}, false);
+		(kakao_id, naver_id, name, u_intro, d_intro, phone, nickname, photo, jop,
+		driver, jumin, grade_no, my_fee, email)
+		VALUES(#{kakaoId},#{naverId},#{name},#{uIntro},#{dIntro},#{phone},#{nickname},#{photo},#{jop},#{driver},#{jumin},#{gradeNo},#{myFee},#{email})
 	</insert>
 </mapper>
