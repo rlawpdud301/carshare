@@ -38,7 +38,7 @@ public class LoginAndJoinController {
 		LoginDTO dto = new LoginDTO();
 		Map<String, String> id = new HashMap<>();
 		
-		//·Î±×ÀÎ ¹æ¹ýÀÌÃß°¡µÉ¶§¼öÁ¤
+		//ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß°ï¿½ï¿½É¶ï¿½ï¿½ï¿½ï¿½ï¿½
 		if (type.equals("kakao")) {
 			id.put("kakaoId", vo.getKakaoId());
 		}else {
@@ -75,11 +75,11 @@ public class LoginAndJoinController {
 		logger.info("join-Post");
 		logger.info("vo : "+vo);
 		
-		service.insertMember(vo);
-		
+		int memberNo = service.insertMember(vo);
+
 		LoginDTO dto = new LoginDTO();
 		dto.setDriver(vo.isDriver());
-		dto.setMemberNo(vo.getMemberNo());
+		dto.setMemberNo(memberNo);
 		dto.setNickname(vo.getNickname());
 		dto.setPhoto(vo.getPhoto());
 		HttpSession session = request.getSession();
@@ -87,6 +87,11 @@ public class LoginAndJoinController {
 		response.sendRedirect(request.getContextPath()+"/nowuse/nowRouteUpload");
 		/*return "/nowuse/nowRouteUpload";*/
 	}
-	
+
+	@RequestMapping(value = "addDriver", method = RequestMethod.GET)
+	public String addDriverGet() { 
+		logger.info("addDriver-get");
+		return "/loginAndJoin/addDriver";
+	}
 	
 }

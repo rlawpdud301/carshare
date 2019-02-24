@@ -1,5 +1,6 @@
 package com.zero.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +22,13 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public void insertMember(MemberVO vo) {
+	public int insertMember(MemberVO vo) {
 		// TODO Auto-generated method stub
 		dao.insertMember(vo);
+		Map<String, String> id = new HashMap<>();
+		id.put("kakaoId", vo.getKakaoId());
+		id.put("naverId", vo.getNaverId());
+		return dao.selectMemberById(id).getMemberNo();
 	}
 
 }

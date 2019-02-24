@@ -4360,4 +4360,11 @@ fieldset[disabled] .btn-vk.active {
   .table-responsive > .table tr td {
     white-space: normal!important;
   }
+  
+  #use{
+  	color: #3c8dbc;
+  }
+  #drive{
+  	color: #00a65a;
+  }
 }

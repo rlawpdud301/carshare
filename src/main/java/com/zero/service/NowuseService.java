@@ -5,4 +5,6 @@ import com.zero.domain.RouteVO;
 public interface NowuseService {
 
 	void insertRoute(RouteVO vo);
+	
+	RouteVO selectRoutByRouteNo(String RouteNo);
 }

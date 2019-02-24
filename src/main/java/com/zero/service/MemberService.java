@@ -6,5 +6,5 @@ import com.zero.domain.MemberVO;
 
 public interface MemberService {
 	MemberVO selectMemberById(Map<String, String> id);
-	void insertMember(MemberVO vo);
+	int insertMember(MemberVO vo);
 }

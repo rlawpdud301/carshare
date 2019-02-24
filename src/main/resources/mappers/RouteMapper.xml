@@ -15,4 +15,12 @@
 	<select id="selectLastNo" resultType="String">
 		select max(Route_no) FROM carshare.route;
 	</select>
+	
+	<select id="selectRoutByRouteNo" resultType="RouteVO">
+		SELECT Route_no, member_no, process, avgFee,
+		start_address, start_latitude, start_hardness, end_address,
+		end_latitude, end_hardness
+		FROM carshare.route
+		where left(Route_no, 1) != 'f' and member_no =#{memberNo} and process = '등록'
+	</select>
 </mapper> 

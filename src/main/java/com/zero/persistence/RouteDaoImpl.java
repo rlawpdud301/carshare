@@ -27,4 +27,10 @@ public class RouteDaoImpl implements RouteDAO {
 		return sqlSession.selectOne(namespace + ".selectLastNo");
 	}
 
+	@Override
+	public RouteVO selectRoutByRouteNo(String RouteNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".selectRoutByRouteNo",RouteNo);
+	}
+
 }

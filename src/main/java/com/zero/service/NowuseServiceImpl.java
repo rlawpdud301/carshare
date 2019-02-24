@@ -19,12 +19,25 @@ public class NowuseServiceImpl implements NowuseService {
 	@Transactional
 	public void insertRoute(RouteVO vo) {
 		// TODO Auto-generated method stub	
-		String RouteNo = routDao.selectLastNo();
-		if (RouteNo == null) {
-			RouteNo = "u0001";
+		String routeNo = routDao.selectLastNo();
+		
+		if (routeNo == null) {
+			routeNo = "u0000";
+		}else {
+			String what = routeNo.substring(0, 1);
+			int num = (Integer.parseInt(routeNo.substring(1)) + 1);
+			
+			routeNo = what + (String.format("%04d", num));
 		}
-		vo.setRouteNo(RouteNo);
+		vo.setRouteNo(routeNo);
 		routDao.insertRoute(vo);
+	}
+
+
+	@Override
+	public RouteVO selectRoutByRouteNo(String RouteNo) {
+		// TODO Auto-generated method stub
+		return routDao.selectRoutByRouteNo(RouteNo);
 	}
 
 }

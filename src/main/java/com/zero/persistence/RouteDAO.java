@@ -7,4 +7,6 @@ public interface RouteDAO {
 	void insertRoute(RouteVO vo);
 
 	String selectLastNo();
+	
+	RouteVO selectRoutByRouteNo(String RouteNo);
 }

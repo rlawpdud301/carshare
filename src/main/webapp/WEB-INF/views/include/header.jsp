@@ -2,6 +2,20 @@
     pageEncoding="UTF-8"%>
    
 <!DOCTYPE html>
+<style>
+#forg{
+	color: #008d4c;
+}
+#forg:hover{
+	color: #B7F0B1;
+}
+#forb{
+	color: #3c8dbc;
+}
+#forb:hover{
+	color: #B2EBF4;
+}
+</style>
 <html>
   <head>
     <meta charset="UTF-8">
@@ -39,7 +53,7 @@
           <!-- mini logo for sidebar mini 50x50 pixels -->
           <span class="logo-mini"><b>A</b>LT</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>GET</b> PROJECT</span>
+          <span class="logo-lg"><b>GET</b> <span id="mode">Ride mode</span></span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -317,11 +331,11 @@
             <li class="header">MAIN NAVIGATION</li>
             <li class="treeview">
               <a href="#">
-                <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
+                <i class="fa fa-dashboard"></i> <span>모드 변경(운전자or이용자)</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="${pageContext.request.contextPath }/resources/index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-                <li><a href="${pageContext.request.contextPath }/resources/index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
+                <li><a id="use"><i class="fa fa-circle-o"></i><span id="forb">탈래요 모드</span></a></li>
+                <li><a id="drive"><i class="fa fa-circle-o"></i><span id="forg">태울래요 모드</span></a></li>
               </ul>
             </li>
             <li class="treeview">
@@ -465,3 +479,34 @@
             <li class="active">General Elements</li>
           </ol>
         </section> -->
+        <script type="text/javascript">
+        $(document).on("click","#use",function(){
+        	$("#mode").text("Ride mode");
+        	$("body").removeClass("skin-green");
+        	$("body").addClass("skin-blue");
+        	
+        })
+        
+        $(document).on("click","#drive",function(){
+        	
+        	if (!${vo.driver}) {
+        		if (confirm("태울래요 모드를 이용하시려면 운전자등록이필요합니다. 운전자등록을 하시겠습니까?")) {
+        			$("#mode").text("Drive mode");
+        			$("body").removeClass("skin-blue");
+    	        	$("body").addClass("skin-green");
+    	        	location.href="${pageContext.request.contextPath }/addDriver";
+        		}else{
+        			return;
+        		}
+			}else{
+				$("#mode").text("Drive mode");
+				$("body").removeClass("skin-blue");
+	        	$("body").addClass("skin-green");
+			}
+        	
+        })
+        $(function () {
+        	$("body").removeClass("skin-green");
+        	$("body").addClass("skin-blue");
+		})
+        </script>
