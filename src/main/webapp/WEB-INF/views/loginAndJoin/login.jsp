@@ -59,7 +59,7 @@
 							$("#nickname").val(res.properties['nickname']);
 							$("#photo").val(res.properties['profile_image']);
 							 
-							 Kakao.Auth.logout();
+							/*  Kakao.Auth.logout(); */
 							  
 							/*   alert(res.id);
 							  alert(res.properties['nickname']);

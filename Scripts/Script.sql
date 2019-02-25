@@ -4,454 +4,456 @@ DROP SCHEMA IF EXISTS carshare;
 -- carshare
 CREATE SCHEMA carshare;
 
--- È¸ï¿½ï¿½
+-- È¸¿ø
 CREATE TABLE carshare.member (
-	member_no INT(11)      NOT NULL COMMENT 'ï¿½Ù²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', -- È¸ï¿½ï¿½ï¿½ï¿½È£
-	kakao_id  VARCHAR(50)  NULL     COMMENT 'Ä«Ä«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½', -- Ä«Ä«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ìµï¿½
-	naver_id  VARCHAR(50)  NULL     COMMENT 'ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½Ìµï¿½', -- ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½Ìµï¿½
-	name      VARCHAR(50)  NULL     COMMENT 'ï¿½Ì¸ï¿½', -- ï¿½Ì¸ï¿½
-	u_intro   TEXT(200)    NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½Ò°ï¿½', -- ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½Ò°ï¿½
-	d_intro   TEXT(200)    NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½Ò°ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½Ú°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú±ï¿½Ò°ï¿½
-	phone     VARCHAR(15)  NULL     COMMENT 'ï¿½ï¿½È­ï¿½ï¿½È£', -- ï¿½ï¿½È­ï¿½ï¿½È£
-	nickname  VARCHAR(50)  NULL     COMMENT 'ï¿½Ð³ï¿½ï¿½ï¿½', -- ï¿½Ð³ï¿½ï¿½ï¿½
-	photo     VARCHAR(100) NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½
-	jop       VARCHAR(50)  NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½
-	driver    BOOLEAN      NOT NULL DEFAULT false COMMENT 'ï¿½âº»ï¿½Þ½ï¿½', -- ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½
-	jumin     VARCHAR(15)  NULL     COMMENT 'ï¿½Ö¹Îµï¿½Ï¹ï¿½È£', -- ï¿½Ö¹Îµï¿½Ï¹ï¿½È£
-	grade_no  VARCHAR(50)  NULL     COMMENT 'ï¿½ï¿½Þ¹ï¿½È£', -- ï¿½ï¿½Þ¹ï¿½È£
-	my_fee    INT(11)      NULL     COMMENT 'ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½
-	email     VARCHAR(50)  NULL     COMMENT 'ï¿½Ì¸ï¿½ï¿½ï¿½' -- ï¿½Ì¸ï¿½ï¿½ï¿½
+	member_no         INT(11)      NOT NULL COMMENT '¹Ù²ãÁà¾ßÇÔ', -- È¸¿ø¹øÈ£
+	kakao_id          VARCHAR(50)  NULL     COMMENT 'Ä«Ä«¿ÀÅå¾ÆÀÌµð', -- Ä«Ä«¿ÀÅå¾ÆÀÌµð
+	naver_id          VARCHAR(50)  NULL     COMMENT '³×ÀÌ¹ö¾ÆÀÌµð', -- ³×ÀÌ¹ö¾ÆÀÌµð
+	name              VARCHAR(50)  NULL     COMMENT 'ÀÌ¸§', -- ÀÌ¸§
+	u_intro           TEXT(200)    NULL     COMMENT '»ç¿ëÀÚ°£´ÜÇÑÀÚ±â¼Ò°³', -- »ç¿ëÀÚ°£´ÜÇÑÀÚ±â¼Ò°³
+	d_intro           TEXT(200)    NULL     COMMENT '¿îÀüÀÚ°£´ÜÇÑÀÚ±â¼Ò°³', -- ¿îÀüÀÚ°£´ÜÇÑÀÚ±â¼Ò°³
+	phone             VARCHAR(15)  NULL     COMMENT 'ÀüÈ­¹øÈ£', -- ÀüÈ­¹øÈ£
+	nickname          VARCHAR(50)  NULL     COMMENT '´Ð³×ÀÓ', -- ´Ð³×ÀÓ
+	photo             VARCHAR(100) NULL     COMMENT '»çÁø', -- »çÁø
+	jop               VARCHAR(50)  NULL     COMMENT 'Á÷¾÷', -- Á÷¾÷
+	driver            BOOLEAN      NOT NULL DEFAULT false COMMENT '±âº»ÆÞ½º', -- µå¶óÀÌ¹ö
+	jumin             VARCHAR(15)  NULL     COMMENT 'ÁÖ¹Îµî·Ï¹øÈ£', -- ÁÖ¹Îµî·Ï¹øÈ£
+	grade_no          VARCHAR(50)  NULL     COMMENT 'µî±Þ¹øÈ£', -- µî±Þ¹øÈ£
+	my_fee            INT(11)      NULL     COMMENT '¿ä±Ý', -- ¿ä±Ý
+	email             VARCHAR(15)  NULL     COMMENT 'ÀÌ¸ÞÀÏ', -- ÀÌ¸ÞÀÏ
+	dirver_enrollment DATE         NULL     COMMENT 'µå¶óÀÌ¹ö µî·ÏÀÏ', -- µå¶óÀÌ¹ö µî·ÏÀÏ
+	dirver_apply      DATE         NULL     COMMENT 'µå¶óÀÌ¹ö ½ÅÃ»ÀÏ' -- µå¶óÀÌ¹ö ½ÅÃ»ÀÏ
 )
-COMMENT 'È¸ï¿½ï¿½';
+COMMENT 'È¸¿ø';
 
--- È¸ï¿½ï¿½
+-- È¸¿ø
 ALTER TABLE carshare.member
-	ADD CONSTRAINT PK_member -- È¸ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_member -- È¸¿ø ±âº»Å°
 		PRIMARY KEY (
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+			member_no -- È¸¿ø¹øÈ£
 		);
 
 ALTER TABLE carshare.member
-	MODIFY COLUMN member_no INT(11) NOT NULL AUTO_INCREMENT COMMENT 'ï¿½Ù²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½';
+	MODIFY COLUMN member_no INT(11) NOT NULL AUTO_INCREMENT COMMENT '¹Ù²ãÁà¾ßÇÔ';
 
--- ï¿½Ì¿ï¿½ï¿½ï¿½
+-- ÀÌ¿ëÆò
 CREATE TABLE carshare.userating (
-	userating_no VARCHAR(50)  NOT NULL COMMENT 'ï¿½ï¿½ï¿½È£', -- ï¿½ï¿½ï¿½È£
-	use_no       VARCHAR(50)  NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½È£', -- ï¿½ï¿½ï¿½ï¿½È£
-	contract_no  VARCHAR(50)  NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½È£(ï¿½ï¿½Ã»ï¿½ï¿½È£)', -- ï¿½ï¿½ï¿½ï¿½È£(ï¿½ï¿½Ã»ï¿½ï¿½È£)
-	rating       INT(1)       NOT NULL COMMENT 'ï¿½ï¿½5ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½
-	content      TEXT         NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½
-	img1         VARCHAR(100) NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½', -- ï¿½Ì¹ï¿½ï¿½ï¿½1
-	img2         VARCHAR(100) NULL     COMMENT 'ï¿½Ì¹ï¿½ï¿½ï¿½2', -- ï¿½Ì¹ï¿½ï¿½ï¿½2
-	img3         VARCHAR(100) NULL     COMMENT 'ï¿½Ì¹ï¿½ï¿½ï¿½3', -- ï¿½Ì¹ï¿½ï¿½ï¿½3
-	regdate      TIMESTAMP    NULL     COMMENT 'ï¿½Û¼ï¿½ï¿½ï¿½', -- ï¿½Û¼ï¿½ï¿½ï¿½
-	modedate     TIMESTAMP    NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½' -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	userating_no VARCHAR(50)  NOT NULL COMMENT 'Æò¹øÈ£', -- Æò¹øÈ£
+	use_no       VARCHAR(50)  NOT NULL COMMENT '»ç¿ë¹øÈ£', -- »ç¿ë¹øÈ£
+	contract_no  VARCHAR(50)  NULL     COMMENT '°è¾à¹øÈ£(½ÅÃ»¹øÈ£)', -- °è¾à¹øÈ£(½ÅÃ»¹øÈ£)
+	rating       INT(1)       NOT NULL COMMENT 'º°5¸¸Á¡', -- ÆòÁ¡
+	content      TEXT         NULL     COMMENT '³»¿ë', -- ³»¿ë
+	img1         VARCHAR(100) NULL     COMMENT 'ÆÄÀÏÀÌ¸§', -- ÀÌ¹ÌÁö1
+	img2         VARCHAR(100) NULL     COMMENT 'ÀÌ¹ÌÁö2', -- ÀÌ¹ÌÁö2
+	img3         VARCHAR(100) NULL     COMMENT 'ÀÌ¹ÌÁö3', -- ÀÌ¹ÌÁö3
+	regdate      TIMESTAMP    NULL     COMMENT 'ÀÛ¼ºÀÏ', -- ÀÛ¼ºÀÏ
+	modedate     TIMESTAMP    NULL     COMMENT '¼öÁ¤ÀÏ' -- ¼öÁ¤ÀÏ
 )
-COMMENT 'ï¿½Ì¿ï¿½ï¿½ï¿½';
+COMMENT 'ÀÌ¿ëÆò';
 
--- ï¿½Ì¿ï¿½ï¿½ï¿½
+-- ÀÌ¿ëÆò
 ALTER TABLE carshare.userating
-	ADD CONSTRAINT PK_userating -- ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_userating -- ÀÌ¿ëÆò ±âº»Å°
 		PRIMARY KEY (
-			userating_no -- ï¿½ï¿½ï¿½È£
+			userating_no -- Æò¹øÈ£
 		);
 
--- ï¿½Ì¿ë³»ï¿½ï¿½
+-- ÀÌ¿ë³»¿ª
 CREATE TABLE carshare.use_info (
-	use_no      VARCHAR(50) NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½È£', -- ï¿½ï¿½ï¿½ï¿½È£
-	u_member_no INT(11)     NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½
-	d_member_no INT(11)     NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½Ìµï¿½', -- ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½Ìµï¿½
-	start_time  TIMESTAMP   NULL     COMMENT 'ï¿½ï¿½ß½Ã°ï¿½', -- ï¿½ï¿½ß½Ã°ï¿½
-	end_time    TIMESTAMP   NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½Ã°ï¿½
-	fee         INT(11)     NULL     COMMENT 'ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½
-	start_spot  INT(11)     NULL     COMMENT 'APIGPSï¿½Ö¼ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½
-	end_spot    INT(11)     NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½' -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	use_no      VARCHAR(50) NOT NULL COMMENT '»ç¿ë¹øÈ£', -- »ç¿ë¹øÈ£
+	u_member_no INT(11)     NULL     COMMENT '»ç¿ëÀÚ ¾ÆÀÌµð', -- »ç¿ëÀÚ ¾ÆÀÌµð
+	d_member_no INT(11)     NULL     COMMENT 'µå¶óÀÌ¹ö ¾ÆÀÌµð', -- µå¶óÀÌ¹ö ¾ÆÀÌµð
+	start_time  TIMESTAMP   NULL     COMMENT 'Ãâ¹ß½Ã°£', -- Ãâ¹ß½Ã°£
+	end_time    TIMESTAMP   NULL     COMMENT 'µµÂø½Ã°£', -- µµÂø½Ã°£
+	fee         INT(11)     NULL     COMMENT '¿ä±Ý', -- ¿ä±Ý
+	start_spot  INT(11)     NULL     COMMENT 'APIGPSÁÖ¼ÒÁ¤º¸', -- Ãâ¹ßÁö
+	end_spot    INT(11)     NULL     COMMENT 'µµÂøÁö' -- µµÂøÁö
 )
-COMMENT 'ï¿½Ì¿ë³»ï¿½ï¿½';
+COMMENT 'ÀÌ¿ë³»¿ª';
 
--- ï¿½Ì¿ë³»ï¿½ï¿½
+-- ÀÌ¿ë³»¿ª
 ALTER TABLE carshare.use_info
-	ADD CONSTRAINT PK_use_info -- ï¿½Ì¿ë³»ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_use_info -- ÀÌ¿ë³»¿ª ±âº»Å°
 		PRIMARY KEY (
-			use_no -- ï¿½ï¿½ï¿½ï¿½È£
+			use_no -- »ç¿ë¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½
+-- °æ·Î
 CREATE TABLE carshare.route (
-	Route_no       VARCHAR(50)  NOT NULL COMMENT 'ï¿½Ö°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ã£ï¿½ï¿½Ç¥ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¹ï¿½È£
-	member_no      INT(11)      NULL     COMMENT 'È¸ï¿½ï¿½ï¿½ï¿½È£', -- È¸ï¿½ï¿½ï¿½ï¿½È£
-	process        VARCHAR(50)  NULL     COMMENT 'ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ ', -- Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	avgFee         INT(11)      NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	start_address  VARCHAR(255) NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½
-	start_latitude DOUBLE       NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	start_hardness DOUBLE       NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æµµ', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æµµ
-	end_address    VARCHAR(255) NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¼ï¿½
-	end_latitude   DOUBLE       NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	end_hardness   DOUBLE       NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æµµ' -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æµµ
+	Route_no       VARCHAR(50)  NOT NULL COMMENT 'ÁÖ°æ·Î µå¶óÀÌ¹öÀ¯Àú ±¸ºÐ Áñ°ÜÃ£±âÇ¥½Ã', -- »ç¿ëÀÚ °æ·Î¹øÈ£
+	member_no      INT(11)      NULL     COMMENT 'È¸¿ø¹øÈ£', -- È¸¿ø¹øÈ£
+	process        VARCHAR(50)  NULL     COMMENT 'µî·Ï ´ë±â ¹èÂ÷¿Ï·á ', -- Ã³¸®»óÅÂ
+	avgFee         INT(11)      NULL     COMMENT '¿¹»ó¿ä±Ý', -- ¿¹»ó¿ä±Ý
+	start_address  VARCHAR(255) NULL     COMMENT 'Ãâ¹ßÁöÁÖ¼Ò', -- Ãâ¹ßÁöÁÖ¼Ò
+	start_latitude DOUBLE       NULL     COMMENT 'Ãâ¹ßÁöÀ§µµ', -- Ãâ¹ßÁöÀ§µµ
+	start_hardness DOUBLE       NULL     COMMENT 'Ãâ¹ßÁö°æµµ', -- Ãâ¹ßÁö°æµµ
+	end_address    VARCHAR(255) NULL     COMMENT 'µµÂøÁöÁÖ¼Ò', -- µµÂøÁöÁÖ¼Ò
+	end_latitude   DOUBLE       NULL     COMMENT 'µµÂøÁöÀ§µµ', -- µµÂøÁöÀ§µµ
+	end_hardness   DOUBLE       NULL     COMMENT 'µµÂøÁö°æµµ' -- µµÂøÁö°æµµ
 )
-COMMENT 'ï¿½ï¿½ï¿½';
+COMMENT '°æ·Î';
 
--- ï¿½ï¿½ï¿½
+-- °æ·Î
 ALTER TABLE carshare.route
-	ADD CONSTRAINT PK_route -- ï¿½ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_route -- °æ·Î ±âº»Å°
 		PRIMARY KEY (
-			Route_no -- ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¹ï¿½È£
+			Route_no -- »ç¿ëÀÚ °æ·Î¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½
+-- °è¾à
 CREATE TABLE carshare.contract (
-	contract_no    VARCHAR(50) NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½È£(ï¿½ï¿½Ã»ï¿½ï¿½È£)
-	u_member_no    INT(11)     NULL     COMMENT 'ï¿½Ì¿ï¿½ï¿½Ú¾ï¿½ï¿½Ìµï¿½', -- ï¿½Ì¿ï¿½ï¿½Ú¾ï¿½ï¿½Ìµï¿½
-	d_member_no    INT(11)     NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½Ìµï¿½', -- ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½Ìµï¿½
-	start_contract TIMESTAMP   NULL     COMMENT 'ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	end_contract   TIMESTAMP   NULL     COMMENT 'ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	cycle          CHAR(10)    NULL     COMMENT 'ï¿½Ì¿ï¿½ï¿½ï¿½ï¿½', -- ï¿½Ö±ï¿½
-	contract_date  TIMESTAMP   NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½
-	contract_fee   INT(11)     NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½?', -- ï¿½ï¿½ï¿½ï¿½?
-	contract_cont  TEXT(200)   NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½Ñ±ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½Ñ±ï¿½
-	process        VARCHAR(50) NULL     COMMENT 'ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Åºï¿½', -- Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	fee            INT(11)     NULL     COMMENT 'ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½
-	start_spot     INT(11)     NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½
-	end_spot       INT(11)     NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½' -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	contract_no    VARCHAR(50) NOT NULL COMMENT 'µå¶óÀÌ¹öÀ¯Àú ±¸ºÐ', -- °è¾à¹øÈ£(½ÅÃ»¹øÈ£)
+	u_member_no    INT(11)     NULL     COMMENT 'ÀÌ¿ëÀÚ¾ÆÀÌµð', -- ÀÌ¿ëÀÚ¾ÆÀÌµð
+	d_member_no    INT(11)     NULL     COMMENT 'µå¶óÀÌ¹ö¾ÆÀÌµð', -- µå¶óÀÌ¹ö¾ÆÀÌµð
+	start_contract TIMESTAMP   NULL     COMMENT '°è¾à ½ÃÀÛÀÏ', -- °è¾à ½ÃÀÛÀÏ
+	end_contract   TIMESTAMP   NULL     COMMENT '°è¾à Á¾·áÀÏ', -- °è¾à Á¾·áÀÏ
+	cycle          CHAR(10)    NULL     COMMENT 'ÀÌ¿ë¿äÀÏ', -- ÁÖ±â
+	contract_date  TIMESTAMP   NULL     COMMENT '°è¾àÀÏ', -- °è¾àÀÏ
+	contract_fee   INT(11)     NULL     COMMENT '°è¾à±Ý?', -- °è¾à±Ý?
+	contract_cont  TEXT(200)   NULL     COMMENT '°£·«ÇÑ±Û', -- °£·«ÇÑ±Û
+	process        VARCHAR(50) NULL     COMMENT '´ë±â ½ÂÀÎ °ÅºÎ', -- Ã³¸®¿©ºÎ
+	fee            INT(11)     NULL     COMMENT '¿ä±Ý', -- ¿ä±Ý
+	start_spot     INT(11)     NULL     COMMENT 'Ãâ¹ßÁö', -- Ãâ¹ßÁö
+	end_spot       INT(11)     NULL     COMMENT 'µµÂøÁö' -- µµÂøÁö
 )
-COMMENT 'ï¿½ï¿½ï¿½';
+COMMENT '°è¾à';
 
--- ï¿½ï¿½ï¿½
+-- °è¾à
 ALTER TABLE carshare.contract
-	ADD CONSTRAINT PK_contract -- ï¿½ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_contract -- °è¾à ±âº»Å°
 		PRIMARY KEY (
-			contract_no -- ï¿½ï¿½ï¿½ï¿½È£(ï¿½ï¿½Ã»ï¿½ï¿½È£)
+			contract_no -- °è¾à¹øÈ£(½ÅÃ»¹øÈ£)
 		);
 
--- ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+-- ¿ä±Ý(°ü¸®ÀÚ °ü¸®)
 CREATE TABLE carshare.fee (
-	fee      INT(11)     NOT NULL COMMENT 'ï¿½ï¿½ï¿½Í´ï¿½ ,ï¿½â¸§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Úµï¿½ï¿½ï¿½ï¿½?', -- ï¿½ï¿½ï¿½
-	grade_no VARCHAR(50) NULL     COMMENT 'ï¿½ï¿½Þ¹ï¿½È£', -- ï¿½ï¿½Þ¹ï¿½È£
-	max_fee  INT(11)     NULL     COMMENT 'ï¿½ï¿½Þºï¿½ ï¿½Û¼ï¿½Æ®ï¿½Ù¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ë°¡ï¿½ï¿½' -- ï¿½Ö´ï¿½ï¿½ï¿½
+	fee      INT(11)     NOT NULL COMMENT '¹ÌÅÍ´ç ,±â¸§°ªºñ·ÊÀÚµ¿°è»ê?', -- ¿ä±Ý
+	grade_no VARCHAR(50) NULL     COMMENT 'µî±Þ¹øÈ£', -- µî±Þ¹øÈ£
+	max_fee  INT(11)     NULL     COMMENT 'µî±Þº° ÆÛ¼¾Æ®´Ù¸£°ÔÀû¿ë°¡´É' -- ÃÖ´ë¿ä±Ý
 )
-COMMENT 'ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)';
+COMMENT '¿ä±Ý(°ü¸®ÀÚ °ü¸®)';
 
--- ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+-- ¿ä±Ý(°ü¸®ÀÚ °ü¸®)
 ALTER TABLE carshare.fee
-	ADD CONSTRAINT PK_fee -- ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) ï¿½âº»Å°
+	ADD CONSTRAINT PK_fee -- ¿ä±Ý(°ü¸®ÀÚ °ü¸®) ±âº»Å°
 		PRIMARY KEY (
-			fee -- ï¿½ï¿½ï¿½
+			fee -- ¿ä±Ý
 		);
 
--- ï¿½ï¿½ï¿½
+-- µî±Þ
 CREATE TABLE carshare.grade (
-	grade_no   VARCHAR(50) NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Þºï¿½È­', -- ï¿½ï¿½Þ¹ï¿½È£
-	grade_name VARCHAR(50) NULL     COMMENT 'ï¿½ï¿½Þ¸ï¿½' -- ï¿½ï¿½Þ¸ï¿½
+	grade_no   VARCHAR(50) NOT NULL COMMENT 'È½¼ö ÆòÁ¡¿¡µû¸¥µî±Þº¯È­', -- µî±Þ¹øÈ£
+	grade_name VARCHAR(50) NULL     COMMENT 'µî±Þ¸í' -- µî±Þ¸í
 )
-COMMENT 'ï¿½ï¿½ï¿½';
+COMMENT 'µî±Þ';
 
--- ï¿½ï¿½ï¿½
+-- µî±Þ
 ALTER TABLE carshare.grade
-	ADD CONSTRAINT PK_grade -- ï¿½ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_grade -- µî±Þ ±âº»Å°
 		PRIMARY KEY (
-			grade_no -- ï¿½ï¿½Þ¹ï¿½È£
+			grade_no -- µî±Þ¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+-- Â÷·®Á¤º¸
 CREATE TABLE carshare.car_info (
-	member_no             INT(11)      NOT NULL COMMENT 'È¸ï¿½ï¿½ï¿½ï¿½È£', -- È¸ï¿½ï¿½ï¿½ï¿½È£
-	car_name              VARCHAR(20)  NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½
-	car_number            VARCHAR(50)  NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£
-	insurance_date        DATE         NOT NULL COMMENT 'ï¿½ï¿½ï¿½è¸¸ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½è¸¸ï¿½ï¿½ï¿½ï¿½
-	insurance_boonean     BOOLEAN      NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ãº¸ï¿½ï¿½ï¿½Î¹ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ãº¸
-	relationship_carowner VARCHAR(100) NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
-	car_owner             VARCHAR(50)  NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
-	insurance_card        VARCHAR(100) NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	car_card              VARCHAR(100) NOT NULL COMMENT 'ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½' -- ï¿½Úµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	member_no             INT(11)      NOT NULL COMMENT 'È¸¿ø¹øÈ£', -- È¸¿ø¹øÈ£
+	car_name              VARCHAR(20)  NOT NULL COMMENT 'º¸ÇèÁõÂüÁ¶ °ü¸®ÀÚ»ðÀÔ', -- Â÷Á¾
+	car_number            VARCHAR(50)  NOT NULL COMMENT 'º¸ÇèÁõÂüÁ¶ °ü¸®ÀÚ»ðÀÔ', -- Â÷·®¹øÈ£
+	insurance_date        DATE         NOT NULL COMMENT 'º¸ÇèÁõÂüÁ¶ °ü¸®ÀÚ»ðÀÔ', -- º¸Çè¸¸·áÀÏ
+	insurance_boonean     BOOLEAN      NOT NULL COMMENT 'º¸ÇèÁõÂüÁ¶ °ü¸®ÀÚ»ðÀÔ', -- º¸Çè´ãº¸
+	relationship_carowner VARCHAR(100) NOT NULL COMMENT 'Â÷·®¼ÒÀ¯ °ü°è', -- Â÷·®¼ÒÀ¯ °ü°è
+	car_owner             VARCHAR(50)  NOT NULL COMMENT 'ÀÚµ¿Â÷µî·ÏÁõÂüÁ¶ °ü¸®ÀÚ»ðÀÔ', -- Â÷·®¼ÒÀ¯ÁÖÀÌ¸§
+	insurance_card        VARCHAR(150) NOT NULL COMMENT 'º¸ÇèÁõ', -- º¸ÇèÁõ
+	car_card              VARCHAR(100) NOT NULL COMMENT 'ÀÚµ¿Â÷µî·ÏÁõ' -- ÀÚµ¿Â÷µî·ÏÁõ
 )
-COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½';
+COMMENT 'Â÷·®Á¤º¸';
 
--- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+-- Â÷·®Á¤º¸
 ALTER TABLE carshare.car_info
-	ADD CONSTRAINT PK_car_info -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_car_info -- Â÷·®Á¤º¸ ±âº»Å°
 		PRIMARY KEY (
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+			member_no -- È¸¿ø¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+-- ¸éÇãÁ¤º¸
 CREATE TABLE carshare.license_info (
-	member_no        INT(11)      NOT NULL COMMENT 'È¸ï¿½ï¿½ï¿½ï¿½È£', -- È¸ï¿½ï¿½ï¿½ï¿½È£
-	license_photo    VARCHAR(100) NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	license_no       VARCHAR(50)  NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½È£', -- ï¿½ï¿½ï¿½ï¿½ï¿½È£
-	license_kind     VARCHAR(50)  NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	birthday         DATE         NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	deadline         DATE         NOT NULL COMMENT 'ï¿½ï¿½ï¿½ã°»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ã°»ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
-	certification_no VARCHAR(50)  NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£' -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£
+	member_no        INT(11)      NOT NULL COMMENT 'È¸¿ø¹øÈ£', -- È¸¿ø¹øÈ£
+	license_photo    VARCHAR(150) NOT NULL COMMENT '¸éÇã»çÁø', -- ¸éÇã»çÁø
+	license_no       VARCHAR(50)  NOT NULL COMMENT '¸éÇã¹øÈ£', -- ¸éÇã¹øÈ£
+	license_kind     VARCHAR(50)  NOT NULL COMMENT '¸éÇãÁ¾·ù', -- ¸éÇãÁ¾·ù
+	birthday         DATE         NOT NULL COMMENT '»ý³â¿ùÀÏ', -- »ý³â¿ùÀÏ
+	deadline         DATE         NOT NULL COMMENT '¸éÇã°»½Å ¸¶°¨ÀÏ', -- ¸éÇã°»½Å ¸¶°¨ÀÏ
+	certification_no VARCHAR(50)  NOT NULL COMMENT '¸éÇãÀÎÁõ¹øÈ£' -- ¸éÇãÀÎÁõ¹øÈ£
 )
-COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½';
+COMMENT '¸éÇãÁ¤º¸';
 
--- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+-- ¸éÇãÁ¤º¸
 ALTER TABLE carshare.license_info
-	ADD CONSTRAINT PK_license_info -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_license_info -- ¸éÇãÁ¤º¸ ±âº»Å°
 		PRIMARY KEY (
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+			member_no -- È¸¿ø¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½ï¿½
+-- ÄíÆù
 CREATE TABLE carshare.coupons (
-	coupon_no   VARCHAR(50) NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£', -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£
-	coupon_name VARCHAR(50) NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½', -- ï¿½ï¿½ï¿½ï¿½ï¿½Ì¸ï¿½
-	coupon_ex   TEXT(200)   NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½' -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	coupon_no   VARCHAR(50) NOT NULL COMMENT 'ÄíÆù¹øÈ£', -- ÄíÆù¹øÈ£
+	coupon_name VARCHAR(50) NULL     COMMENT 'ÄíÆùÀÌ¸§', -- ÄíÆùÀÌ¸§
+	coupon_ex   TEXT(200)   NULL     COMMENT 'ÄíÆù¼³¸í' -- ÄíÆù¼³¸í
 )
-COMMENT 'ï¿½ï¿½ï¿½ï¿½';
+COMMENT 'ÄíÆù';
 
--- ï¿½ï¿½ï¿½ï¿½
+-- ÄíÆù
 ALTER TABLE carshare.coupons
-	ADD CONSTRAINT PK_coupons -- ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_coupons -- ÄíÆù ±âº»Å°
 		PRIMARY KEY (
-			coupon_no -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£
+			coupon_no -- ÄíÆù¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+-- º¸À¯ ÄíÆù
 CREATE TABLE carshare.Own_coupons (
-	member_no INT(11)     NULL COMMENT 'È¸ï¿½ï¿½ï¿½ï¿½È£', -- È¸ï¿½ï¿½ï¿½ï¿½È£
-	coupon_no VARCHAR(50) NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£' -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£
+	member_no INT(11)     NULL COMMENT 'È¸¿ø¹øÈ£', -- È¸¿ø¹øÈ£
+	coupon_no VARCHAR(50) NULL COMMENT 'ÄíÆù¹øÈ£' -- ÄíÆù¹øÈ£
 )
-COMMENT 'ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½';
+COMMENT 'º¸À¯ ÄíÆù';
 
--- ï¿½Ì¿ë³»ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½
+-- ÀÌ¿ë³»¿ªÀ§Ä¡Á¤º¸
 CREATE TABLE carshare.use_info_location (
-	location_no INT(11)      NOT NULL COMMENT 'ï¿½ï¿½Ä¡ï¿½ï¿½È£', -- ï¿½ï¿½Ä¡ï¿½ï¿½È£
-	address     VARCHAR(255) NULL     COMMENT 'ï¿½Ö¼ï¿½', -- ï¿½Ö¼ï¿½
-	latitude    DOUBLE       NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½
-	hardness    DOUBLE       NULL     COMMENT 'ï¿½æµµ' -- ï¿½æµµ
+	location_no INT(11)      NOT NULL COMMENT 'À§Ä¡¹øÈ£', -- À§Ä¡¹øÈ£
+	address     VARCHAR(255) NULL     COMMENT 'ÁÖ¼Ò', -- ÁÖ¼Ò
+	latitude    DOUBLE       NULL     COMMENT 'À§µµ', -- À§µµ
+	hardness    DOUBLE       NULL     COMMENT '°æµµ' -- °æµµ
 )
-COMMENT 'ï¿½Ì¿ë³»ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½';
+COMMENT 'ÀÌ¿ë³»¿ªÀ§Ä¡Á¤º¸';
 
--- ï¿½Ì¿ë³»ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½
+-- ÀÌ¿ë³»¿ªÀ§Ä¡Á¤º¸
 ALTER TABLE carshare.use_info_location
-	ADD CONSTRAINT PK_use_info_location -- ï¿½Ì¿ë³»ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_use_info_location -- ÀÌ¿ë³»¿ªÀ§Ä¡Á¤º¸ ±âº»Å°
 		PRIMARY KEY (
-			location_no -- ï¿½ï¿½Ä¡ï¿½ï¿½È£
+			location_no -- À§Ä¡¹øÈ£
 		);
 
 ALTER TABLE carshare.use_info_location
-	MODIFY COLUMN location_no INT(11) NOT NULL AUTO_INCREMENT COMMENT 'ï¿½ï¿½Ä¡ï¿½ï¿½È£';
+	MODIFY COLUMN location_no INT(11) NOT NULL AUTO_INCREMENT COMMENT 'À§Ä¡¹øÈ£';
 
--- ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½
+-- °è¾àÀ§Ä¡Á¤º¸
 CREATE TABLE carshare.contract_location (
-	location_no INT(11)      NOT NULL COMMENT 'ï¿½ï¿½Ä¡ï¿½ï¿½È£', -- ï¿½ï¿½Ä¡ï¿½ï¿½È£
-	address     VARCHAR(255) NULL     COMMENT 'ï¿½Ö¼ï¿½', -- ï¿½Ö¼ï¿½
-	latitude    DOUBLE       NULL     COMMENT 'ï¿½ï¿½ï¿½ï¿½', -- ï¿½ï¿½ï¿½ï¿½
-	hardness    DOUBLE       NULL     COMMENT 'ï¿½æµµ' -- ï¿½æµµ
+	location_no INT(11)      NOT NULL COMMENT 'À§Ä¡¹øÈ£', -- À§Ä¡¹øÈ£
+	address     VARCHAR(255) NULL     COMMENT 'ÁÖ¼Ò', -- ÁÖ¼Ò
+	latitude    DOUBLE       NULL     COMMENT 'À§µµ', -- À§µµ
+	hardness    DOUBLE       NULL     COMMENT '°æµµ' -- °æµµ
 )
-COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½';
+COMMENT '°è¾àÀ§Ä¡Á¤º¸';
 
--- ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½
+-- °è¾àÀ§Ä¡Á¤º¸
 ALTER TABLE carshare.contract_location
-	ADD CONSTRAINT PK_contract_location -- ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_contract_location -- °è¾àÀ§Ä¡Á¤º¸ ±âº»Å°
 		PRIMARY KEY (
-			location_no -- ï¿½ï¿½Ä¡ï¿½ï¿½È£
+			location_no -- À§Ä¡¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½
+-- ÇÇÀÌ¿ëÀÚ
 CREATE TABLE carshare.route_user (
-	Route_no  VARCHAR(50) NOT NULL COMMENT 'ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¹ï¿½È£', -- ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¹ï¿½È£
-	member_no INT(11)     NULL     COMMENT 'È¸ï¿½ï¿½ï¿½ï¿½È£', -- È¸ï¿½ï¿½ï¿½ï¿½È£
-	time      TIMESTAMP   NULL     COMMENT 'ï¿½ï¿½Ã»ï¿½Ã°ï¿½' -- ï¿½ï¿½Ã»ï¿½Ã°ï¿½
+	Route_no  VARCHAR(50) NOT NULL COMMENT '»ç¿ëÀÚ °æ·Î¹øÈ£', -- »ç¿ëÀÚ °æ·Î¹øÈ£
+	member_no INT(11)     NULL     COMMENT 'È¸¿ø¹øÈ£', -- È¸¿ø¹øÈ£
+	time      TIMESTAMP   NULL     COMMENT '½ÅÃ»½Ã°£' -- ½ÅÃ»½Ã°£
 )
-COMMENT 'ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½';
+COMMENT 'ÇÇÀÌ¿ëÀÚ';
 
--- ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½
+-- ÇÇÀÌ¿ëÀÚ
 ALTER TABLE carshare.route_user
-	ADD CONSTRAINT PK_route_user -- ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½ ï¿½âº»Å°
+	ADD CONSTRAINT PK_route_user -- ÇÇÀÌ¿ëÀÚ ±âº»Å°
 		PRIMARY KEY (
-			Route_no -- ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¹ï¿½È£
+			Route_no -- »ç¿ëÀÚ °æ·Î¹øÈ£
 		);
 
--- È¸ï¿½ï¿½
+-- È¸¿ø
 ALTER TABLE carshare.member
-	ADD CONSTRAINT FK_grade_TO_member -- ï¿½ï¿½ï¿½ -> È¸ï¿½ï¿½
+	ADD CONSTRAINT FK_grade_TO_member -- µî±Þ -> È¸¿ø
 		FOREIGN KEY (
-			grade_no -- ï¿½ï¿½Þ¹ï¿½È£
+			grade_no -- µî±Þ¹øÈ£
 		)
-		REFERENCES carshare.grade ( -- ï¿½ï¿½ï¿½
-			grade_no -- ï¿½ï¿½Þ¹ï¿½È£
+		REFERENCES carshare.grade ( -- µî±Þ
+			grade_no -- µî±Þ¹øÈ£
 		);
 
--- ï¿½Ì¿ï¿½ï¿½ï¿½
+-- ÀÌ¿ëÆò
 ALTER TABLE carshare.userating
-	ADD CONSTRAINT FK_use_info_TO_userating -- ï¿½Ì¿ë³»ï¿½ï¿½ -> ï¿½Ì¿ï¿½ï¿½ï¿½
+	ADD CONSTRAINT FK_use_info_TO_userating -- ÀÌ¿ë³»¿ª -> ÀÌ¿ëÆò
 		FOREIGN KEY (
-			use_no -- ï¿½ï¿½ï¿½ï¿½È£
+			use_no -- »ç¿ë¹øÈ£
 		)
-		REFERENCES carshare.use_info ( -- ï¿½Ì¿ë³»ï¿½ï¿½
-			use_no -- ï¿½ï¿½ï¿½ï¿½È£
+		REFERENCES carshare.use_info ( -- ÀÌ¿ë³»¿ª
+			use_no -- »ç¿ë¹øÈ£
 		);
 
--- ï¿½Ì¿ï¿½ï¿½ï¿½
+-- ÀÌ¿ëÆò
 ALTER TABLE carshare.userating
-	ADD CONSTRAINT FK_contract_TO_userating -- ï¿½ï¿½ï¿½ -> ï¿½Ì¿ï¿½ï¿½ï¿½
+	ADD CONSTRAINT FK_contract_TO_userating -- °è¾à -> ÀÌ¿ëÆò
 		FOREIGN KEY (
-			contract_no -- ï¿½ï¿½ï¿½ï¿½È£(ï¿½ï¿½Ã»ï¿½ï¿½È£)
+			contract_no -- °è¾à¹øÈ£(½ÅÃ»¹øÈ£)
 		)
-		REFERENCES carshare.contract ( -- ï¿½ï¿½ï¿½
-			contract_no -- ï¿½ï¿½ï¿½ï¿½È£(ï¿½ï¿½Ã»ï¿½ï¿½È£)
+		REFERENCES carshare.contract ( -- °è¾à
+			contract_no -- °è¾à¹øÈ£(½ÅÃ»¹øÈ£)
 		);
 
--- ï¿½Ì¿ë³»ï¿½ï¿½
+-- ÀÌ¿ë³»¿ª
 ALTER TABLE carshare.use_info
-	ADD CONSTRAINT FK_member_TO_use_info -- È¸ï¿½ï¿½ -> ï¿½Ì¿ë³»ï¿½ï¿½
+	ADD CONSTRAINT FK_member_TO_use_info -- È¸¿ø -> ÀÌ¿ë³»¿ª
 		FOREIGN KEY (
-			u_member_no -- ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½
+			u_member_no -- »ç¿ëÀÚ ¾ÆÀÌµð
 		)
-		REFERENCES carshare.member ( -- È¸ï¿½ï¿½
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+		REFERENCES carshare.member ( -- È¸¿ø
+			member_no -- È¸¿ø¹øÈ£
 		);
 
--- ï¿½Ì¿ë³»ï¿½ï¿½
+-- ÀÌ¿ë³»¿ª
 ALTER TABLE carshare.use_info
-	ADD CONSTRAINT FK_use_info_location_TO_use_info2 -- ï¿½Ì¿ë³»ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ -> ï¿½Ì¿ë³»ï¿½ï¿½2
+	ADD CONSTRAINT FK_use_info_location_TO_use_info2 -- ÀÌ¿ë³»¿ªÀ§Ä¡Á¤º¸ -> ÀÌ¿ë³»¿ª2
 		FOREIGN KEY (
-			start_spot -- ï¿½ï¿½ï¿½ï¿½ï¿½
+			start_spot -- Ãâ¹ßÁö
 		)
-		REFERENCES carshare.use_info_location ( -- ï¿½Ì¿ë³»ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½
-			location_no -- ï¿½ï¿½Ä¡ï¿½ï¿½È£
+		REFERENCES carshare.use_info_location ( -- ÀÌ¿ë³»¿ªÀ§Ä¡Á¤º¸
+			location_no -- À§Ä¡¹øÈ£
 		);
 
--- ï¿½Ì¿ë³»ï¿½ï¿½
+-- ÀÌ¿ë³»¿ª
 ALTER TABLE carshare.use_info
-	ADD CONSTRAINT FK_use_info_location_TO_use_info -- ï¿½Ì¿ë³»ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ -> ï¿½Ì¿ë³»ï¿½ï¿½
+	ADD CONSTRAINT FK_use_info_location_TO_use_info -- ÀÌ¿ë³»¿ªÀ§Ä¡Á¤º¸ -> ÀÌ¿ë³»¿ª
 		FOREIGN KEY (
-			end_spot -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			end_spot -- µµÂøÁö
 		)
-		REFERENCES carshare.use_info_location ( -- ï¿½Ì¿ë³»ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½
-			location_no -- ï¿½ï¿½Ä¡ï¿½ï¿½È£
+		REFERENCES carshare.use_info_location ( -- ÀÌ¿ë³»¿ªÀ§Ä¡Á¤º¸
+			location_no -- À§Ä¡¹øÈ£
 		);
 
--- ï¿½Ì¿ë³»ï¿½ï¿½
+-- ÀÌ¿ë³»¿ª
 ALTER TABLE carshare.use_info
-	ADD CONSTRAINT FK_member_TO_use_info2 -- È¸ï¿½ï¿½ -> ï¿½Ì¿ë³»ï¿½ï¿½2
+	ADD CONSTRAINT FK_member_TO_use_info2 -- È¸¿ø -> ÀÌ¿ë³»¿ª2
 		FOREIGN KEY (
-			d_member_no -- ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½Ìµï¿½
+			d_member_no -- µå¶óÀÌ¹ö ¾ÆÀÌµð
 		)
-		REFERENCES carshare.member ( -- È¸ï¿½ï¿½
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+		REFERENCES carshare.member ( -- È¸¿ø
+			member_no -- È¸¿ø¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½
+-- °æ·Î
 ALTER TABLE carshare.route
-	ADD CONSTRAINT FK_member_TO_route -- È¸ï¿½ï¿½ -> ï¿½ï¿½ï¿½
+	ADD CONSTRAINT FK_member_TO_route -- È¸¿ø -> °æ·Î
 		FOREIGN KEY (
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+			member_no -- È¸¿ø¹øÈ£
 		)
-		REFERENCES carshare.member ( -- È¸ï¿½ï¿½
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+		REFERENCES carshare.member ( -- È¸¿ø
+			member_no -- È¸¿ø¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½
+-- °è¾à
 ALTER TABLE carshare.contract
-	ADD CONSTRAINT FK_member_TO_contract -- È¸ï¿½ï¿½ -> ï¿½ï¿½ï¿½
+	ADD CONSTRAINT FK_member_TO_contract -- È¸¿ø -> °è¾à
 		FOREIGN KEY (
-			u_member_no -- ï¿½Ì¿ï¿½ï¿½Ú¾ï¿½ï¿½Ìµï¿½
+			u_member_no -- ÀÌ¿ëÀÚ¾ÆÀÌµð
 		)
-		REFERENCES carshare.member ( -- È¸ï¿½ï¿½
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+		REFERENCES carshare.member ( -- È¸¿ø
+			member_no -- È¸¿ø¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½
+-- °è¾à
 ALTER TABLE carshare.contract
-	ADD CONSTRAINT FK_member_TO_contract2 -- È¸ï¿½ï¿½ -> ï¿½ï¿½ï¿½2
+	ADD CONSTRAINT FK_member_TO_contract2 -- È¸¿ø -> °è¾à2
 		FOREIGN KEY (
-			d_member_no -- ï¿½ï¿½ï¿½ï¿½Ì¹ï¿½ï¿½ï¿½ï¿½Ìµï¿½
+			d_member_no -- µå¶óÀÌ¹ö¾ÆÀÌµð
 		)
-		REFERENCES carshare.member ( -- È¸ï¿½ï¿½
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+		REFERENCES carshare.member ( -- È¸¿ø
+			member_no -- È¸¿ø¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½
+-- °è¾à
 ALTER TABLE carshare.contract
-	ADD CONSTRAINT FK_contract_location_TO_contract -- ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½
+	ADD CONSTRAINT FK_contract_location_TO_contract -- °è¾àÀ§Ä¡Á¤º¸ -> °è¾à
 		FOREIGN KEY (
-			start_spot -- ï¿½ï¿½ï¿½ï¿½ï¿½
+			start_spot -- Ãâ¹ßÁö
 		)
-		REFERENCES carshare.contract_location ( -- ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½
-			location_no -- ï¿½ï¿½Ä¡ï¿½ï¿½È£
+		REFERENCES carshare.contract_location ( -- °è¾àÀ§Ä¡Á¤º¸
+			location_no -- À§Ä¡¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½
+-- °è¾à
 ALTER TABLE carshare.contract
-	ADD CONSTRAINT FK_contract_location_TO_contract2 -- ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½2
+	ADD CONSTRAINT FK_contract_location_TO_contract2 -- °è¾àÀ§Ä¡Á¤º¸ -> °è¾à2
 		FOREIGN KEY (
-			end_spot -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+			end_spot -- µµÂøÁö
 		)
-		REFERENCES carshare.contract_location ( -- ï¿½ï¿½ï¿½ï¿½ï¿½Ä¡ï¿½ï¿½ï¿½ï¿½
-			location_no -- ï¿½ï¿½Ä¡ï¿½ï¿½È£
+		REFERENCES carshare.contract_location ( -- °è¾àÀ§Ä¡Á¤º¸
+			location_no -- À§Ä¡¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+-- ¿ä±Ý(°ü¸®ÀÚ °ü¸®)
 ALTER TABLE carshare.fee
-	ADD CONSTRAINT FK_grade_TO_fee -- ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+	ADD CONSTRAINT FK_grade_TO_fee -- µî±Þ -> ¿ä±Ý(°ü¸®ÀÚ °ü¸®)
 		FOREIGN KEY (
-			grade_no -- ï¿½ï¿½Þ¹ï¿½È£
+			grade_no -- µî±Þ¹øÈ£
 		)
-		REFERENCES carshare.grade ( -- ï¿½ï¿½ï¿½
-			grade_no -- ï¿½ï¿½Þ¹ï¿½È£
+		REFERENCES carshare.grade ( -- µî±Þ
+			grade_no -- µî±Þ¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+-- Â÷·®Á¤º¸
 ALTER TABLE carshare.car_info
-	ADD CONSTRAINT FK_member_TO_car_info -- È¸ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ADD CONSTRAINT FK_member_TO_car_info -- È¸¿ø -> Â÷·®Á¤º¸
 		FOREIGN KEY (
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+			member_no -- È¸¿ø¹øÈ£
 		)
-		REFERENCES carshare.member ( -- È¸ï¿½ï¿½
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+		REFERENCES carshare.member ( -- È¸¿ø
+			member_no -- È¸¿ø¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+-- ¸éÇãÁ¤º¸
 ALTER TABLE carshare.license_info
-	ADD CONSTRAINT FK_member_TO_license_info -- È¸ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	ADD CONSTRAINT FK_member_TO_license_info -- È¸¿ø -> ¸éÇãÁ¤º¸
 		FOREIGN KEY (
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+			member_no -- È¸¿ø¹øÈ£
 		)
-		REFERENCES carshare.member ( -- È¸ï¿½ï¿½
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+		REFERENCES carshare.member ( -- È¸¿ø
+			member_no -- È¸¿ø¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+-- º¸À¯ ÄíÆù
 ALTER TABLE carshare.Own_coupons
-	ADD CONSTRAINT FK_member_TO_Own_coupons -- È¸ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	ADD CONSTRAINT FK_member_TO_Own_coupons -- È¸¿ø -> º¸À¯ ÄíÆù
 		FOREIGN KEY (
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+			member_no -- È¸¿ø¹øÈ£
 		)
-		REFERENCES carshare.member ( -- È¸ï¿½ï¿½
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+		REFERENCES carshare.member ( -- È¸¿ø
+			member_no -- È¸¿ø¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+-- º¸À¯ ÄíÆù
 ALTER TABLE carshare.Own_coupons
-	ADD CONSTRAINT FK_coupons_TO_Own_coupons -- ï¿½ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+	ADD CONSTRAINT FK_coupons_TO_Own_coupons -- ÄíÆù -> º¸À¯ ÄíÆù
 		FOREIGN KEY (
-			coupon_no -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£
+			coupon_no -- ÄíÆù¹øÈ£
 		)
-		REFERENCES carshare.coupons ( -- ï¿½ï¿½ï¿½ï¿½
-			coupon_no -- ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È£
+		REFERENCES carshare.coupons ( -- ÄíÆù
+			coupon_no -- ÄíÆù¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½
+-- ÇÇÀÌ¿ëÀÚ
 ALTER TABLE carshare.route_user
-	ADD CONSTRAINT FK_route_TO_route_user -- ï¿½ï¿½ï¿½ -> ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½
+	ADD CONSTRAINT FK_route_TO_route_user -- °æ·Î -> ÇÇÀÌ¿ëÀÚ
 		FOREIGN KEY (
-			Route_no -- ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¹ï¿½È£
+			Route_no -- »ç¿ëÀÚ °æ·Î¹øÈ£
 		)
-		REFERENCES carshare.route ( -- ï¿½ï¿½ï¿½
-			Route_no -- ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¹ï¿½È£
+		REFERENCES carshare.route ( -- °æ·Î
+			Route_no -- »ç¿ëÀÚ °æ·Î¹øÈ£
 		);
 
--- ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½
+-- ÇÇÀÌ¿ëÀÚ
 ALTER TABLE carshare.route_user
-	ADD CONSTRAINT FK_member_TO_route_user -- È¸ï¿½ï¿½ -> ï¿½ï¿½ï¿½Ì¿ï¿½ï¿½ï¿½
+	ADD CONSTRAINT FK_member_TO_route_user -- È¸¿ø -> ÇÇÀÌ¿ëÀÚ
 		FOREIGN KEY (
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+			member_no -- È¸¿ø¹øÈ£
 		)
-		REFERENCES carshare.member ( -- È¸ï¿½ï¿½
-			member_no -- È¸ï¿½ï¿½ï¿½ï¿½È£
+		REFERENCES carshare.member ( -- È¸¿ø
+			member_no -- È¸¿ø¹øÈ£
 		);
 	
 CREATE USER 'user_carshare'@'%';

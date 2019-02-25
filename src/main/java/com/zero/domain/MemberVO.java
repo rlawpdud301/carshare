@@ -1,5 +1,7 @@
 package com.zero.domain;
 
+import java.util.Date;
+
 public class MemberVO {
 	private int memberNo;
 	private String kakaoId;
@@ -16,12 +18,38 @@ public class MemberVO {
 	private String gradeNo;
 	private int myFee;
 	private String email;
+	private Date dirverEnrollment;
+	private Date dirverApply;
+	
+	
 	
 	
 
 	
 
-	
+	public Date getDirverEnrollment() {
+		return dirverEnrollment;
+	}
+
+
+
+	public void setDirverEnrollment(Date dirverEnrollment) {
+		this.dirverEnrollment = dirverEnrollment;
+	}
+
+
+
+	public Date getDirverApply() {
+		return dirverApply;
+	}
+
+
+
+	public void setDirverApply(Date dirverApply) {
+		this.dirverApply = dirverApply;
+	}
+
+
 
 	public String getEmail() {
 		return email;
@@ -185,7 +213,8 @@ public class MemberVO {
 		return "MemberVO [memberNo=" + memberNo + ", kakaoId=" + kakaoId + ", naverId=" + naverId + ", jumin=" + jumin
 				+ ", name=" + name + ", uIntro=" + uIntro + ", dIntro=" + dIntro + ", phone=" + phone + ", nickname="
 				+ nickname + ", photo=" + photo + ", jop=" + jop + ", driver=" + driver + ", gradeNo=" + gradeNo
-				+ ", myFee=" + myFee + ", email=" + email + "]";
+				+ ", myFee=" + myFee + ", email=" + email + ", dirverEnrollment=" + dirverEnrollment + ", dirverApply="
+				+ dirverApply + "]";
 	}
 
 

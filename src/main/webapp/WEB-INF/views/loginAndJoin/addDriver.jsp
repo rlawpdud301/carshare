@@ -23,7 +23,18 @@
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
-	
+<style>
+#greetings{
+	/* color: blue; */ 
+	font-size: 20px;
+}
+.login-box-body{
+	min-height: 300px;
+}
+.warning{
+	color: red;
+}
+</style>	
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
@@ -31,12 +42,10 @@
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-	<form action="addDriver" method="post" id="f1">
+	<form id="f1" action="addDriver" method="post" enctype="multipart/form-data">
 		<p class="login-box-msg" id="greetings"></p>
 		<div id="answer"></div>
-		
 	</form>
-	
   </div>
   <!-- /.login-box-body -->
 </div>
@@ -51,9 +60,9 @@
 <script src="${pageContext.request.contextPath }/resources/plugins/iCheck/icheck.min.js"></script>
 <script>
 var i = 0;
-var txt1 = "안녕 하세요. +${vo.nickname} 님 만나서 반갑습니다.+ GET을 찾아주셔서 감사합니다. +저는 GET입니다. +${vo.nickname} 님의 안전한 GET 이용을위하여 개인정보 수집이 필요합니다. 계속하시겠습니까?";
+var txt1 = "안녕 하세요. +${vo.nickname} 님 다시만나서 반갑습니다.+ GET을 이용해주셔서 감사합니다. +${vo.nickname} 님의 면허 정보를알려주세요. + 등록후  심사가진행됩니다.";
 var speed = 70;    
-var textbnt = "<br><div><button type='button' id='yes'>yes</button><br><button type='button' id='no'>no</button></div>";
+var textbnt = "<div id='licensePhotoDiv'><br>${vo.nickname} 님의 면허 사진을 보여주세요.<br><input type='file' id='licensePhoto' name='licensePhoto'><button type='button' id='ok'>확인</button></div>";
 function Greetings(){   	 
 	if (i < txt1.length+1) {
 	    if (i == txt1.length) {
@@ -73,6 +82,69 @@ function Greetings(){
 }
 $(function () {
 	Greetings();
+	
+	
+})
+$(document).on("click","#ok",function(){
+	if ($("#licensePhoto").val()=="") {
+		$("#greetings").empty();
+		var alretText = "<span class='warning'>파일이 없거나 형식이 잘못되었습니다.</span>";
+		$("#greetings").append(alretText);
+		return;
+	}
+	$("#greetings").empty();
+	$("#licensePhotoDiv").css("display","none");
+	i = 0;
+	txt1 = "다음은 차량입니다.";
+	speed = 70;    
+	textbnt = "<div id='carCardDiv'><br>${vo.nickname} 님의 자동차등록증을 보여주세요.<br><input type='file' id='carCard' name='carCard'><button type='button' id='ok2'>확인</button></div>";
+	Greetings();
+})
+$(document).on("click","#ok2",function(){
+	if ($("#carCard").val()=="") {
+		$("#greetings").empty();
+		var alretText = "<span class='warning'>파일이 없거나 형식이 잘못되었습니다.</span>";
+		$("#greetings").append(alretText);
+		return;
+	}
+	$("#greetings").empty();
+	$("#carCardDiv").css("display","none");
+	i = 0;
+	txt1 = "감사합니다.";
+	speed = 70;    
+	textbnt = "<div id='relationshipCarownerDiv'><br>등록하신 차량의 차량소유주와의 관계를 입력해주세요.<br><input id='relationshipCarowner' name='relationshipCarowner' placeholder='ex) 어머니차,회사차'><button type='button' id='ok3'>확인</button></div>";
+	Greetings();
+	
+})
+
+$(document).on("click","#ok3",function(){
+	if ($("#relationshipCarowner").val()=="") {
+		$("#greetings").empty();
+		var alretText = "<span class='warning'>관계를 입력하주세요.</span>";
+		$("#greetings").append(alretText);
+		return;
+	}
+	$("#greetings").empty();
+	$("#relationshipCarownerDiv").css("display","none");
+	i = 0;
+	txt1 = "마지막 입니다.";
+	speed = 70;    
+	textbnt = "<br>${vo.nickname} 님의 자동차등록증을 보여주세요.<br><input type='file' id='insuranceCard' name='insuranceCard'><button type='button' id='done'>확인</button>";
+	Greetings();
+	
+})
+
+$(document).on("click","#done",function(){
+	if ($("#insuranceCard").val()=="") {
+		$("#greetings").empty();
+		var alretText = "<span class='warning'>파일이 없거나 형식이 잘못되었습니다.</span>";
+		$("#greetings").append(alretText);
+		return;
+	}
+	/* $("#carCardDiv").css("display","block");
+	$("#licensePhotoDiv").css("display","block"); */
+	
+	$("#f1").submit();
 })
 </script>
 </body>

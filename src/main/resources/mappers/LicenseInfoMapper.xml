@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zero.mapper.LicenseInfoMapper">
+	
+	
+	<insert id="insertLicenseInfo">
+		INSERT INTO carshare.license_info
+		(member_no, license_photo)
+		VALUES(#{memberNo.memberNo},#{licensePhoto});
+	</insert>
+</mapper>

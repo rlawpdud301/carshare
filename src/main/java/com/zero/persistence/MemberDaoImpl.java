@@ -28,4 +28,16 @@ public class MemberDaoImpl implements MemberDAO {
 		sqlSession.insert(namespace + ".insertMember",vo);
 	}
 
+	@Override
+	public void updateDirverApply(MemberVO memberNo) {
+		// TODO Auto-generated method stub
+		sqlSession.update(namespace + ".updateDirverApply",memberNo);
+	}
+
+	@Override
+	public MemberVO selectMemberByMemberNo(int memberNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".selectMemberByMemberNo",memberNo);
+	}
+
 }
