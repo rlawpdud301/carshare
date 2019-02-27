@@ -71,7 +71,7 @@ public class LoginAndJoinController {
 			dto.setDirverEnrollment(findevo.getDirverEnrollment());
 			dto.setDirverApply(findevo.getDirverApply());
 			dto.setName(findevo.getName());
-			
+			session.setAttribute("driver", "user");
 			session.setAttribute("vo", dto);
 			response.sendRedirect(request.getContextPath()+"/nowuse/nowRouteUpload");
 		}
@@ -99,6 +99,7 @@ public class LoginAndJoinController {
 		dto.setDirverApply(null);
 		dto.setName(vo.getName());
 		HttpSession session = request.getSession();
+		session.setAttribute("driver", "user");
 		session.setAttribute("vo", dto);
 		response.sendRedirect(request.getContextPath()+"/nowuse/nowRouteUpload");
 		/*return "/nowuse/nowRouteUpload";*/

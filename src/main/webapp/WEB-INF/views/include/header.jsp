@@ -497,6 +497,7 @@
         	$("#mode").text("Ride mode");
         	$("body").removeClass("skin-green");
         	$("body").addClass("skin-blue");
+        	location.href="${pageContext.request.contextPath }/nowuse/nowRouteUpload";
         	
         })
         
@@ -511,9 +512,9 @@
 						console.log(data);
 						if (!${vo.driver} && ${vo.dirverEnrollment} == null && ${vo.dirverApply} == null) {
 			        		if (confirm("태울래요 모드를 이용하시려면 운전자등록이필요합니다. 운전자등록을 하시겠습니까?")) {
-			        			$("#mode").text("Drive mode");
+			        			/* $("#mode").text("Drive mode");
 			        			$("body").removeClass("skin-blue");
-			    	        	$("body").addClass("skin-green");
+			    	        	$("body").addClass("skin-green"); */
 			    	        	location.href="${pageContext.request.contextPath }/addDriver";
 			        		}else{
 			        			return;
@@ -525,17 +526,23 @@
 						}else{
 							$("#mode").text("Drive mode");
 							$("body").removeClass("skin-blue");
-				        	$("body").addClass("skin-green"); 
+				        	$("body").addClass("skin-green");
+				        	
+				        	location.href="${pageContext.request.contextPath }/DriverHome";
 						}
 					}
-            	})
-        	
-        	
-        	
-        	
+            	})        	
         })
-        $(function () {
-        	$("body").removeClass("skin-green");
-        	$("body").addClass("skin-blue");
+        
+        $(function () { 
+        	if ("${driver}"=="user") {
+        		$("#mode").text("Ride mode");
+				$("body").removeClass("skin-green");
+	        	$("body").addClass("skin-blue");
+			}else{
+				$("#mode").text("Drive mode");
+				$("body").removeClass("skin-blue");
+	        	$("body").addClass("skin-green");
+			}
 		})
         </script>

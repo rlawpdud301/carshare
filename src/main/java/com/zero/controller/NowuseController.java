@@ -35,6 +35,7 @@ public class NowuseController {
 	
 	@RequestMapping(value = "nowRouteUpload", method = RequestMethod.GET)
 	public void nowRouteUploadGet() {
+		/*session.setAttribute("driver", "user");*/
 	}
 	
 	@RequestMapping(value = "nowRouteUpload", method = RequestMethod.POST)
@@ -48,7 +49,7 @@ public class NowuseController {
 		MemberVO memberVO = new MemberVO();
 		memberVO.setMemberNo(dto.getMemberNo());
 		vo.setMemberNo(memberVO);
-		vo.setProcess("등록");
+		vo.setProcess("�벑濡�");
 		service.insertRoute(vo);
 		response.sendRedirect(request.getContextPath()+"/nowuse/nowRouteWaiting");
 		
