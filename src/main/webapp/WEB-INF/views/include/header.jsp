@@ -506,31 +506,32 @@
         		$.ajax({
             		url : "${pageContext.request.contextPath}/updateVo",
     				type : "get",
-    				dataType : "String",
+    				dataType : "text",
 					success : function(data) {
 						console.log(data);
+						if (!${vo.driver} && ${vo.dirverEnrollment} == null && ${vo.dirverApply} == null) {
+			        		if (confirm("태울래요 모드를 이용하시려면 운전자등록이필요합니다. 운전자등록을 하시겠습니까?")) {
+			        			$("#mode").text("Drive mode");
+			        			$("body").removeClass("skin-blue");
+			    	        	$("body").addClass("skin-green");
+			    	        	location.href="${pageContext.request.contextPath }/addDriver";
+			        		}else{
+			        			return;
+			        		}
+						}else if(!${vo.driver} && ${vo.dirverApply} != null){
+							alert("아직심사중이네요ㅠㅠ 빠른시일내 결과를 알려드릴께요. 쪼금만더기다려주세요.");
+							return;
+							
+						}else{
+							$("#mode").text("Drive mode");
+							$("body").removeClass("skin-blue");
+				        	$("body").addClass("skin-green"); 
+						}
 					}
             	})
         	
         	
-        	if (!${vo.driver} && ${vo.dirverEnrollment} == null && ${vo.dirverApply} == null) {
-        		if (confirm("태울래요 모드를 이용하시려면 운전자등록이필요합니다. 운전자등록을 하시겠습니까?")) {
-        			$("#mode").text("Drive mode");
-        			$("body").removeClass("skin-blue");
-    	        	$("body").addClass("skin-green");
-    	        	location.href="${pageContext.request.contextPath }/addDriver";
-        		}else{
-        			return;
-        		}
-			}else if(!${vo.driver} && ${vo.dirverApply} != null){
-				alert("아직심사중이네요ㅠㅠ 빠른시일내 결과를 알려드릴께요. 쪼금만더기다려주세요.");
-				return;
-				
-			}else{
-				$("#mode").text("Drive mode");
-				$("body").removeClass("skin-blue");
-	        	$("body").addClass("skin-green"); 
-			}
+        	
         	
         })
         $(function () {
