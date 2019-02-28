@@ -30,3 +30,14 @@ SELECT member_no, car_name, car_number, insurance_date,
 		FROM carshare.car_info
 		WHERE member_no = #{memberNo} AND
 		car_name ='';
+		
+UPDATE carshare.`member`
+		SET d_intro=null, driver=false, grade_no=null,
+		my_fee=0, dirver_enrollment=null, dirver_apply=null
+		WHERE member_no=1;
+		
+	
+select * from route
+where ((start_latitude - 1)*(start_latitude - 1) + (start_hardness - 1)*(start_hardness - 1)) <= 250000;
+
+

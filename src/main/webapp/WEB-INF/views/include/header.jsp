@@ -67,7 +67,7 @@
 			<!-- Logo -->
 			<a href="/${pageContext.request.contextPath }/resources/index2.html"
 				class="logo"> <!-- mini logo for sidebar mini 50x50 pixels --> <span
-				class="logo-mini"><b>A</b>LT</span> <!-- logo for regular state and mobile devices -->
+				class="logo-mini"><b>G</b>ET</span> <!-- logo for regular state and mobile devices -->
 				<span class="logo-lg"><b>GET</b> <span id="mode">Ride
 						mode</span></span>
 			</a>
@@ -272,7 +272,7 @@
 							<ul class="dropdown-menu">
 								<!-- User image -->
 								<li class="user-header"><img
-									src="${pageContext.request.contextPath }/resources/dist/img/user2-160x160.jpg"
+									src="${vo.photo}"
 									class="img-circle" alt="User Image" />
 									<p>
 										Alexander Pierce - Web Developer <small>Member since
@@ -507,10 +507,10 @@
         		$.ajax({
             		url : "${pageContext.request.contextPath}/updateVo",
     				type : "get",
-    				dataType : "text",
+    				dataType : "json",
 					success : function(data) {
 						console.log(data);
-						if (!${vo.driver} && ${vo.dirverEnrollment} == null && ${vo.dirverApply} == null) {
+						if (!data.driver && data.dirverEnrollment == "null" && data.dirverApply == "null") {
 			        		if (confirm("태울래요 모드를 이용하시려면 운전자등록이필요합니다. 운전자등록을 하시겠습니까?")) {
 			        			/* $("#mode").text("Drive mode");
 			        			$("body").removeClass("skin-blue");
@@ -519,7 +519,7 @@
 			        		}else{
 			        			return;
 			        		}
-						}else if(!${vo.driver} && ${vo.dirverApply} != null){
+						}else if(!data.driver && data.dirverApply != "null"){
 							alert("아직심사중이네요ㅠㅠ 빠른시일내 결과를 알려드릴께요. 쪼금만더기다려주세요.");
 							return;
 							

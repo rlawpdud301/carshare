@@ -13,23 +13,24 @@ import org.springframework.util.FileCopyUtils;
 
 public class UploadFileUtils {
 
-	public static String uploadFile(String uploadPath,String originalname,byte[] fileData) throws IOException {
+	public static String uploadFile(String uploadPath,String name,String originalname,byte[] fileData) throws IOException {
 		
 		UUID uid = UUID.randomUUID();
 		String savedName = uid.toString() + "_" + originalname;
-		File target = new File(uploadPath + clacPath(uploadPath) +"/" + savedName);
+		String clacPath = clacPath(uploadPath,name);
+		File target = new File(uploadPath + clacPath + "/" + savedName);
 		FileCopyUtils.copy(fileData, target);
 		
 		
 		
 		//썸네일이미지
-		String thumPath = makeThumbnail(uploadPath, clacPath(uploadPath), savedName);
+		/*String thumPath = makeThumbnail(uploadPath, clacPath(uploadPath), savedName);*/
 		
 		
 		
 		
 		
-		return thumPath;
+		return uploadPath + clacPath +"/"+savedName;
 	}
 	
 	private static String makeThumbnail(String uploadPath, //c:zzz/upload
@@ -54,13 +55,15 @@ public class UploadFileUtils {
 		return path + "/" + "s_" + fileName;
 	}
 	
-	private static String clacPath(String uploadPath) {
+	private static String clacPath(String uploadPath ,String name) {
 		Calendar cal = Calendar.getInstance();
-		String yearPath = "/" + cal.get(Calendar.YEAR);
+		
+		String namePath = "/" + name;
+		String yearPath =  String.format("%s/%d",namePath ,cal.get(Calendar.YEAR));
 		String monthPath = String.format("%s/%02d", yearPath,cal.get(Calendar.MONTH)+1);
 		String datePath = String.format("%s/%02d", monthPath, cal.get(Calendar.DATE));
 		
-		makeDir(uploadPath, yearPath,monthPath,datePath);
+		makeDir(uploadPath,namePath, yearPath,monthPath,datePath);
 		
 		return datePath;
 	}

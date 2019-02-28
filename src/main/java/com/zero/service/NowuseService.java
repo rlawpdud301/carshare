@@ -7,4 +7,6 @@ public interface NowuseService {
 	void insertRoute(RouteVO vo);
 	
 	RouteVO selectRoutByRouteNo(String RouteNo);
+
+	void deleteRoutByRouteNo(String trim);
 }

@@ -40,4 +40,11 @@ public class NowuseServiceImpl implements NowuseService {
 		return routDao.selectRoutByRouteNo(RouteNo);
 	}
 
+
+	@Override
+	public void deleteRoutByRouteNo(String memberNo) {
+		// TODO Auto-generated method stub
+		routDao.deleteRoutByRouteNo(memberNo);
+	}
+
 }

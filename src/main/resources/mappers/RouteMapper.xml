@@ -1,26 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zero.mapper.RouteMapper">
+	<resultMap type="RouteVO" id="result">
+		<result column="member_no" property="memberNo.memberNo"/>
+	</resultMap>
+
 	<insert id="insertRoute">
 		INSERT INTO carshare.route
-		(Route_no, member_no, process,
+		(Route_no, member_no,
+		process,
 		start_address, start_latitude, start_hardness,
 		end_address,
 		end_latitude, end_hardness)
-		VALUES(#{RouteNo},#{memberNo.memberNo}, #{process},
-		#{startAddress}, #{startLatitude}, #{startHardness}, #{endAddress},
+		VALUES(#{RouteNo},#{memberNo.memberNo},
+		#{process},
+		#{startAddress}, #{startLatitude}, #{startHardness},
+		#{endAddress},
 		#{endLatitude}, #{endHardness})
 	</insert>
-	
+
 	<select id="selectLastNo" resultType="String">
-		select max(Route_no) FROM carshare.route;
+		select max(Route_no) FROM
+		carshare.route;
 	</select>
-	
+
 	<select id="selectRoutByRouteNo" resultType="RouteVO">
+		SELECT Route_no,
+		member_no, process, avgFee,
+		start_address, start_latitude,
+		start_hardness, end_address,
+		end_latitude, end_hardness
+		FROM
+		carshare.route
+		where left(Route_no, 1) != 'f' and member_no
+		=#{memberNo} and process = '등록'
+	</select>
+
+	<delete id="deleteRoutByRouteNo">
+		DELETE FROM carshare.route
+		where left(Route_no, 1) !=
+		'f' and member_no
+		=#{memberNo}
+	</delete>
+
+	<sql id="findMyAroundWhere">
+		<where>
+			<if test="condition != null and condition.equals('driver')">
+				left(Route_no, 1) = 'u'
+			</if>
+			<if test="condition == null and condition.equals('user')">
+				left(Route_no, 1) = 'd'
+			</if>
+			<if test="howfar.equals('three')">
+				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 9
+			</if>
+			<if test="howfar.equals('five')">
+				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 25
+			</if>
+			<if test="howfar.equals('seven')">
+				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 49
+			</if>
+			<if test="howfar.equals('ten')">
+				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 100
+			</if>
+			<if test="howfar.equals('twenty')">
+				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 400
+			</if>
+		</where>
+	</sql>
+
+	<select id="findMyAround" resultMap="result">
 		SELECT Route_no, member_no, process, avgFee,
 		start_address, start_latitude, start_hardness, end_address,
 		end_latitude, end_hardness
 		FROM carshare.route
-		where left(Route_no, 1) != 'f' and member_no =#{memberNo} and process = '등록'
+		<include refid="findMyAroundWhere"/>
 	</select>
+
 </mapper> 

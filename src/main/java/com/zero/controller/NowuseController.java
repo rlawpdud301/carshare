@@ -34,7 +34,15 @@ public class NowuseController {
 	private NowuseService service;
 	
 	@RequestMapping(value = "nowRouteUpload", method = RequestMethod.GET)
-	public void nowRouteUploadGet() {
+	public void nowRouteUploadGet(HttpServletRequest request,String result, Model model) {
+		if (result==null || result.equals("")) {
+			
+		}else {
+			model.addAttribute("result", "등록 완료");
+		}
+		HttpSession session = request.getSession();
+		session.setAttribute("driver", "user");
+		
 		/*session.setAttribute("driver", "user");*/
 	}
 	
@@ -49,7 +57,7 @@ public class NowuseController {
 		MemberVO memberVO = new MemberVO();
 		memberVO.setMemberNo(dto.getMemberNo());
 		vo.setMemberNo(memberVO);
-		vo.setProcess("�벑濡�");
+		vo.setProcess("등록");
 		service.insertRoute(vo);
 		response.sendRedirect(request.getContextPath()+"/nowuse/nowRouteWaiting");
 		
@@ -61,7 +69,19 @@ public class NowuseController {
 		LoginDTO dto = (LoginDTO) session.getAttribute("vo"); 		
 		logger.info("dto : "+dto);
 		RouteVO routeVO = service.selectRoutByRouteNo((dto.getMemberNo()+"").trim());
+		logger.info("routeVO : "+routeVO);
 		model.addAttribute("routeVO", routeVO);
 		return "/nowuse/nowRouteWaiting";
 	}
+	@RequestMapping(value = "cancelRoute", method = RequestMethod.GET)
+	public String cancelRouteGet(HttpServletRequest request, Model model) {
+		logger.info("cancelRoute-get");
+		HttpSession session = request.getSession();
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo"); 		
+		logger.info("dto : "+dto);
+		service.deleteRoutByRouteNo((dto.getMemberNo()+"").trim());
+
+		return "/nowuse/nowRouteUpload";
+	}
+	
 }

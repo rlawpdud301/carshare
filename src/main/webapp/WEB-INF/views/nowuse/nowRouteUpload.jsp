@@ -739,6 +739,9 @@ daum.maps.event.addListener(moveMarker, 'dragend', function() {
 });
 
 $(function() {
+	if ("${result}" != "") {
+		alert("등록이 완료 되었습니다 승인 완료되면 등록하신 이메일 로알려드릴께요.");
+	}
 	$(document).on("click","#selectDone",function(){
 		
 		/* alert(startMarker.getPosition()); */

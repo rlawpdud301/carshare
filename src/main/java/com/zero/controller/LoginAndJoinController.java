@@ -1,5 +1,6 @@
 package com.zero.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.zero.domain.CarInfoVO;
@@ -112,7 +114,7 @@ public class LoginAndJoinController {
 	}
 	
 	@RequestMapping(value = "addDriver", method = RequestMethod.POST)
-	public void addDriverPost(HttpServletRequest request,String relationshipCarowner ,MultipartFile licensePhoto,MultipartFile carCard,MultipartFile insuranceCard, HttpServletResponse response) throws IOException { 
+	public void addDriverPost(Model model,  HttpServletRequest request,String relationshipCarowner ,MultipartFile licensePhoto,MultipartFile carCard,MultipartFile insuranceCard, HttpServletResponse response) throws IOException { 
 		logger.info("addDriver-post");
 		logger.info("relationshipCarowner : " + relationshipCarowner);
 		logger.info("licensePhoto : " + licensePhoto);
@@ -121,14 +123,14 @@ public class LoginAndJoinController {
 		HttpSession session = request.getSession();
 		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
 		
-		documentUpload = documentUpload + "/" + dto.getName();
-		String licensePhotoThumPath = UploadFileUtils.uploadFile(documentUpload, licensePhoto.getOriginalFilename(),
+		
+		String licensePhotoThumPath = UploadFileUtils.uploadFile(documentUpload,dto.getMemberNo()+"", licensePhoto.getOriginalFilename(),
 				licensePhoto.getBytes());
 		
-		String carCardThumPath = UploadFileUtils.uploadFile(documentUpload, carCard.getOriginalFilename(),
+		String carCardThumPath = UploadFileUtils.uploadFile(documentUpload,dto.getMemberNo()+"", carCard.getOriginalFilename(),
 				carCard.getBytes());
 		
-		String insuranceCardThumPath = UploadFileUtils.uploadFile(documentUpload, insuranceCard.getOriginalFilename(),
+		String insuranceCardThumPath = UploadFileUtils.uploadFile(documentUpload,dto.getMemberNo()+"", insuranceCard.getOriginalFilename(),
 				insuranceCard.getBytes());
 		
 		MemberVO memberVO = new MemberVO();
@@ -144,8 +146,21 @@ public class LoginAndJoinController {
 		licenseInfoVO.setMemberNo(memberVO);
 		licenseInfoVO.setLicensePhoto(licensePhotoThumPath);
 		
-		service.addDriverUser(carInfoVO,licenseInfoVO);
-		response.sendRedirect(request.getContextPath()+"/addDriverWaiting");
+		try {
+			service.addDriverUser(carInfoVO,licenseInfoVO);
+		} catch (Exception e) {
+			// TODO: handle exception
+			File licensePhotoFile = new File(licensePhotoThumPath);
+			File carCardFile = new File(carCardThumPath);
+			File insuranceCardFile = new File(insuranceCardThumPath);
+			carCardFile.delete();
+			licensePhotoFile.delete();
+			insuranceCardFile.delete();
+			
+		}
+		
+		/*model.addAttribute("result", "등록 완료");*/
+		response.sendRedirect(request.getContextPath()+"/nowuse/nowRouteUpload?result=aa");
 	}
 	@RequestMapping(value = "addDriverWaiting", method = RequestMethod.GET)
 	public String addDriverWaitingGet() { 
@@ -153,11 +168,11 @@ public class LoginAndJoinController {
 		return "/loginAndJoin/addDriverWaiting";
 	}
 	
-	
+	@ResponseBody
 	@RequestMapping(value = "updateVo", method = RequestMethod.GET)
-	public ResponseEntity<String> updatevoGet(HttpServletRequest request) { 
+	public ResponseEntity<LoginDTO> updatevoGet(HttpServletRequest request) { 
 		logger.info("updatevoGet-get");
-		ResponseEntity<String> entity = null;
+		ResponseEntity<LoginDTO> entity = null;
 		
 		try {
 			HttpSession session = request.getSession();
@@ -175,7 +190,7 @@ public class LoginAndJoinController {
 			
 			session.setAttribute("vo", dto);
 			
-			entity = new ResponseEntity<String>("ok",HttpStatus.OK);
+			entity = new ResponseEntity<LoginDTO>(dto,HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();

@@ -1,5 +1,8 @@
 package com.zero.persistence;
 
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,6 +34,18 @@ public class RouteDaoImpl implements RouteDAO {
 	public RouteVO selectRoutByRouteNo(String RouteNo) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace + ".selectRoutByRouteNo",RouteNo);
+	}
+
+	@Override
+	public void deleteRoutByRouteNo(String memberNo) {
+		// TODO Auto-generated method stub
+		sqlSession.insert(namespace + ".deleteRoutByRouteNo",memberNo);
+	}
+
+	@Override
+	public List<RouteVO> findMyAround(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace + ".findMyAround",map);
 	}
 
 }
