@@ -102,6 +102,10 @@ var howfar;
 			getMyLocation();
 		})
 		
+		$(document).on("click", ".listtgd", function() {
+			alert($(this).text());
+		})
+		
 	}) 
 	
 	
