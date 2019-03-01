@@ -46,11 +46,15 @@
 				<div class="col-sm-12">
 					<div class="box">
 						<div class="box-header with-border">
-							<button type="button" class="howfar" value="three">내주변 300m</button>
-							<button type="button" class="howfar" value="five">내주변 500m</button>
-							<button type="button" class="howfar" value="seven">내주변 700m</button>
-							<button type="button" class="howfar" value="ten">내주변 1km</button>
-							<button type="button" class="howfar" value="twenty">내주변 2km</button>
+							<button type="button" class="howfar" value="three">내주변 약 300m</button>
+							<button type="button" class="howfar" value="five">내주변 약 500m</button>
+							<button type="button" class="howfar" value="seven">내주변 약 700m</button>
+							<button type="button" class="howfar" value="ten">내주변 약 1km</button>
+							<button type="button" class="howfar" value="twenty">내주변 약 2km</button>
+							<div class="col-xs-4 col-xs-offset-8">
+								<button type="button" class="btn">지도로 보기</button>
+								<button type="button" class="btn">리스트로 보기</button>
+							</div>
 						</div>
 						<div class="box-body">
 							
@@ -64,17 +68,6 @@
 									</tr>
 								</thead>
 								<tbody id="tableBody">
-									<%-- <c:forEach items="${list }" var="board">
-								<tr>
-									<td>${board.bno }</td>
-									<td><a href="${pageContext.request.contextPath}/sboard/read?bno=${board.bno}&page=${pageMaker.cri.page}&searchType=${cri.searchType}&keyword=${cri.keyword}">${board.title }</a>
-										<strong>[${board.replycnt}]</strong>
-									</td>
-									<td>${board.writer }</td>
-									<td><fmt:formatDate value="${board.regdate }" pattern="yyyy-MM-dd HH:mm"/></td> 
-									<td><span class="badge bg-red">${board.viewcnt }</span></td>
-								</tr>
-							</c:forEach> --%>
 								</tbody>
 							</table>
 						</div>
@@ -139,12 +132,17 @@ var howfar;
 							var first = afterStr[1].substring( 0, 3 );
 							var last = afterStr[0] + "." + afterStr[1].substring( 0, 3 );
 							
+							var tgda = $("<a>");
+							
 							var tgdtr = $("<tr>");
 							var tgdtd1 = $("<td>").text(i+1);
 							var tgdtd2 = $("<td>").text(item.startAddress);
 							var tgdtd3 = $("<td>").text(item.endAddress);
 							var tgdtd4 = $("<td>").text("약 "+last+"km");
 							tgdtr.append(tgdtd1).append(tgdtd2).append(tgdtd3).append(tgdtd4);
+							
+							tgda
+							
 							$("#tableBody").append(tgdtr);
 						})
 						

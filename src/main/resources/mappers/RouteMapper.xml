@@ -52,19 +52,19 @@
 				left(Route_no, 1) = 'd'
 			</if>
 			<if test="howfar.equals('three')">
-				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 9
+				and (((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude})) + ((start_hardness - #{startHardness})*(start_hardness - #{startHardness}))) &lt;= 0.00001
 			</if>
 			<if test="howfar.equals('five')">
-				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 25
+				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 0.0000253
 			</if>
 			<if test="howfar.equals('seven')">
-				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 49
+				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 0.0000493
 			</if>
 			<if test="howfar.equals('ten')">
-				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 100
+				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 0.0001228
 			</if>
 			<if test="howfar.equals('twenty')">
-				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 400
+				and ((start_latitude - #{startLatitude})*(start_latitude - #{startLatitude}) + (start_hardness - #{startHardness})*(start_hardness - #{startHardness})) &lt;= 0.0004003
 			</if>
 		</where>
 	</sql>
