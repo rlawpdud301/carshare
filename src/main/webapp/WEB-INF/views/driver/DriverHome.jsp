@@ -132,16 +132,13 @@ var howfar;
 							var first = afterStr[1].substring( 0, 3 );
 							var last = afterStr[0] + "." + afterStr[1].substring( 0, 3 );
 							
-							var tgda = $("<a>");
 							
-							var tgdtr = $("<tr>");
+							var tgdtr = $("<tr>").addClass("listtgd");
 							var tgdtd1 = $("<td>").text(i+1);
 							var tgdtd2 = $("<td>").text(item.startAddress);
 							var tgdtd3 = $("<td>").text(item.endAddress);
 							var tgdtd4 = $("<td>").text("약 "+last+"km");
 							tgdtr.append(tgdtd1).append(tgdtd2).append(tgdtd3).append(tgdtd4);
-							
-							tgda
 							
 							$("#tableBody").append(tgdtr);
 						})
