@@ -11,6 +11,7 @@ public class RouteVO {
 	private String endAddress;
 	private Double endLatitude;
 	private Double endHardness;
+	private int opponentNo;
 	public String getRouteNo() {
 		return RouteNo;
 	}
@@ -72,13 +73,22 @@ public class RouteVO {
 	public void setEndHardness(Double endHardness) {
 		this.endHardness = endHardness;
 	}
+	public int getOpponentNo() {
+		return opponentNo;
+	}
+	public void setOpponentNo(int opponentNo) {
+		this.opponentNo = opponentNo;
+	}
 	@Override
 	public String toString() {
 		return "RouteVO [RouteNo=" + RouteNo + ", memberNo=" + memberNo + ", process=" + process + ", avgFee=" + avgFee
 				+ ", startAddress=" + startAddress + ", startLatitude=" + startLatitude + ", startHardness="
 				+ startHardness + ", endAddress=" + endAddress + ", endLatitude=" + endLatitude + ", endHardness="
-				+ endHardness + "]";
+				+ endHardness + ", opponentNo=" + opponentNo + "]";
 	}
+	
+	
+	
 	
 	
 	

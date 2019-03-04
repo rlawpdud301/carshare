@@ -48,4 +48,10 @@ public class RouteDaoImpl implements RouteDAO {
 		return sqlSession.selectList(namespace + ".findMyAround",map);
 	}
 
+	@Override
+	public void addOpponentNo(RouteVO routeVO) {
+		// TODO Auto-generated method stub
+		sqlSession.update(namespace + ".addOpponentNo",routeVO);
+	}
+
 }

@@ -74,5 +74,57 @@ public class DriverController {
 		
 		return entity;
 	}
-
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/driver/getInfor", method = RequestMethod.GET)
+	public ResponseEntity<LoginDTO> getInforGet(int memberNo) { 
+		logger.info("getInfor-get");
+		logger.info("memberNo------------------------" + memberNo);
+		ResponseEntity<LoginDTO> entity = null;
+		
+		try {
+			MemberVO memberVO = service.selectMemberByMemberNo(memberNo);
+			
+			LoginDTO loginDTO = new LoginDTO();
+			loginDTO.setNickname(memberVO.getNickname());
+			loginDTO.setPhoto(memberVO.getPhoto());
+			
+			logger.info("loginDTO------------------------" + loginDTO);
+			entity = new ResponseEntity<LoginDTO>(loginDTO,HttpStatus.OK);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	
+	
+	@ResponseBody
+	@RequestMapping(value = "/driver/waitingApproval", method = RequestMethod.GET)
+	public ResponseEntity<String> waitingApprovalGet(HttpServletRequest request ,String routeNo) { 
+		logger.info("waitingApproval-get");
+		logger.info("routeNo------------------------" + routeNo);
+		ResponseEntity<String> entity = null;
+		try {
+			HttpSession session = request.getSession();
+			LoginDTO dto = (LoginDTO) session.getAttribute("vo");
+			RouteVO routeVO = new RouteVO();
+			routeVO.setOpponentNo(dto.getMemberNo());
+			routeVO.setRouteNo(routeNo);
+			service.waitingApproval(routeVO);
+			entity = new ResponseEntity<String>("ok",HttpStatus.OK);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		
+		return entity;
+	}
 }

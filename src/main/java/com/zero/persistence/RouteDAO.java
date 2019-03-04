@@ -16,4 +16,6 @@ public interface RouteDAO {
 	void deleteRoutByRouteNo(String memberNo);
 
 	List<RouteVO> findMyAround(Map<String, Object> map);
+
+	void addOpponentNo(RouteVO routeVO);
 }
