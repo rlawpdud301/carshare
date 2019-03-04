@@ -14,4 +14,6 @@ public interface DriverService {
 
 	void waitingApproval(RouteVO routeVO);
 
+	void setDriverWhere(MemberVO memberVO);
+
 }

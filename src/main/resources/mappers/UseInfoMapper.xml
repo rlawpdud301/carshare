@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zero.mapper.UseInfoMapper">
+	<resultMap type="UseInfoVO" id="result">
+		<result column="u_member_no" property="uMemberNo.memberNo"/>
+		<result column="d_member_no" property="dMemberNo.memberNo"/>
+	</resultMap>
+
+
+	<insert id="insertUseInfo" parameterType="RouteVO">
+		INSERT INTO
+		carshare.use_info
+		(u_member_no, d_member_no,process,start_address,
+		start_latitude, start_hardness, end_address,
+		end_latitude,
+		end_hardness)
+		VALUES(#{memberNo.memberNo}, #{opponentNo}, '대기',
+		#{startAddress}, #{startLatitude}, #{startHardness}, #{endAddress},
+		#{endLatitude}, #{endHardness})
+	</insert>
+
+	<select id="selectUseInfoByMemberNo" resultMap="result">
+		SELECT use_no, u_member_no, d_member_no, start_time,
+		end_time, fee, process, start_address, start_latitude, start_hardness,
+		end_address, end_latitude, end_hardness
+		FROM carshare.use_info
+		WHERE u_member_no = #{memberNo}
+	</select>
+</mapper>

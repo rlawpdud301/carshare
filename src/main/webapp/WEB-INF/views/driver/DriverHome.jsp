@@ -149,6 +149,7 @@
 							<div class="col-xs-4 col-xs-offset-8">
 								<button type="button" class="btn" id="showMap">지도로 보기</button>
 								<button type="button" class="btn" id="showList">리스트로 보기</button>
+								<button type="button" class="btn" id="reflash">새로 고침</button>
 							</div>
 						</div>
 						<div class="box-body">
@@ -188,6 +189,7 @@ var lon;
 var map;
 var positions = new Array();
 var iwContent = new Array();
+var marker =new daum.maps.Marker();
 /* var markers = new Array(); */
 var infowindow = new daum.maps.InfoWindow({zIndex:1,removable : true});
 var modal = document.getElementById('myModal');
@@ -237,6 +239,11 @@ var routeNo;
 			waitingApproval($("#modalOk").attr("data-routeno"));
 		})
 		
+		$(document).on("click", "#reflash", function() {
+			getMyLocation();
+		})
+		
+		
 		$(".table").css("display","none");
 		
 		
@@ -247,7 +254,7 @@ var routeNo;
 		$.ajax({
 			url : "${pageContext.request.contextPath}/driver/waitingApproval",
 			type : "get",
-			data : "routeNo=" + waitrouteNo,
+			data : "routeNo=" + waitrouteNo + "&lat=" + lat+"&lon="+lon,
 			dataType : "json",
 			success : function(data) {
 				console.log(data);
@@ -299,6 +306,7 @@ var routeNo;
 	
 	
 	function getMyLocation() {
+		marker.setMap(null);
 		// HTML5의 geolocation으로 사용할 수 있는지 확인합니다 
 		if (navigator.geolocation) {
 
@@ -351,7 +359,7 @@ var routeNo;
 	function displayMarker(place) {
 	    
 	    // 마커를 생성하고 지도에 표시합니다
-	    var marker = new daum.maps.Marker({
+	    marker = new daum.maps.Marker({
 	        map: map,
 	        position: place.latlng 
 	    });

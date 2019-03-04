@@ -37,6 +37,13 @@ public class DriverServiceImpl implements DriverService {
 	public void waitingApproval(RouteVO routeVO) {
 		// TODO Auto-generated method stub
 		routeDAO.addOpponentNo(routeVO);
+		
+	}
+
+	@Override
+	public void setDriverWhere(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		memberDAO.setDriverWhere(memberVO);
 	}
 	
 }

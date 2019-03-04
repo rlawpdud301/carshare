@@ -105,7 +105,7 @@ public class DriverController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/driver/waitingApproval", method = RequestMethod.GET)
-	public ResponseEntity<String> waitingApprovalGet(HttpServletRequest request ,String routeNo) { 
+	public ResponseEntity<String> waitingApprovalGet(HttpServletRequest request ,String routeNo ,double lat,double lon) { 
 		logger.info("waitingApproval-get");
 		logger.info("routeNo------------------------" + routeNo);
 		ResponseEntity<String> entity = null;
@@ -115,6 +115,11 @@ public class DriverController {
 			RouteVO routeVO = new RouteVO();
 			routeVO.setOpponentNo(dto.getMemberNo());
 			routeVO.setRouteNo(routeNo);
+			MemberVO memberVO = new MemberVO();
+			memberVO.setMemberNo(dto.getMemberNo());
+			memberVO.setDriverLatitude(lat);
+			memberVO.setDriverHardness(lon);
+			service.setDriverWhere(memberVO);
 			service.waitingApproval(routeVO);
 			entity = new ResponseEntity<String>("ok",HttpStatus.OK);
 			

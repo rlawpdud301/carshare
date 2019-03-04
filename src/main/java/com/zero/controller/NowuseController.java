@@ -11,13 +11,17 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.zero.domain.CarInfoVO;
 import com.zero.domain.LocationVO;
 import com.zero.domain.LoginDTO;
 import com.zero.domain.MemberVO;
@@ -83,5 +87,52 @@ public class NowuseController {
 
 		return "/nowuse/nowRouteUpload";
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "waitingnowuse", method = RequestMethod.GET)
+	public ResponseEntity<LoginDTO> waitingnowuseGet(HttpServletRequest request) { 
+		logger.info("waitingnowuse-get");
+		ResponseEntity<LoginDTO> entity = null;
+		
+		HttpSession session = request.getSession();
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo"); 
+		
+		try {
+			LoginDTO opponentInfo = service.findOpponentNo(dto.getMemberNo());
+			if (opponentInfo != null) {
+				entity = new ResponseEntity<LoginDTO>(opponentInfo,HttpStatus.OK);
+			}else {
+				LoginDTO nulldto = new LoginDTO();
+				entity = new ResponseEntity<LoginDTO>(nulldto,HttpStatus.OK);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	@RequestMapping(value = "waitDriver", method = RequestMethod.GET)
+	public void waitDriverGet(HttpServletRequest request,Model model) { 
+		logger.info("waitDriverGet-get");
+		HttpSession session = request.getSession();
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
+		Map<String, Object> map = service.finduseInfoanddriverinfo(dto.getMemberNo());
+		MemberVO memberVO = getDriverWhere(((CarInfoVO)map.get("carInfoVO")).getMemberNo().getMemberNo());
+		map.put("driverLatitude", memberVO.getDriverLatitude());
+		map.put("driverHardness", memberVO.getDriverHardness());
+		model.addAttribute("map", map);
+	}
+	
+	
+
+	private MemberVO getDriverWhere(int memberNo) {
+		// TODO Auto-generated method stub
+		MemberVO memberVO = service.selectMemberByMemberNo(memberNo);		
+		return memberVO;
+		
+	}
+	
 	
 }

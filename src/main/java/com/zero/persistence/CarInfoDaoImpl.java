@@ -20,4 +20,10 @@ public class CarInfoDaoImpl implements CarInfoDAO {
 		sqlSession.insert(namespace + ".insertCarInfo",carInfoVO);
 	}
 
+	@Override
+	public CarInfoVO selectCarInfoByMemberNo(int memberNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".selectCarInfoByMemberNo",memberNo);
+	}
+
 }

@@ -18,4 +18,6 @@ public interface RouteDAO {
 	List<RouteVO> findMyAround(Map<String, Object> map);
 
 	void addOpponentNo(RouteVO routeVO);
+
+	RouteVO findMyRouteuseOpponentNo(int memberNo);
 }

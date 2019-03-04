@@ -40,4 +40,10 @@ public class MemberDaoImpl implements MemberDAO {
 		return sqlSession.selectOne(namespace + ".selectMemberByMemberNo",memberNo);
 	}
 
+	@Override
+	public void setDriverWhere(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		sqlSession.update(namespace + ".setDriverWhere",memberVO);
+	}
+
 }

@@ -92,7 +92,16 @@
 
 	<update id="addOpponentNo">
 		UPDATE carshare.route
-		SET process='신청', opponent_no=#{opponentNo}
+		SET process='신청',
+		opponent_no=#{opponentNo}
 		WHERE Route_no=#{RouteNo}
 	</update>
+
+	<select id="findMyRouteuseOpponentNo" resultType="RouteVO">
+		SELECT
+		Route_no, member_no, process, avgFee, start_address, start_latitude,
+		start_hardness, end_address, end_latitude, end_hardness, opponent_no
+		FROM carshare.route
+		WHERE member_no=#{memberNo} and process='신청'
+	</select>
 </mapper> 

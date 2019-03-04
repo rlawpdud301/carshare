@@ -54,4 +54,10 @@ public class RouteDaoImpl implements RouteDAO {
 		sqlSession.update(namespace + ".addOpponentNo",routeVO);
 	}
 
+	@Override
+	public RouteVO findMyRouteuseOpponentNo(int memberNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".findMyRouteuseOpponentNo",memberNo);
+	}
+
 }

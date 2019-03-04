@@ -25,7 +25,7 @@
 		kakao_id, naver_id, name, u_intro, d_intro, phone,
 		nickname, photo,
 		jop, driver, jumin, grade_no, my_fee, email,
-		dirver_enrollment, dirver_apply
+		dirver_enrollment, dirver_apply,driver_latitude,driver_hardness
 		FROM
 		carshare.`member`
 		<include refid="whereforid" />
@@ -44,16 +44,24 @@
 	<update id="updateDirverApply">
 		UPDATE carshare.`member`
 		SET dirver_apply=now()
-		WHERE member_no= #{memberNo}
+		WHERE
+		member_no= #{memberNo}
 	</update>
-	
+
 	<select id="selectMemberByMemberNo" resultType="MemberVO">
 		SELECT member_no,
 		kakao_id, naver_id, name, u_intro, d_intro, phone,
 		nickname, photo,
 		jop, driver, jumin, grade_no, my_fee, email,
-		dirver_enrollment, dirver_apply
+		dirver_enrollment,
+		dirver_apply,driver_latitude,driver_hardness
 		FROM carshare.`member`
 		WHERE member_no= #{memberNo}
 	</select>
+
+	<update id="setDriverWhere">
+		UPDATE carshare.`member`
+		SET driver_latitude=#{driverLatitude}, driver_hardness=#{driverHardness}
+		WHERE member_no=#{memberNo};
+	</update>
 </mapper>

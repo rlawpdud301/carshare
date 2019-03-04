@@ -20,12 +20,38 @@ public class MemberVO {
 	private String email;
 	private Date dirverEnrollment;
 	private Date dirverApply;
+	private double driverLatitude;
+	private double driverHardness;
 	
 	
 	
 	
 
 	
+
+	public double getDriverLatitude() {
+		return driverLatitude;
+	}
+
+
+
+	public void setDriverLatitude(double driverLatitude) {
+		this.driverLatitude = driverLatitude;
+	}
+
+
+
+	public double getDriverHardness() {
+		return driverHardness;
+	}
+
+
+
+	public void setDriverHardness(double driverHardness) {
+		this.driverHardness = driverHardness;
+	}
+
+
 
 	public Date getDirverEnrollment() {
 		return dirverEnrollment;
@@ -214,9 +240,12 @@ public class MemberVO {
 				+ ", name=" + name + ", uIntro=" + uIntro + ", dIntro=" + dIntro + ", phone=" + phone + ", nickname="
 				+ nickname + ", photo=" + photo + ", jop=" + jop + ", driver=" + driver + ", gradeNo=" + gradeNo
 				+ ", myFee=" + myFee + ", email=" + email + ", dirverEnrollment=" + dirverEnrollment + ", dirverApply="
-				+ dirverApply + "]";
+				+ dirverApply + ", driverLatitude=" + driverLatitude + ", driverHardness=" + driverHardness + "]";
 	}
 
+
+
+	
 
 
 	

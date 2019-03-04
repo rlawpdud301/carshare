@@ -18,6 +18,13 @@
 #forb:hover {
 	color: #B2EBF4;
 }
+#headerModal-body img{
+	width: 100px;
+}
+.modal{
+	z-index: 10;
+}
+
 </style>
 <html>
 <head>
@@ -61,6 +68,26 @@
 	src="${pageContext.request.contextPath }/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
 
 <body class="skin-blue sidebar-mini">
+<!-- The Modal -->
+<div id="headerMyModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>배차가 완료 되었습니다.</h2>
+    </div>
+    <div class="modal-body" id="headerModal-body">
+      <p>Some text in the Modal Body</p>
+      <p>Some other text...</p>
+    </div>
+    <div class="modal-footer">
+      <h3><button id="headerModalOk" type="button">운전자 위치 상새정보 보기</button></h3>
+    </div>
+  </div>
+
+</div>
+
+
 	<div class="wrapper">
 
 		<header class="main-header">
@@ -493,6 +520,10 @@
           </ol>
         </section> -->
 			<script type="text/javascript">
+			
+			var headerMyModal = document.getElementById('headerMyModal');
+			var ckeck;
+			
         $(document).on("click","#use",function(){
         	$("#mode").text("Ride mode");
         	$("body").removeClass("skin-green");
@@ -535,6 +566,9 @@
         })
         
         $(function () { 
+        	
+        	
+        	
         	if ("${driver}"=="user") {
         		$("#mode").text("Ride mode");
 				$("body").removeClass("skin-green");
@@ -544,5 +578,48 @@
 				$("body").removeClass("skin-blue");
 	        	$("body").addClass("skin-green");
 			}
+        	
+
+        	ckeck =	setInterval(waiting,3000);
+        	
+        	
+        	$(document).on("click","#headerModalOk",function(){
+        		headerMyModal.style.display = "none";
+        		window.location.href = '${pageContext.request.contextPath}/nowuse/waitDriver';
+        	})
+        	
 		})
+		
+		function waiting() {
+        	
+        	$.ajax({
+        		url : "${pageContext.request.contextPath}/nowuse/waitingnowuse",
+    			type : "get",
+    			dataType : "json",
+    			success : function(data) {
+    				console.log(data);
+    				
+    				if (data.memberNo==0) {
+						
+					}else{
+						
+						clearInterval(ckeck);
+						var betweenInfo = "<p>운전자정보</p>";
+						var startInfo = "<p><img src=" + data.photo + "></p>";
+						var endInfo = "<p>닉네임 : " + data.nickname + "</p>";
+						
+						$("#headerModal-body").empty();
+						$("#headerModal-body").append(betweenInfo);
+						$("#headerModal-body").append(startInfo);
+						$("#headerModal-body").append(endInfo);
+						headerMyModal.style.display = "block";
+						
+					}
+    				
+    			}
+        	})
+        	
+		}
+        
+		
         </script>
