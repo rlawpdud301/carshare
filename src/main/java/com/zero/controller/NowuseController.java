@@ -98,6 +98,9 @@ public class NowuseController {
 		LoginDTO dto = (LoginDTO) session.getAttribute("vo"); 
 		
 		try {
+			if (dto == null) {
+				return new ResponseEntity<LoginDTO>(HttpStatus.OK);
+			}
 			LoginDTO opponentInfo = service.findOpponentNo(dto.getMemberNo());
 			if (opponentInfo != null) {
 				entity = new ResponseEntity<LoginDTO>(opponentInfo,HttpStatus.OK);

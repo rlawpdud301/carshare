@@ -505,6 +505,7 @@ function getMyLocation() {
 		} else { // HTML5의 GeoLocation을 사용할 수 없을때 마커 표시 위치와 인포윈도우 내용을 설정합니다
 			var locPosition = new daum.maps.LatLng(33.450701, 126.570667), message = 'geolocation을 사용할수 없어요..'
 			displayMarker(locPosition);
+			alert("geolocation을 사용할수 없어요..");
 		}
 }
 
