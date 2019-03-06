@@ -10,4 +10,6 @@ public interface UseInfoDAO {
 	UseInfoVO selectUseInfoByMemberNo(int memberNo);
 
 	UseInfoVO selectUseInfoByDriverNo(int driverNo);
+
+	void updateUseInfo(UseInfoVO useInfoVO);
 }

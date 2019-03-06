@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.zero.mapper.UseInfoMapper">
 	<resultMap type="UseInfoVO" id="result">
-		<result column="u_member_no" property="uMemberNo.memberNo"/>
-		<result column="d_member_no" property="dMemberNo.memberNo"/>
+		<result column="u_member_no" property="uMemberNo.memberNo" />
+		<result column="d_member_no" property="dMemberNo.memberNo" />
 	</resultMap>
 
 
@@ -20,18 +20,34 @@
 	</insert>
 
 	<select id="selectUseInfoByMemberNo" resultMap="result">
-		SELECT use_no, u_member_no, d_member_no, start_time,
-		end_time, fee, process, start_address, start_latitude, start_hardness,
-		end_address, end_latitude, end_hardness
+		SELECT use_no,
+		u_member_no, d_member_no, start_time,
+		end_time, fee, process,
+		start_address, start_latitude, start_hardness,
+		end_address,
+		end_latitude, end_hardness
 		FROM carshare.use_info
-		WHERE u_member_no = #{memberNo}
+		WHERE u_member_no =
+		#{memberNo}
 	</select>
-	
+
 	<select id="selectUseInfoByDriverNo" resultMap="result">
-		SELECT use_no, u_member_no, d_member_no, start_time,
-		end_time, fee, process, start_address, start_latitude, start_hardness,
-		end_address, end_latitude, end_hardness
+		SELECT use_no,
+		u_member_no, d_member_no, start_time,
+		end_time, fee, process,
+		start_address, start_latitude, start_hardness,
+		end_address,
+		end_latitude, end_hardness
 		FROM carshare.use_info
-		WHERE d_member_no = #{driverNo}
+		WHERE d_member_no =
+		#{driverNo} and process='대기'
 	</select>
+
+	<update id="updateUseInfo">
+		UPDATE carshare.use_info
+		SET start_time=now(),
+		process='주행중', start_latitude=#{startLatitude}, start_hardness=#{startHardness}
+		WHERE d_member_no =
+		#{dMemberNo.memberNo}
+	</update>
 </mapper>

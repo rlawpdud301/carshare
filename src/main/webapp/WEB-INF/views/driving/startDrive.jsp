@@ -24,42 +24,18 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	
 <style>
-table {
-	border: solid 1px black;
-	border-collapse: collapse;
-}
-th,td{
-	border: solid 1px black;
-}
+
 </style>
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    Witing <b>Driver</b>
+    <b>Driving</b>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
 	<div id="map" style="width: 100%; height: 400px;"></div>
-	<p>출발지에서 대기해주세요</p>
-	<p>운전자와 출발지의 거리 : <span id="distence"></span> </p>
-	<table>
-		<tr>
-			<th>차종</th>
-			<th>번호</th>
-		</tr>
-		<tr>
-			<td>${map.carInfoVO.carName}</td>
-			<td>${map.carInfoVO.carNumber}</td>
-		</tr>
-	</table>
-	<%-- <form action="${pageContext.request.contextPath}/driving/staryDrive" method="get" id="f1">
-		<input type="hidden" value="user" name="driver">
-		
-	</form>
-	<button type="button" id="startDrive">동승완료 주행시작</button> --%>
-  	<!-- <button id="test">moveTest</button> -->
-	
-
+	<p>도착지와의 거리 : <span id="distence"></span> </p>
+	<button id="done">도착</button>
   </div>
   <!-- /.login-box-body -->
 </div>
@@ -70,12 +46,20 @@ th,td{
 <script type='text/javascript'>
 var myMarker =new daum.maps.Marker();
 var startMarker =new daum.maps.Marker();
-var driverMarker =new daum.maps.Marker();
+var endMarker =new daum.maps.Marker();
 
-var driverNo = ${map.useInfoVO.dMemberNo.memberNo}
+var myPosition = new daum.maps.LatLng();
+var startPosition = new daum.maps.LatLng(${useInfoVO.startLatitude},${useInfoVO.startHardness});
+var endPosition = new daum.maps.LatLng(${useInfoVO.endLatitude},${useInfoVO.endHardness}); 
 
-var startPosition = new daum.maps.LatLng(${map.useInfoVO.startLatitude},${map.useInfoVO.startHardness});
-var driverPosition = new daum.maps.LatLng(${map.driverLatitude},${map.driverHardness});
+var startLat = ${useInfoVO.endLatitude};
+var startLon = ${useInfoVO.endHardness}; 
+
+var driverPosition = new daum.maps.LatLng();
+
+var lat;
+var lon;
+
 
 var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
 var mapOption = {
@@ -94,10 +78,10 @@ var myInfowindow = new daum.maps.InfoWindow({
 	removable : iwRemoveable
 });
 
-var driverIwContent = '<div style="padding:5px;">운전자 위치</div>'
+var endIwContent = '<div style="padding:5px;">도착 위치</div>'
 
-var driverInfowindow = new daum.maps.InfoWindow({
-	content : driverIwContent,
+var endInfowindow = new daum.maps.InfoWindow({
+	content : endIwContent,
 	removable : iwRemoveable
 });
 
@@ -108,24 +92,18 @@ var startInfowindow = new daum.maps.InfoWindow({
 	removable : iwRemoveable
 });
 
-var lat;
-var lon;
-
-
+var drawingFlag = true; // 선이 그려지고 있는 상태를 가지고 있을 변수입니다
+var moveLine;
+var clickLine;
+var distanceOverlay;
+var dots = {};
 
 
 $(function() {
 	getMyLocation();
+	setOtherMarker(); 
 	
-	startMarker.setPosition(startPosition);
-	startMarker.setMap(map);
-	
-	driverMarker.setPosition(driverPosition);
-	driverMarker.setMap(map);
-	
-	startInfowindow.open(map, startMarker); 
-	
-	ckeck =	setInterval(getDriverLocation,1000);
+	ckeck =	setInterval(getDriverLocationTset,1000);
 	
 	daum.maps.event.addListener(myMarker, 'click', function() {
 	      // 마커 위에 인포윈도우를 표시합니다
@@ -135,18 +113,77 @@ $(function() {
 	      // 마커 위에 인포윈도우를 표시합니다
 	      startInfowindow.open(map, startMarker);  
 	});
-	daum.maps.event.addListener(driverMarker, 'click', function() {
+	daum.maps.event.addListener(endMarker, 'click', function() {
 	      // 마커 위에 인포윈도우를 표시합니다
-	      driverInfowindow.open(map, driverMarker);  
+	      endInfowindow.open(map, endMarker);  
 	});
 	
-	/* $(document).on("click", "#startDrive", function() {
-		if (confirm("주행을 시작하시겠습니까?")) {
-			$("#f1").submit();
-		}
-	}); */
+	$(document).on("click", "#done", function() {
+		
+	})
 	
 })
+
+function getDriverLocationTset() {
+	lat = lat - 0.0001;
+	lon = lon - 0.0001;
+	
+	map.setCenter(new daum.maps.LatLng(lat,lon));
+	myMarker.setPosition(new daum.maps.LatLng(lat,lon));
+	myMarker.setMap(map);
+	/* setDriverLocation(); */
+	
+	myPosition = new daum.maps.LatLng(lat,lon);
+	
+	$("#distence").text(getDistance());
+	
+	var mousePosition = myPosition;
+	
+	// 그려지고 있는 선의 좌표 배열을 얻어옵니다
+    var path = clickLine.getPath();
+
+    var movepath = [path[path.length-1], mousePosition];
+    moveLine.setPath(movepath);    
+    moveLine.setMap(map);
+    
+    var distance = Math.round(clickLine.getLength() + moveLine.getLength()), // 선의 총 거리를 계산합니다
+    content = '<div class="dotOverlay distanceInfo">총거리 <span class="number">' + distance + '</span>m</div>'; // 커스텀오버레이에 추가될 내용입니다
+
+	// 거리정보를 지도에 표시합니다
+	
+    // 좌표 배열에 클릭한 위치를 추가합니다
+    path.push(myPosition);
+    
+    // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
+    clickLine.setPath(path);
+
+    var distance = Math.round(clickLine.getLength());
+    displayCircleDot(myPosition, distance);
+	
+}
+function setOtherMarker() {
+	startMarker.setPosition(startPosition);
+	startMarker.setMap(map);
+	endMarker.setPosition(endPosition);
+	endMarker.setMap(map);			
+}
+
+
+function drawingLine() {	
+ 	// 그려지고 있는 선의 좌표 배열을 얻어옵니다
+    path = clickLine.getPath();
+
+    // 좌표 배열에 클릭한 위치를 추가합니다
+    path.push(drawingPosition);
+    
+    // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
+    clickLine.setPath(path);
+
+    var distance = Math.round(clickLine.getLength());
+    displayCircleDot(clickPosition, distance);
+ 	
+	
+}
 
 
 function getMyLocation() {
@@ -161,8 +198,29 @@ function getMyLocation() {
 			myMarker.setPosition(new daum.maps.LatLng(lat,lon));
 			myMarker.setMap(map);
 			
+			myPosition = new daum.maps.LatLng(lat,lon);
 			
-						
+			$("#distence").text(getDistance());
+			
+			var drawingPosition = myPosition;
+			
+			clickLine = new daum.maps.Polyline({
+			    map: map, // 선을 표시할 지도입니다 
+			    path: [drawingPosition], // 선을 구성하는 좌표 배열입니다 클릭한 위치를 넣어줍니다
+			    strokeWeight: 3, // 선의 두께입니다 
+			    strokeColor: '#db4040', // 선의 색깔입니다
+			    strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+			    strokeStyle: 'solid' // 선의 스타일입니다
+			});
+			 
+				// 선이 그려지고 있을 때 마우스 움직임에 따라 선이 그려질 위치를 표시할 선을 생성합니다
+			moveLine = new daum.maps.Polyline({
+			    strokeWeight: 3, // 선의 두께입니다 
+			    strokeColor: '#db4040', // 선의 색깔입니다
+			    strokeOpacity: 0.5, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
+			    strokeStyle: 'solid' // 선의 스타일입니다    
+			});
+			
 			
 		});
 		
@@ -172,22 +230,10 @@ function getMyLocation() {
 	}
 	
 }
-function getDriverLocation() {
-	$.ajax({
-		url : "${pageContext.request.contextPath}/nowuse/getDriverLocation",
-		type : "get",
-		data : {driverNo: driverNo},
-		dataType : "json",
-		success : function(data) {
-			driverPosition = new daum.maps.LatLng(data.driverLatitude,data.driverHardness);
-			driverMarker.setPosition(driverPosition);
-			$("#distence").text(getDistance(data.driverLatitude,data.driverHardness));
-			
-		}
-	})	
-}
-function getDistance(driverLat,driverLon) {
-	var distance = calculateDistance(${map.useInfoVO.startLatitude},${map.useInfoVO.startHardness},driverLat,driverLon);
+
+
+function getDistance() {
+	var distance = calculateDistance(lat, lon, startLat, startLon);
 	var makeString = distance + "";
 	var splitString = makeString.split('.');				
 	var sumSting = splitString[0] + "." + splitString[1].substring( 0, 3 );

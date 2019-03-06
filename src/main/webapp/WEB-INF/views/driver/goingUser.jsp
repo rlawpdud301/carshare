@@ -27,11 +27,15 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    Going <b>user</b>
+    Going <b>User</b>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
 	<div id="map" style="width: 100%; height: 400px;"></div>
+	<p>출발지로 이동해주세요</p>
+	<p>출발지와의 거리 : <span id="distence"></span> </p>
+	
+	<button type="button" id="startDrive">동승완료 주행시작</button>
   	<button id="test">moveTest</button>
 	
 
@@ -50,7 +54,11 @@ var startAddress = "${useInfoVO.startAddress}";
 
 var bounds = new daum.maps.LatLngBounds();
 
+var lat;
+var lon;
+
 var marker = new daum.maps.Marker();
+var startMarker = new daum.maps.Marker();
 var mapContainer = document.getElementById('map'); // 지도를 표시할 div 
 var mapOption = {
     center: new daum.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
@@ -80,6 +88,12 @@ $(function() {
 		marker.setMap(map);		
 	})
 	
+	$(document).on("click", "#startDrive", function() {
+		if (confirm("주행을 시작하시겠습니까?")) {
+			window.location.href="${pageContext.request.contextPath}/driving/startDrive?lat="+lat+"&lon="+lon;
+		}
+	});
+	
 	
 })
 
@@ -96,9 +110,12 @@ function getMyLocation() {
 			marker.setPosition(new daum.maps.LatLng(lat,lon));
 			marker.setMap(map);
 			/* map.setLevel(5); */
-			for (var i = 0; i < points.length; i++) {
+			/* for (var i = 0; i < points.length; i++) {
 		 		bounds.extend(points[i]);
-			}
+			} */
+			setDriverLocation();
+			
+			$("#distence").text(getDistance());
 			
 		});
 		
@@ -109,20 +126,59 @@ function getMyLocation() {
 	
 }
 function getMyLocationforTest() {
-	lat = lat + 0.0001;
-	lon = lon + 0.0001;
+	lat = lat - 0.0001;
+	lon = lon - 0.0001;
 	
 	points[1]= new daum.maps.LatLng(lat,lon);
 	map.setCenter(new daum.maps.LatLng(lat,lon));
 	marker.setPosition(new daum.maps.LatLng(lat,lon));
 	marker.setMap(map);
+	setDriverLocation();
 	
-	for (var i = 0; i < points.length; i++) {
+	$("#distence").text(getDistance());
+	
+	/* for (var i = 0; i < points.length; i++) {
 		 bounds.extend(points[i]);
-	}
+	} */
 }
 function setStartMarker() {
-	
+	startMarker.setPosition(new daum.maps.LatLng(startLat,startLon));
+	startMarker.setMap(map);
+}
+function setDriverLocation() {
+	/* alert("lat=" + lat +"& lon" + lon); */
+	$.ajax({
+		url : "${pageContext.request.contextPath}/driver/setDriverLocation",
+		type : "get",
+		data : {lat: lat, lon: lon},
+		dataType : "json",
+		success : function(data) {
+			
+		}
+	})
+}
+function getDistance() {
+	var distance = calculateDistance(lat,lon,startLat,startLon);
+	var makeString = distance + "";
+	var splitString = makeString.split('.');				
+	var sumSting = splitString[0] + "." + splitString[1].substring( 0, 3 );
+	return sumSting+"km";
+}
+
+
+function calculateDistance(lat1, lon1, lat2, lon2) {
+    var R = 6371; // km
+    var dLat = (lat2-lat1).toRad();
+    var dLon = (lon2-lon1).toRad(); 
+    var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+            Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) * 
+            Math.sin(dLon/2) * Math.sin(dLon/2); 
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+    var d = R * c;
+    return d;
+  }
+Number.prototype.toRad = function() {
+    return this * Math.PI / 180;
 }
 </script>
 <!-- jQuery 3 -->

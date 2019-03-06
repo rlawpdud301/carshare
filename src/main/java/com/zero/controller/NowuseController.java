@@ -122,12 +122,36 @@ public class NowuseController {
 		HttpSession session = request.getSession();
 		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
 		Map<String, Object> map = service.finduseInfoanddriverinfo(dto.getMemberNo());
+		
+		
 		MemberVO memberVO = getDriverWhere(((CarInfoVO)map.get("carInfoVO")).getMemberNo().getMemberNo());
+		
 		map.put("driverLatitude", memberVO.getDriverLatitude());
 		map.put("driverHardness", memberVO.getDriverHardness());
 		model.addAttribute("map", map);
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping(value = "getDriverLocation", method = RequestMethod.GET)
+	public ResponseEntity<MemberVO> getDriverLocationGet(int driverNo) { 
+		logger.info("getDriverLocation-get");
+		ResponseEntity<MemberVO> entity = null;
+		
+		
+		
+		try {
+			MemberVO memberVO = getDriverWhere(driverNo);
+			entity = new ResponseEntity<MemberVO>(memberVO,HttpStatus.OK);
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+		
+	}
 	
 
 	private MemberVO getDriverWhere(int memberNo) {

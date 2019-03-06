@@ -144,4 +144,18 @@ public class DriverController {
 		UseInfoVO useInfoVO = service.selectUseInfoByDriverNo(dto.getMemberNo());
 		model.addAttribute("useInfoVO", useInfoVO);		
 	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/driver/setDriverLocation", method = RequestMethod.GET)
+	public void setDriverLocationGet(HttpSession session,double lat,double lon) { 
+		logger.info("setDriverLocation-get");
+		
+		
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
+		MemberVO memberVO = new MemberVO();
+		memberVO.setMemberNo(dto.getMemberNo());
+		memberVO.setDriverHardness(lon);
+		memberVO.setDriverLatitude(lat); 
+		service.setDriverWhere(memberVO);
+	}
 }
