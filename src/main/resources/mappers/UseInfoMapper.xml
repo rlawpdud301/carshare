@@ -26,4 +26,12 @@
 		FROM carshare.use_info
 		WHERE u_member_no = #{memberNo}
 	</select>
+	
+	<select id="selectUseInfoByDriverNo" resultMap="result">
+		SELECT use_no, u_member_no, d_member_no, start_time,
+		end_time, fee, process, start_address, start_latitude, start_hardness,
+		end_address, end_latitude, end_hardness
+		FROM carshare.use_info
+		WHERE d_member_no = #{driverNo}
+	</select>
 </mapper>

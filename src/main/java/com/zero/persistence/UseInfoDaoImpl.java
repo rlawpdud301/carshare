@@ -27,4 +27,10 @@ public class UseInfoDaoImpl implements UseInfoDAO {
 		return sqlSession.selectOne(namespace + ".selectUseInfoByMemberNo",memberNo);
 	}
 
+	@Override
+	public UseInfoVO selectUseInfoByDriverNo(int driverNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".selectUseInfoByDriverNo",driverNo);
+	}
+
 }

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.zero.domain.LoginDTO;
 import com.zero.domain.MemberVO;
 import com.zero.domain.RouteVO;
+import com.zero.domain.UseInfoVO;
 import com.zero.service.DriverService;
 import com.zero.service.MemberService;
 
@@ -131,5 +133,15 @@ public class DriverController {
 		
 		
 		return entity;
+	}
+	
+	@RequestMapping(value = "/driver/goingUser", method = RequestMethod.GET)
+	public void goingUserGet(HttpServletRequest request ,Model model) { 
+		logger.info("goingUser-get");
+		HttpSession session = request.getSession();
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
+
+		UseInfoVO useInfoVO = service.selectUseInfoByDriverNo(dto.getMemberNo());
+		model.addAttribute("useInfoVO", useInfoVO);		
 	}
 }

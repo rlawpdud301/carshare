@@ -8,9 +8,11 @@ import org.springframework.stereotype.Service;
 
 import com.zero.domain.MemberVO;
 import com.zero.domain.RouteVO;
+import com.zero.domain.UseInfoVO;
 import com.zero.persistence.DriverApplyDAO;
 import com.zero.persistence.MemberDAO;
 import com.zero.persistence.RouteDAO;
+import com.zero.persistence.UseInfoDAO;
 
 @Service
 public class DriverServiceImpl implements DriverService {
@@ -20,6 +22,9 @@ public class DriverServiceImpl implements DriverService {
 	
 	@Autowired
 	private MemberDAO memberDAO;
+	
+	@Autowired
+	private UseInfoDAO useInfoDAO;
 
 	@Override
 	public List<RouteVO> findMyAround(Map<String, Object> map) {
@@ -44,6 +49,12 @@ public class DriverServiceImpl implements DriverService {
 	public void setDriverWhere(MemberVO memberVO) {
 		// TODO Auto-generated method stub
 		memberDAO.setDriverWhere(memberVO);
+	}
+
+	@Override
+	public UseInfoVO selectUseInfoByDriverNo(int driverNo) {
+		// TODO Auto-generated method stub
+		return useInfoDAO.selectUseInfoByDriverNo(driverNo);
 	}
 	
 }

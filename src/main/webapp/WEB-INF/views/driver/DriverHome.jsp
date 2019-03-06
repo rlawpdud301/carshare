@@ -235,12 +235,15 @@ var routeNo;
 		})
 		
 		$(document).on("click","#modalOk",function(){
-			alert($("#modalOk").attr("data-routeno"));
+			/* alert($("#modalOk").attr("data-routeno")); */
 			waitingApproval($("#modalOk").attr("data-routeno"));
+			location.href="${pageContext.request.contextPath }/driver/goingUser";
 		})
 		
 		$(document).on("click", "#reflash", function() {
+			positions = new Array();
 			getMyLocation();
+			
 		})
 		
 		
@@ -258,7 +261,9 @@ var routeNo;
 			dataType : "json",
 			success : function(data) {
 				console.log(data);
-				alert("신청완료"); 
+				/* alert("신청완료"); */ 
+				modal.style.display = "none";
+				
 			}
 			
 		})
@@ -382,20 +387,6 @@ var routeNo;
 						for (var i = 0; i < positions.length; i ++) {
 							displayMarker(positions[i]); 
 							
-						   /*  var markers = new daum.maps.Marker({
-						    	map: map,
-						        position: positions[i].latlng,// 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-						        title : positions[i].title
-						    });
-						    markers.setMap(map);
-						   infowindow = new daum.maps.InfoWindow({
-							    removable : true
-							}); 
-						   daum.maps.event.addListener(markers, 'click', function() {
-							      // 마커 위에 인포윈도우를 표시합니다
-							     infowindow.setContent("aa");
-							     infowindow.open(map, markers);  
-							}); */
 						}
 						
 					}
