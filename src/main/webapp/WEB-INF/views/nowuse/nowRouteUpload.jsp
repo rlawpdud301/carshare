@@ -144,7 +144,7 @@
 			<button type="button" id="keywordsrch">검색</button>
 			<button id="selectMap" type="button">지도에서 직접 선택</button>
 			<button id="myloc" type="button">내위치</button>	
-			<input type="checkbox" name="favorites" value="favorites">즐겨찾기등록
+			
 		</div>
 	</div>
 	
@@ -166,6 +166,7 @@
 </form>	
 
 <button id="selectDone" type="button">선택 완료</button>
+<button type="button" id="addFavorites">즐겨찾기 등록</button>
 <hr>
 	<ul id="placesList"></ul>
 	<div id="pagination"></div>
@@ -738,51 +739,87 @@ daum.maps.event.addListener(moveMarker, 'dragend', function() {
 			});
     
 });
+var last;
 
 $(function() {
+	
 	if ("${result}" != "") {
 		alert("등록이 완료 되었습니다 승인 완료되면 등록하신 이메일 로알려드릴께요.");
 	}
 	$(document).on("click","#selectDone",function(){
 		
-		/* alert(startMarker.getPosition()); */
-		if ($("#startSpot").val()=="") {
-			alert("출발지를 선택해주세요.");
-			return;
+		if(findEmpty()){
+			var startInfo = "<p>출발지 : " + $("#startAddress").val() + "</p>";
+			var endInfo = "<p>도착지 : " + $("#endAddress").val() + "</p>";
+			var betweenInfo = "<p>두지점간의 거리는 "+last+"km 입니다.</p>";
+			$("#modal-body").empty();
+			$("#modal-body").append(startInfo);
+			$("#modal-body").append(endInfo);
+			$("#modal-body").append(betweenInfo);
+			
+			modal.style.display = "block";
 		}
-		if ($("#endSpot").val()=="") {
-			alert("도착지를 선택해주세요.");
-			return;
-		}
 		
 		
-
-		var distance = calculateDistance(startMarker.getPosition().getLat(), startMarker.getPosition().getLng(), endMarker.getPosition().getLat(), endMarker.getPosition().getLng())
-		/* alert(distance); */
-		var befor = distance + "";
-		var afterStr = befor.split('.');
+	})
+	
+	$(document).on("click","#addFavorites",function(){
+		if(findEmpty()){
+			$.ajax({
+				url : "${pageContext.request.contextPath}/nowuse/addFavorites",
+				type : "get",
+				data : {startAddress: $("#startAddress").val(),startLatitude: $("#startLatitude").val(),startHardness: $("#startHardness").val(),endAddress: $("#endAddress").val(),endLatitude: $("#endLatitude").val(),endHardness: $("#endHardness").val()},
+				dataType : "json",
+				success : function(data) {
+					console.log(data);
+					if (data.result==5) {
+						alert("즐겨 찾기는 5개까지만 등록가능합니다. 우측 즐겨찾기매뉴에서 관리 가능합니다.");
+						return;
+					}
+					alert("등록 완료.  우측 즐겨찾기매뉴에서 확인 가능합니다.");
+		            
+				}
+			})
+		} 
 		
-		var first = afterStr[1].substring( 0, 3 );
-		var last = afterStr[0] + "." + afterStr[1].substring( 0, 3 );
-		
-		/* alert(last);  */
-		if (distance <= 1) {
-			$("#alert").css("display","block");
-			$("#alert").append("두지점간의 거리는 "+last+"km 입니다. 1km 이하는 이용할수없습니다.");
-			return;
-		}
-		var startInfo = "<p>출발지 : " + $("#startAddress").val() + "</p>";
-		var endInfo = "<p>도착지 : " + $("#endAddress").val() + "</p>";
-		var betweenInfo = "<p>두지점간의 거리는 "+last+"km 입니다.</p>";
-		$("#modal-body").empty();
-		$("#modal-body").append(startInfo);
-		$("#modal-body").append(endInfo);
-		$("#modal-body").append(betweenInfo);
-		
-		modal.style.display = "block";
 		
 	})
 })
+function findEmpty() {
+	$("#alert").css("display","none");
+	if ($("#startAddress").val()=="") {
+		alert("출발지를 선택해주세요.");
+		return false;
+	}
+	if ($("#endAddress").val()=="") {
+		alert("도착지를 선택해주세요.");
+		return false;
+	}		
+
+	var distance = calculateDistance(startMarker.getPosition().getLat(), startMarker.getPosition().getLng(), endMarker.getPosition().getLat(), endMarker.getPosition().getLng());
+
+	var befor = distance + "";
+	var afterStr = befor.split('.');
+	
+
+	
+	
+	if (afterStr[1]==null) {
+		last = afterStr[0];
+	}else{
+		last = afterStr[0] + "." + afterStr[1].substring( 0, 3 );
+	}
+	
+	
+	if (distance <= 1) {
+		$("#alert").empty();
+		$("#alert").css("display","block");
+		$("#alert").append("두지점간의 거리는 "+last+"km 입니다. 1km 이하는 이용할수없습니다.");
+		return false;
+	}
+	return true;
+	
+}
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
 		      var R = 6371; // km

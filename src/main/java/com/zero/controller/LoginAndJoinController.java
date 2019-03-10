@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -29,43 +30,41 @@ import com.zero.domain.MemberVO;
 import com.zero.service.MemberService;
 import com.zero.util.UploadFileUtils;
 
-
 @Controller
 public class LoginAndJoinController {
 
 	private static final Logger logger = LoggerFactory.getLogger(LoginAndJoinController.class);
-	
+
 	@Autowired
 	private MemberService service;
-	
+
 	@Resource(name = "documentUpload")
 	private String documentUpload;
-	
-	
+
 	@RequestMapping(value = "login", method = RequestMethod.POST)
-	public void loginPost(MemberVO vo,String type,HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void loginPost(MemberVO vo, String type, HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		logger.info("login-Post");
-		logger.info("vo : "+vo);
+		logger.info("vo : " + vo);
 		HttpSession session = request.getSession();
 		LoginDTO dto = new LoginDTO();
 		Map<String, String> id = new HashMap<>();
-		
-		//占싸깍옙占쏙옙 占쏙옙占쏙옙占쏙옙煞占쏙옙占쏙옙占쏙옙占�
+
+		// 占싸깍옙占쏙옙 占쏙옙占쏙옙占쏙옙煞占쏙옙占쏙옙占쏙옙占�
 		if (type.equals("kakao")) {
 			id.put("kakaoId", vo.getKakaoId());
-		}else {
+		} else {
 			id.put("naverId", vo.getNaverId());
 		}
-		
-		
+
 		MemberVO findevo = service.selectMemberById(id);
-		logger.info("findevo"+findevo);
-		
-		if (findevo==null) {
+		logger.info("findevo" + findevo);
+
+		if (findevo == null) {
 			session.setAttribute("vo", vo);
-			response.sendRedirect(request.getContextPath()+"/join");
-			
-		}else {
+			response.sendRedirect(request.getContextPath() + "/join");
+
+		} else {
 			dto.setDriver(findevo.isDriver());
 			dto.setMemberNo(findevo.getMemberNo());
 			dto.setNickname(findevo.getNickname());
@@ -75,21 +74,23 @@ public class LoginAndJoinController {
 			dto.setName(findevo.getName());
 			session.setAttribute("driver", "user");
 			session.setAttribute("vo", dto);
-			response.sendRedirect(request.getContextPath()+"/nowuse/nowRouteUpload");
+			response.sendRedirect(request.getContextPath() + "/nowuse/nowRouteUpload");
 		}
-		
+
 	}
+
 	@RequestMapping(value = "join", method = RequestMethod.GET)
-	public String joinGet() { 
+	public String joinGet() {
 		logger.info("joinGet-get");
 		return "/loginAndJoin/join";
 	}
-	
+
 	@RequestMapping(value = "join", method = RequestMethod.POST)
-	public void joinPost(MemberVO vo ,Model model,HttpServletRequest request, HttpServletResponse response) throws IOException {
+	public void joinPost(MemberVO vo, Model model, HttpServletRequest request, HttpServletResponse response)
+			throws IOException {
 		logger.info("join-Post");
-		logger.info("vo : "+vo);
-		
+		logger.info("vo : " + vo);
+
 		int memberNo = service.insertMember(vo);
 
 		LoginDTO dto = new LoginDTO();
@@ -103,51 +104,52 @@ public class LoginAndJoinController {
 		HttpSession session = request.getSession();
 		session.setAttribute("driver", "user");
 		session.setAttribute("vo", dto);
-		response.sendRedirect(request.getContextPath()+"/nowuse/nowRouteUpload");
-		/*return "/nowuse/nowRouteUpload";*/
+		response.sendRedirect(request.getContextPath() + "/nowuse/nowRouteUpload");
+		/* return "/nowuse/nowRouteUpload"; */
 	}
 
 	@RequestMapping(value = "addDriver", method = RequestMethod.GET)
-	public String addDriverGet() { 
+	public String addDriverGet() {
 		logger.info("addDriver-get");
 		return "/loginAndJoin/addDriver";
 	}
-	
+
 	@RequestMapping(value = "addDriver", method = RequestMethod.POST)
-	public void addDriverPost(Model model,  HttpServletRequest request,String relationshipCarowner ,MultipartFile licensePhoto,MultipartFile carCard,MultipartFile insuranceCard, HttpServletResponse response) throws IOException { 
+	public void addDriverPost(Model model, HttpServletRequest request, String relationshipCarowner,
+			MultipartFile licensePhoto, MultipartFile carCard, MultipartFile insuranceCard,
+			HttpServletResponse response) throws IOException {
 		logger.info("addDriver-post");
 		logger.info("relationshipCarowner : " + relationshipCarowner);
 		logger.info("licensePhoto : " + licensePhoto);
 		logger.info("carCard : " + carCard);
-		
+
 		HttpSession session = request.getSession();
 		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
-		
-		
-		String licensePhotoThumPath = UploadFileUtils.uploadFile(documentUpload,dto.getMemberNo()+"", licensePhoto.getOriginalFilename(),
-				licensePhoto.getBytes());
-		
-		String carCardThumPath = UploadFileUtils.uploadFile(documentUpload,dto.getMemberNo()+"", carCard.getOriginalFilename(),
-				carCard.getBytes());
-		
-		String insuranceCardThumPath = UploadFileUtils.uploadFile(documentUpload,dto.getMemberNo()+"", insuranceCard.getOriginalFilename(),
-				insuranceCard.getBytes());
-		
+
+		String licensePhotoThumPath = UploadFileUtils.uploadFile(documentUpload, dto.getMemberNo() + "",
+				licensePhoto.getOriginalFilename(), licensePhoto.getBytes());
+
+		String carCardThumPath = UploadFileUtils.uploadFile(documentUpload, dto.getMemberNo() + "",
+				carCard.getOriginalFilename(), carCard.getBytes());
+
+		String insuranceCardThumPath = UploadFileUtils.uploadFile(documentUpload, dto.getMemberNo() + "",
+				insuranceCard.getOriginalFilename(), insuranceCard.getBytes());
+
 		MemberVO memberVO = new MemberVO();
 		memberVO.setMemberNo(dto.getMemberNo());
-		
+
 		CarInfoVO carInfoVO = new CarInfoVO();
 		carInfoVO.setMemberNo(memberVO);
 		carInfoVO.setCarCard(carCardThumPath);
 		carInfoVO.setInsuranceCard(insuranceCardThumPath);
 		carInfoVO.setRelationshipCarowner(relationshipCarowner);
-		
+
 		LicenseInfoVO licenseInfoVO = new LicenseInfoVO();
 		licenseInfoVO.setMemberNo(memberVO);
 		licenseInfoVO.setLicensePhoto(licensePhotoThumPath);
-		
+
 		try {
-			service.addDriverUser(carInfoVO,licenseInfoVO);
+			service.addDriverUser(carInfoVO, licenseInfoVO);
 		} catch (Exception e) {
 			// TODO: handle exception
 			File licensePhotoFile = new File(licensePhotoThumPath);
@@ -156,30 +158,31 @@ public class LoginAndJoinController {
 			carCardFile.delete();
 			licensePhotoFile.delete();
 			insuranceCardFile.delete();
-			
+
 		}
-		
-		/*model.addAttribute("result", "등록 완료");*/
-		response.sendRedirect(request.getContextPath()+"/nowuse/nowRouteUpload?result=aa");
+
+		/* model.addAttribute("result", "등록 완료"); */
+		response.sendRedirect(request.getContextPath() + "/nowuse/nowRouteUpload?result=aa");
 	}
+
 	@RequestMapping(value = "addDriverWaiting", method = RequestMethod.GET)
-	public String addDriverWaitingGet() { 
+	public String addDriverWaitingGet() {
 		logger.info("addDriverWaiting-get");
 		return "/loginAndJoin/addDriverWaiting";
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "updateVo", method = RequestMethod.GET)
-	public ResponseEntity<LoginDTO> updatevoGet(HttpServletRequest request) { 
+	public ResponseEntity<LoginDTO> updatevoGet(HttpServletRequest request) {
 		logger.info("updatevoGet-get");
 		ResponseEntity<LoginDTO> entity = null;
-		
+
 		try {
 			HttpSession session = request.getSession();
 			LoginDTO dto = (LoginDTO) session.getAttribute("vo");
-			
+
 			MemberVO findevo = service.selectMemberByMemberNo(dto.getMemberNo());
-			
+
 			dto.setDriver(findevo.isDriver());
 			dto.setMemberNo(findevo.getMemberNo());
 			dto.setNickname(findevo.getNickname());
@@ -187,19 +190,42 @@ public class LoginAndJoinController {
 			dto.setDirverEnrollment(findevo.getDirverEnrollment());
 			dto.setDirverApply(findevo.getDirverApply());
 			dto.setName(findevo.getName());
-			
+
 			session.setAttribute("vo", dto);
-			
-			entity = new ResponseEntity<LoginDTO>(dto,HttpStatus.OK);
+
+			entity = new ResponseEntity<LoginDTO>(dto, HttpStatus.OK);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-		
+
 		return entity;
 	}
-	
-	
-	
+
+	@RequestMapping(value = "signOut", method = RequestMethod.GET)
+	public String signOutGet(HttpSession session, HttpServletRequest request, HttpServletResponse response) {
+		logger.info("signOut-get");
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
+
+		service.deletRoutByMemberNo(dto.getMemberNo());
+
+		session.invalidate();
+		Cookie[] cookies = request.getCookies();
+
+		if (cookies != null) {
+
+			for (int i = 0; i < cookies.length; i++) {
+
+				cookies[i].setMaxAge(0); // 유효시간을 0으로 설정
+
+				response.addCookie(cookies[i]); // 응답 헤더에 추가
+
+			}
+
+		}
+
+		return "redirect:/";
+	}
+
 }

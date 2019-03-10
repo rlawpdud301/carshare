@@ -13,6 +13,7 @@ import com.zero.domain.MemberVO;
 import com.zero.persistence.CarInfoDAO;
 import com.zero.persistence.LicenseInfoDAO;
 import com.zero.persistence.MemberDAO;
+import com.zero.persistence.RouteDAO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -24,6 +25,9 @@ public class MemberServiceImpl implements MemberService {
 	private CarInfoDAO carInfoDAO;
 	@Autowired
 	private LicenseInfoDAO licenseInfoDAO;
+	
+	@Autowired
+	private RouteDAO routeDAO;
 	
 	@Override
 	public MemberVO selectMemberById(Map<String, String> id) {
@@ -54,6 +58,12 @@ public class MemberServiceImpl implements MemberService {
 	public MemberVO selectMemberByMemberNo(int memberNo) {
 		// TODO Auto-generated method stub
 		return memberDAO.selectMemberByMemberNo(memberNo);
+	}
+
+	@Override
+	public void deletRoutByMemberNo(int memberNo) {
+		// TODO Auto-generated method stub
+		routeDAO.deleteRoutByRouteNo(memberNo+"");
 	}
 
 	

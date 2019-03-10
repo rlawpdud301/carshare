@@ -26,6 +26,7 @@ import com.zero.domain.LocationVO;
 import com.zero.domain.LoginDTO;
 import com.zero.domain.MemberVO;
 import com.zero.domain.RouteVO;
+import com.zero.domain.UseInfoVO;
 import com.zero.service.NowuseService;
 
 @Controller
@@ -38,12 +39,13 @@ public class NowuseController {
 	private NowuseService service;
 	
 	@RequestMapping(value = "nowRouteUpload", method = RequestMethod.GET)
-	public void nowRouteUploadGet(HttpServletRequest request,String result, Model model) {
+	public void nowRouteUploadGet(HttpServletRequest request,String result, Model model ) {
 		if (result==null || result.equals("")) {
 			
 		}else {
 			model.addAttribute("result", "등록 완료");
 		}
+		
 		HttpSession session = request.getSession();
 		session.setAttribute("driver", "user");
 		
@@ -60,7 +62,7 @@ public class NowuseController {
 		logger.info("dto : "+dto);
 		MemberVO memberVO = new MemberVO();
 		memberVO.setMemberNo(dto.getMemberNo());
-		vo.setMemberNo(memberVO);
+		vo.setMemberNo(memberVO);  
 		vo.setProcess("등록");
 		service.insertRoute(vo);
 		response.sendRedirect(request.getContextPath()+"/nowuse/nowRouteWaiting");
@@ -134,15 +136,24 @@ public class NowuseController {
 	
 	@ResponseBody
 	@RequestMapping(value = "getDriverLocation", method = RequestMethod.GET)
-	public ResponseEntity<MemberVO> getDriverLocationGet(int driverNo) { 
+	public ResponseEntity<Map<String, Object>> getDriverLocationGet(int driverNo) { 
 		logger.info("getDriverLocation-get");
-		ResponseEntity<MemberVO> entity = null;
-		
+		ResponseEntity<Map<String, Object>> entity = null;
+		Map<String, Object> map = new HashMap<>();
 		
 		
 		try {
 			MemberVO memberVO = getDriverWhere(driverNo);
-			entity = new ResponseEntity<MemberVO>(memberVO,HttpStatus.OK);
+			map.put("memberVO", memberVO);
+			
+			
+			
+			boolean drivingNow = service.getProcees(driverNo);
+			map.put("drivingNow", drivingNow); 
+			
+			
+			entity = new ResponseEntity<Map<String, Object>>(map,HttpStatus.OK);
+			
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -153,6 +164,32 @@ public class NowuseController {
 		
 	}
 	
+	
+	@ResponseBody
+	@RequestMapping(value = "addFavorites", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> addFavoritesGet(HttpSession session,RouteVO routeVO) { 
+		logger.info("addFavorites-get");
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo"); 
+		ResponseEntity<Map<String, Object>> entity = null;
+	
+		try {
+			MemberVO memberVO = new MemberVO();
+			memberVO.setMemberNo(dto.getMemberNo());
+			routeVO.setMemberNo(memberVO);
+			int result = service.addFavorites(routeVO); 
+			Map<String, Object> map = new HashMap<>();
+			map.put("result", result);
+			entity = new ResponseEntity<Map<String, Object>>(map,HttpStatus.OK);
+		} catch (Exception e) { 
+			// TODO: handle exception
+			e.printStackTrace();
+			/*entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);*/
+		}
+		
+		return entity;
+		 
+	}
+	
 
 	private MemberVO getDriverWhere(int memberNo) {
 		// TODO Auto-generated method stub
@@ -161,5 +198,14 @@ public class NowuseController {
 		
 	}
 	
+	@RequestMapping(value = "nowRouteUploadForFavor", method = RequestMethod.GET)
+	public String nowRouteUploadForFavorGet( Model model ,String routeNo) {
+		logger.info("nowRouteUploadForFavor-get"); 
+		 
+		RouteVO routeVO = service.selectRoutByRouteNoA(routeNo);
+
+		model.addAttribute("routeVO", routeVO);
+		return "/nowuse/nowRouteWaiting";
+	}
 	
 }

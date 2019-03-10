@@ -196,6 +196,7 @@ var modal = document.getElementById('myModal');
 var memberNo;
 var routeNo;
 	$(function() {
+		
 		$("#mode").text("Drive mode");
 		$("body").removeClass("skin-blue");
 		$("body").addClass("skin-green");
@@ -233,6 +234,8 @@ var routeNo;
 			
 			/* alert(loadDate[routeNo].memberNo.memberNo); */
 		})
+		
+		
 		
 		$(document).on("click","#modalOk",function(){
 			/* alert($("#modalOk").attr("data-routeno")); */
@@ -482,6 +485,9 @@ var routeNo;
 	    }
 	Number.prototype.toRad = function() {
 	      return this * Math.PI / 180;
+	      
 	    }
+	
+	
 </script>
 <%@ include file="../include/footer.jsp"%>

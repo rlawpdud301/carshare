@@ -2,17 +2,31 @@ package com.zero.controller;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.zero.domain.LoginDTO;
+import com.zero.domain.MemberVO;
+import com.zero.domain.RouteVO;
+import com.zero.domain.UseInfoVO;
+import com.zero.service.DriverService;
+import com.zero.service.HomeService;
 
 /**
  * Handles requests for the application home page.
@@ -21,6 +35,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
+	
+	@Autowired
+	private HomeService service;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -39,5 +56,69 @@ public class HomeController {
 		session.setAttribute("driver", "driver");
 		return "driver/DriverHome"; 
 	}
+	
+	
+	@RequestMapping(value = "findMyHistory", method = RequestMethod.GET)
+	public void findMyHistoryGet(HttpSession session,Model model) {
+		logger.info("findMyHistory ----get");
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
+		
+		
+		Map<String, Object> map = service.findHistory(dto.getMemberNo());
+		
+		model.addAttribute("map", map);		
+
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "getMemberInfo", method = RequestMethod.GET)
+	public ResponseEntity<LoginDTO> getMemberInforGet(int memberNo) { 
+		logger.info("getMemberInfo-get");
+		ResponseEntity<LoginDTO> entity = null;
+		
+		try {
+			MemberVO memberVO = service.selectMemberByMemberNo(memberNo);
+			
+			LoginDTO loginDTO = new LoginDTO();
+			loginDTO.setNickname(memberVO.getNickname());
+			loginDTO.setPhoto(memberVO.getPhoto());
+			
+			logger.info("loginDTO------------------------" + loginDTO);
+			entity = new ResponseEntity<LoginDTO>(loginDTO,HttpStatus.OK);
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+			entity = new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		return entity;
+	}
+	
+	
+	@RequestMapping(value = "favorRout", method = RequestMethod.GET)
+	public void favorRoutGet(HttpSession session,Model model) {
+		logger.info("favorRout ----get");
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
+
+		Map<String, Object> map = service.findMyfavorRout(dto.getMemberNo());
+		
+		model.addAttribute("map", map);		
+
+	}
+	
+	@RequestMapping(value = "readFavor", method = RequestMethod.GET)
+	public void readFavorGet(HttpSession session,Model model,String routeNo) {
+		logger.info("readFavor ----get");
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
+
+		RouteVO routeVO = service.selectRouteByRoutNo(routeNo);
+		
+		model.addAttribute("routeVO", routeVO);		
+
+	}
+	
+	
+	
 	
 }

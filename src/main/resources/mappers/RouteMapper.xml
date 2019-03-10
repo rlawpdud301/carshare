@@ -21,7 +21,8 @@
 
 	<select id="selectLastNo" resultType="String">
 		select max(Route_no) FROM
-		carshare.route;
+		carshare.route
+		<!-- where left(Route_no, 1) != 'f' -->
 	</select>
 
 	<select id="selectRoutByRouteNo" resultType="RouteVO">
@@ -43,10 +44,10 @@
 	<sql id="findMyAroundWhere">
 		<where>
 			<if test="condition != null and condition.equals('driver')">
-				left(Route_no, 1) = 'u'
+				left(Route_no, 2) = 'ou'
 			</if>
 			<if test="condition == null and condition.equals('user')">
-				left(Route_no, 1) = 'd'
+				left(Route_no, 2) = 'od'
 			</if>
 			<if test="howfar.equals('three')">
 				and (((start_latitude - #{startLatitude})*(start_latitude
@@ -103,5 +104,50 @@
 		start_hardness, end_address, end_latitude, end_hardness, opponent_no
 		FROM carshare.route
 		WHERE member_no=#{memberNo} and process='신청'
+	</select>
+
+	<select id="selectFavorByMemberNo" resultType="RouteVO">
+		SELECT Route_no,
+		member_no, process, avgFee, start_address, start_latitude,
+		start_hardness, end_address, end_latitude, end_hardness, opponent_no
+		FROM carshare.route
+		where left(Route_no, 1) = 'f' and member_no
+		=#{memberNo}
+	</select>
+
+	<select id="selectFavorLastNo" resultType="String">
+		select max(Route_no)
+		FROM
+		carshare.route
+		<!-- where left(Route_no, 1) = 'f' -->
+	</select>
+
+	<sql id="whereForMap">
+		<where> 
+			<if test="uMmemberNo != null">
+				and left(Route_no, 2) = 'fu'
+				and member_no=#{uMmemberNo}
+			</if>
+			<if test="dMmemberNo != null">
+				and left(Route_no, 2) = 'fd'
+				and member_no=#{dMmemberNo}
+			</if>
+		</where>
+	</sql>
+
+	<select id="selectFavorRoutByMap" resultType="RouteVO">
+		SELECT Route_no, member_no, process, avgFee,
+		start_address, start_latitude, start_hardness, end_address,
+		end_latitude, end_hardness, opponent_no
+		FROM carshare.route
+		<include refid="whereForMap"/>
+	</select>
+	
+	<select id="selectRoutByRouteNoA" resultMap="result">
+		SELECT Route_no, member_no, process, avgFee,
+		start_address, start_latitude, start_hardness, end_address,
+		end_latitude, end_hardness, opponent_no
+		FROM carshare.route
+		WHERE Route_no=#{routeNo}
 	</select>
 </mapper> 

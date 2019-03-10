@@ -1,5 +1,9 @@
 package com.zero.persistence;
 
+
+import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -37,6 +41,24 @@ public class UseInfoDaoImpl implements UseInfoDAO {
 	public void updateUseInfo(UseInfoVO useInfoVO) {
 		// TODO Auto-generated method stub
 		sqlSession.update(namespace + ".updateUseInfo",useInfoVO);
+	}
+
+	@Override
+	public void lastUupdateUseInfo(UseInfoVO useInfoVO) {
+		// TODO Auto-generated method stub
+		sqlSession.update(namespace + ".lastUupdateUseInfo",useInfoVO);
+	}
+
+	@Override
+	public UseInfoVO getProcees(int driverNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".getProcees",driverNo);
+	}
+
+	@Override
+	public List<UseInfoVO> selectDoneUseInfoByMap(Map<String, Object> conditionMap) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace + ".selectDoneUseInfoByMap",conditionMap);
 	}
 
 }

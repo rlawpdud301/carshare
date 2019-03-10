@@ -11,4 +11,5 @@ public interface MemberService {
 	int insertMember(MemberVO vo);
 	void addDriverUser(CarInfoVO carInfoVO, LicenseInfoVO licenseInfoVO);
 	MemberVO selectMemberByMemberNo(int memberNo);
+	void deletRoutByMemberNo(int memberNo);
 }

@@ -20,4 +20,12 @@ public interface RouteDAO {
 	void addOpponentNo(RouteVO routeVO);
 
 	RouteVO findMyRouteuseOpponentNo(int memberNo);
+
+	List<RouteVO> selectFavorByMemberNo(int memberNo);
+
+	String selectFavorLastNo();
+
+	List<RouteVO> selectFavorRoutByMap(Map<String, Object> conditionMap);
+
+	RouteVO selectRoutByRouteNoA(String routeNo);
 }

@@ -1,6 +1,7 @@
 package com.zero.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,13 +42,13 @@ public class NowuseServiceImpl implements NowuseService {
 		String routeNo = routDao.selectLastNo();
 		
 		if (routeNo == null) {
-			routeNo = "u0000";
+			routeNo = "ou0000";
 		}else {
-			String what = routeNo.substring(0, 1);
-			int num = (Integer.parseInt(routeNo.substring(1)) + 1);
+			String what = routeNo.substring(0, 2);
+			int num = (Integer.parseInt(routeNo.substring(2)) + 1);
 			
-			routeNo = what + (String.format("%04d", num));
-		}
+			routeNo = "ou" + (String.format("%04d", num));
+		} 
 		vo.setRouteNo(routeNo);
 		routDao.insertRoute(vo);
 	}
@@ -109,5 +110,64 @@ public class NowuseServiceImpl implements NowuseService {
 		
 		return memberDAO.selectMemberByMemberNo(memberNo);
 	}
+
+
+	@Override
+	public boolean getProcees(int driverNo) {
+		UseInfoVO useInfoVO = useInfoDAO.getProcees(driverNo);
+		if (useInfoVO != null) {
+			return true;
+		}
+		return false;
+	}
+
+
+	@Override
+	@Transactional
+	public int addFavorites(RouteVO routeVO) {
+		List<RouteVO> routList = routDao.selectFavorByMemberNo(routeVO.getMemberNo().getMemberNo());
+		if (routList.size()==5) {
+			return 5;
+		} 
+		String routeNo = routDao.selectFavorLastNo();
+		
+		if (routeNo == null) {
+			routeNo = "fu0000";
+		}else {
+			String what = routeNo.substring(0, 2);
+			int num = (Integer.parseInt(routeNo.substring(2)) + 1);
+			
+			routeNo = "fu" + (String.format("%04d", num));
+		}
+		routeVO.setRouteNo(routeNo);
+		routDao.insertRoute(routeVO);
+		return 1;
+	}
+
+
+	@Override
+	@Transactional
+	public RouteVO selectRoutByRouteNoA(String routeNo) {
+		// TODO Auto-generated method stub
+		RouteVO routeVO = routDao.selectRoutByRouteNoA(routeNo);
+		
+		routeNo = routDao.selectFavorLastNo();
+		if (routeNo == null) {
+			routeNo = "ou0000";
+		}else {
+			String what = routeNo.substring(0, 2);
+			int num = (Integer.parseInt(routeNo.substring(2)) + 1);
+			
+			routeNo = "ou" + (String.format("%04d", num));
+		}
+		routeVO.setRouteNo(routeNo);
+		routeVO.setProcess("대기");
+		routDao.insertRoute(routeVO);
+		
+		return routeVO;
+	}
+
+
+	
 
 }

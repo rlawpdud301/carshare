@@ -22,4 +22,11 @@ public class DrivingServiceImpl implements DrivingService {
 		return useInfoVO;
 	}
 
+
+	@Override
+	public void endDrive(UseInfoVO useInfoVO) {
+		// TODO Auto-generated method stub
+		useInfoDAO.lastUupdateUseInfo(useInfoVO);
+	}
+
 }

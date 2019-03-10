@@ -44,4 +44,25 @@ public class DrivingController {
 		model.addAttribute("useInfoVO", useInfoVO);
 		
 	}
+	
+	@RequestMapping(value = "/driving/goHome", method = RequestMethod.GET)
+	public String goHomeGet(HttpSession session ,double lat,double lon,int fee,String endAddress ) { 
+		
+		
+		logger.info("goHome-get");
+		
+		logger.info("lat---------------------------"+lat +"lon----------------------"+lon);
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
+		UseInfoVO useInfoVO = new UseInfoVO();
+		MemberVO memberVO = new MemberVO();
+		memberVO.setMemberNo(dto.getMemberNo());
+		useInfoVO.setdMemberNo(memberVO);
+		useInfoVO.setEndAddress(endAddress);
+		useInfoVO.setEndLatitude(lat);
+		useInfoVO.setEndHardness(lon);
+		useInfoVO.setFee(fee);
+		service.endDrive(useInfoVO);
+		
+		return "driver/DriverHome"; 
+	}
 }

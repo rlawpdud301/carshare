@@ -18,13 +18,14 @@
 #forb:hover {
 	color: #B2EBF4;
 }
-#headerModal-body img{
+
+#headerModal-body img {
 	width: 100px;
 }
-.modal{
-	z-index: 10;
-}
 
+.modal {
+	z-index: 100;
+}
 </style>
 <html>
 <head>
@@ -66,26 +67,29 @@
 <!-- jQuery 2.1.4 -->
 <script
 	src="${pageContext.request.contextPath }/resources/plugins/jQuery/jQuery-2.1.4.min.js"></script>
+<script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 <body class="skin-blue sidebar-mini">
-<!-- The Modal -->
-<div id="headerMyModal" class="modal">
+	<!-- The Modal -->
+	<div id="headerMyModal" class="modal">
 
-  <!-- Modal content -->
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>배차가 완료 되었습니다.</h2>
-    </div>
-    <div class="modal-body" id="headerModal-body">
-      <p>Some text in the Modal Body</p>
-      <p>Some other text...</p>
-    </div>
-    <div class="modal-footer">
-      <h3><button id="headerModalOk" type="button">운전자 위치 상새정보 보기</button></h3>
-    </div>
-  </div>
+		<!-- Modal content -->
+		<div class="modal-content">
+			<div class="modal-header">
+				<h2>배차가 완료 되었습니다.</h2>
+			</div>
+			<div class="modal-body" id="headerModal-body">
+				<p>Some text in the Modal Body</p>
+				<p>Some other text...</p>
+			</div>
+			<div class="modal-footer">
+				<h3>
+					<button id="headerModalOk" type="button">운전자 위치 상새정보 보기</button>
+				</h3>
+			</div>
+		</div>
 
-</div>
+	</div>
 
 
 	<div class="wrapper">
@@ -291,39 +295,27 @@
 								<li class="footer"><a href="#">View all tasks</a></li>
 							</ul></li>
 						<!-- User Account: style can be found in dropdown.less -->
-						<li class="dropdown user user-menu"><a href="#"
-							class="dropdown-toggle" data-toggle="dropdown"> <img
-								src="${vo.photo}" class="user-image" alt="User Image" /> <span
-								class="hidden-xs">${vo.nickname }</span>
+						<li class="dropdown user user-menu" id="user-menu"><a
+							href="#" id="user-menu-a" class="dropdown-toggle"
+							data-toggle="dropdown"> <img src="${vo.photo}"
+								class="user-image" alt="User Image" /> <span class="hidden-xs">${vo.nickname }</span>
 						</a>
 							<ul class="dropdown-menu">
 								<!-- User image -->
-								<li class="user-header"><img
-									src="${vo.photo}"
+								<li class="user-header"><img src="${vo.photo}"
 									class="img-circle" alt="User Image" />
 									<p>
 										Alexander Pierce - Web Developer <small>Member since
-											Nov. 2012</small>
+											Nov. 2019</small>
 									</p></li>
-								<!-- Menu Body -->
-								<li class="user-body">
-									<div class="col-xs-4 text-center">
-										<a href="#">Followers</a>
-									</div>
-									<div class="col-xs-4 text-center">
-										<a href="#">Sales</a>
-									</div>
-									<div class="col-xs-4 text-center">
-										<a href="#">Friends</a>
-									</div>
-								</li>
+
 								<!-- Menu Footer-->
 								<li class="user-footer">
 									<div class="pull-left">
 										<a href="#" class="btn btn-default btn-flat">Profile</a>
 									</div>
 									<div class="pull-right">
-										<a href="#" class="btn btn-default btn-flat">Sign out</a>
+										<a id="signOut" class="btn btn-default btn-flat">Sign out</a>
 									</div>
 								</li>
 							</ul></li>
@@ -376,22 +368,12 @@
 							<li><a id="drive"><i class="fa fa-circle-o"></i><span
 									id="forg">태울래요 모드</span></a></li>
 						</ul></li>
-					<li class="treeview"><a href="#"> <i class="fa fa-files-o"></i>
-							<span>Layout Options</span> <span
-							class="label label-primary pull-right">4</span>
-					</a>
-						<ul class="treeview-menu">
-							<li><a href="../layout/top-nav.html"><i
-									class="fa fa-circle-o"></i> Top Navigation</a></li>
-							<li><a href="../layout/boxed.html"><i
-									class="fa fa-circle-o"></i> Boxed</a></li>
-							<li><a href="../layout/fixed.html"><i
-									class="fa fa-circle-o"></i> Fixed</a></li>
-							<li><a href="../layout/collapsed-sidebar.html"><i
-									class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-						</ul></li>
-					<li><a href="../widgets.html"> <i class="fa fa-th"></i> <span>Widgets</span>
-							<small class="label pull-right bg-green">new</small>
+					<li class="treeview"><a
+						href="${pageContext.request.contextPath }/findMyHistory"> <i
+							class="fa fa-files-o"></i> <span>이용 내역</span>
+					</a></li>
+					<li><a href="${pageContext.request.contextPath }/favorRout">
+							<i class="fa fa-th"></i> <span>즐겨 찾기</span> <!-- <small class="label pull-right bg-green">new</small> -->
 					</a></li>
 					<li class="treeview"><a href="#"> <i
 							class="fa fa-pie-chart"></i> <span>Charts</span> <i
@@ -520,106 +502,158 @@
           </ol>
         </section> -->
 			<script type="text/javascript">
-			
-			var headerMyModal = document.getElementById('headerMyModal');
-			var ckeck;
-			
-        $(document).on("click","#use",function(){
-        	$("#mode").text("Ride mode");
-        	$("body").removeClass("skin-green");
-        	$("body").addClass("skin-blue");
-        	location.href="${pageContext.request.contextPath }/nowuse/nowRouteUpload";
-        	
-        })
-        
-        $(document).on("click","#drive",function(){
-        	//ajax스로 정보들고와야함
-        	
-        		$.ajax({
-            		url : "${pageContext.request.contextPath}/updateVo",
-    				type : "get",
-    				dataType : "json",
-					success : function(data) {
-						console.log(data);
-						if (!data.driver && data.dirverEnrollment == "null" && data.dirverApply == "null") {
-			        		if (confirm("태울래요 모드를 이용하시려면 운전자등록이필요합니다. 운전자등록을 하시겠습니까?")) {
-			        			/* $("#mode").text("Drive mode");
-			        			$("body").removeClass("skin-blue");
-			    	        	$("body").addClass("skin-green"); */
-			    	        	location.href="${pageContext.request.contextPath }/addDriver";
-			        		}else{
-			        			return;
-			        		}
-						}else if(!data.driver && data.dirverApply != "null"){
-							alert("아직심사중이네요ㅠㅠ 빠른시일내 결과를 알려드릴께요. 쪼금만더기다려주세요.");
-							return;
-							
-						}else{
-							$("#mode").text("Drive mode");
-							$("body").removeClass("skin-blue");
-				        	$("body").addClass("skin-green");
-				        	
-				        	location.href="${pageContext.request.contextPath }/DriverHome";
-						}
-					}
-            	})        	
-        })
-        
-        $(function () { 
-        	
-        	
-        	
-        	if ("${driver}"=="user") {
-        		$("#mode").text("Ride mode");
-				$("body").removeClass("skin-green");
-	        	$("body").addClass("skin-blue");
-			}else{
-				$("#mode").text("Drive mode");
-				$("body").removeClass("skin-blue");
-	        	$("body").addClass("skin-green");
-			}
-        	
+				var headerMyModal = document.getElementById('headerMyModal');
+				var ckeck;
 
-        	ckeck =	setInterval(waiting,3000);
-        	
-        	
-        	$(document).on("click","#headerModalOk",function(){
-        		headerMyModal.style.display = "none";
-        		window.location.href = '${pageContext.request.contextPath}/nowuse/waitDriver';
-        	})
-        	
-		})
-		
-		function waiting() {
-        	
-        	$.ajax({
-        		url : "${pageContext.request.contextPath}/nowuse/waitingnowuse",
-    			type : "get",
-    			dataType : "json",
-    			success : function(data) {
-    				console.log(data);
-    				
-    				if (data.memberNo==0) {
-						
-					}else{
-						
-						clearInterval(ckeck);
-						var betweenInfo = "<p>운전자정보</p>";
-						var startInfo = "<p><img src=" + data.photo + "></p>";
-						var endInfo = "<p>닉네임 : " + data.nickname + "</p>";
-						
-						$("#headerModal-body").empty();
-						$("#headerModal-body").append(betweenInfo);
-						$("#headerModal-body").append(startInfo);
-						$("#headerModal-body").append(endInfo);
-						headerMyModal.style.display = "block";
-						
+				$(document)
+						.on(
+								"click",
+								"#use",
+								function() {
+									$("#mode").text("Ride mode");
+									$("body").removeClass("skin-green");
+									$("body").addClass("skin-blue");
+									location.href = "${pageContext.request.contextPath }/nowuse/nowRouteUpload";
+
+								})
+
+				$(document)
+						.on(
+								"click",
+								"#drive",
+								function() {
+									//ajax스로 정보들고와야함
+
+									$
+											.ajax({
+												url : "${pageContext.request.contextPath}/updateVo",
+												type : "get",
+												dataType : "json",
+												success : function(data) {
+													console.log(data);
+													if (!data.driver
+															&& data.dirverEnrollment == "null"
+															&& data.dirverApply == "null") {
+														if (confirm("태울래요 모드를 이용하시려면 운전자등록이필요합니다. 운전자등록을 하시겠습니까?")) {
+															/* $("#mode").text("Drive mode");
+															$("body").removeClass("skin-blue");
+															$("body").addClass("skin-green"); */
+															location.href = "${pageContext.request.contextPath }/addDriver";
+														} else {
+															return;
+														}
+													} else if (!data.driver
+															&& data.dirverApply != "null") {
+														alert("아직심사중이네요ㅠㅠ 빠른시일내 결과를 알려드릴께요. 쪼금만더기다려주세요.");
+														return;
+
+													} else {
+														$("#mode").text(
+																"Drive mode");
+														$("body").removeClass(
+																"skin-blue");
+														$("body").addClass(
+																"skin-green");
+
+														location.href = "${pageContext.request.contextPath }/DriverHome";
+													}
+												}
+											})
+								})
+
+				$(function() {
+
+					if ("${driver}" == "user") {
+						$("#mode").text("Ride mode");
+						$("body").removeClass("skin-green");
+						$("body").addClass("skin-blue");
+					} else {
+						$("#mode").text("Drive mode");
+						$("body").removeClass("skin-blue");
+						$("body").addClass("skin-green");
 					}
-    				
-    			}
-        	})
-        	
-		}
-        
-		
-        </script>
+
+					ckeck = setInterval(waiting, 3000);
+
+					$(document)
+							.on(
+									"click",
+									"#headerModalOk",
+									function() {
+										headerMyModal.style.display = "none";
+										window.location.href = '${pageContext.request.contextPath}/nowuse/waitDriver';
+									})
+
+					$(document).on("click", "#signOut", function() {
+						if (confirm("정말 로그아웃하시겠습니까? 대기중인 경로는삭제됩니다. ")) {
+							signOut();
+						}
+					})
+
+					/* $(document).on("click","#history",function(){
+						$("#body").empty();
+						$("#body").append("<section class='content'><div class='row'><div class='col-sm-12'><div class='box'><div class='box-header with-border'><h3 class='box-title'>History 이용 내역</h3></div></div><div class='row'>aa</div><div class='row'>bb</div></div></section>"); 
+						$.ajax({
+							url : "${pageContext.request.contextPath}/findMyHistory",
+							type : "get",
+							dataType : "json",
+							success : function(data) {
+								
+								console.log(data);
+								$.each(data.driverList, function(idx,useInfo) {
+									
+								})
+								$.each(data.userList, function(idx, useInfo) {
+									
+								})
+							}
+							
+						})
+					}) */
+
+				})
+
+				function waiting() {
+
+					$
+							.ajax({
+								url : "${pageContext.request.contextPath}/nowuse/waitingnowuse",
+								type : "get",
+								dataType : "json",
+								success : function(data) {
+									console.log(data);
+
+									if (data.memberNo == 0) {
+
+									} else {
+
+										clearInterval(ckeck);
+										var betweenInfo = "<p>운전자정보</p>";
+										var startInfo = "<p><img src=" + data.photo + "></p>";
+										var endInfo = "<p>닉네임 : "
+												+ data.nickname + "</p>";
+
+										$("#headerModal-body").empty();
+										$("#headerModal-body").append(
+												betweenInfo);
+										$("#headerModal-body")
+												.append(startInfo);
+										$("#headerModal-body").append(endInfo);
+										headerMyModal.style.display = "block";
+
+									}
+
+								}
+							})
+
+				}
+				$(document).on("click", "#user-menu", function() {
+					$(this).toggleClass("open");
+					/* $("#user-menu-a").attr("aria-expanded","true"); */
+
+				})
+
+				function signOut() {
+					location.href = '${pageContext.request.contextPath}/signOut';
+				}
+			</script>

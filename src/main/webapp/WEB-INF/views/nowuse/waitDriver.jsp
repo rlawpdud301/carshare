@@ -179,9 +179,15 @@ function getDriverLocation() {
 		data : {driverNo: driverNo},
 		dataType : "json",
 		success : function(data) {
-			driverPosition = new daum.maps.LatLng(data.driverLatitude,data.driverHardness);
+			driverPosition = new daum.maps.LatLng(data.memberVO.driverLatitude,data.memberVO.driverHardness);
 			driverMarker.setPosition(driverPosition);
-			$("#distence").text(getDistance(data.driverLatitude,data.driverHardness));
+			$("#distence").text(getDistance(data.memberVO.driverLatitude,data.memberVO.driverHardness));
+			if (data.drivingNow) {
+				
+				clearInterval(ckeck);
+				alert("주행시작");
+				window.location.href="${pageContext.request.contextPath}/nowuse/nowRouteUpload";
+			}
 			
 		}
 	})	

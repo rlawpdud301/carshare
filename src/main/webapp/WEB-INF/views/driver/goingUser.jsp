@@ -48,9 +48,9 @@
 
 <script type='text/javascript'>
 var points = new Array();
-var startLat = ${useInfoVO.startLatitude};
-var startLon = ${useInfoVO.startHardness};
-var startAddress = "${useInfoVO.startAddress}";
+var startLat;
+var startLon;
+var startAddress;
 
 var bounds = new daum.maps.LatLngBounds();
 
@@ -69,6 +69,9 @@ var map = new daum.maps.Map(mapContainer, mapOption);
 var marker =new daum.maps.Marker();
 
 $(function() {
+	startLat = ${useInfoVO.startLatitude};
+	startLon = ${useInfoVO.startHardness};
+	startAddress = "${useInfoVO.startAddress}";
 	
 	points[0]= new daum.maps.LatLng(startLat,startLon);
 	getMyLocation();

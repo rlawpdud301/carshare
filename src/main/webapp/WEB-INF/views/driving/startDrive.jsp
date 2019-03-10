@@ -24,7 +24,74 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	
 <style>
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+}
 
+/* Modal Content */
+.modal-content {
+  position: relative;
+  background-color: #fefefe;
+  margin: auto;
+  padding: 0;
+  border: 1px solid #888;
+  width: 50%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+  -webkit-animation-name: animatetop;
+  -webkit-animation-duration: 0.4s;
+  animation-name: animatetop;
+  animation-duration: 0.4s
+}
+
+/* Add Animation */
+@-webkit-keyframes animatetop {
+  from {top:-300px; opacity:0} 
+  to {top:0; opacity:1}
+}
+
+@keyframes animatetop {
+  from {top:-300px; opacity:0}
+  to {top:0; opacity:1}
+}
+
+/* The Close Button */
+.close {
+  color: white;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
+
+.modal-body {padding: 2px 16px;}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: #5cb85c;
+  color: white;
+}
 </style>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -34,29 +101,61 @@
   <!-- /.login-logo -->
   <div class="login-box-body">
 	<div id="map" style="width: 100%; height: 400px;"></div>
-	<p>도착지와의 거리 : <span id="distence"></span> </p>
+	<p>
+		도착지와의 거리 : <span id="distence"></span>km <br>
+		요금 : <span id="fee"></span>원<br>
+		주행거리 : <span id="nowDistence"></span>km
+	</p>
 	<button id="done">도착</button>
   </div>
   <!-- /.login-box-body -->
+</div>
+
+
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>이용 정보</h2>
+    </div>
+    <div class="modal-body" id="modal-body">
+    	<p>
+      		요금 : <span id="last-fee"></span>원<br>
+			주행거리 : <span id="last-nowDistence"></span>km<br>
+			도착지 : <span id="address"></span>
+    	</p>
+    </div>
+    <div class="modal-footer">
+      <h3><button id="modalOk" type="button">확인</button>확인버튼을 누르지않으시면  <span id="s">10</span> 초 후 자동으로 확인됩니다.</h3>
+    </div>
+  </div>
+
 </div>
 <!-- /.login-box -->
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=96466e1526b35b59aaba41206905a93d&libraries=services"></script>
 
 <script type='text/javascript'>
+var modal = document.getElementById('myModal');
+
+
 var myMarker =new daum.maps.Marker();
 var startMarker =new daum.maps.Marker();
 var endMarker =new daum.maps.Marker();
 
 var myPosition = new daum.maps.LatLng();
-var startPosition = new daum.maps.LatLng(${useInfoVO.startLatitude},${useInfoVO.startHardness});
-var endPosition = new daum.maps.LatLng(${useInfoVO.endLatitude},${useInfoVO.endHardness}); 
-
-var startLat = ${useInfoVO.endLatitude};
-var startLon = ${useInfoVO.endHardness}; 
+var startPosition;
+var endPosition;
+var startLat;
+var startLon;
 
 var driverPosition = new daum.maps.LatLng();
 
+/* var myFee = ${memberVO.myFee}; */
+
+var myFee = 100;
+var fee; 
 var lat;
 var lon;
 
@@ -93,17 +192,35 @@ var startInfowindow = new daum.maps.InfoWindow({
 });
 
 var drawingFlag = true; // 선이 그려지고 있는 상태를 가지고 있을 변수입니다
-var moveLine;
-var clickLine;
-var distanceOverlay;
-var dots = {};
 
+var clickLine;
+/* var distanceOverlay;
+var dots = {}; */
+var path;
+
+var allDistance;
+
+var endAddress;
+
+//주소-좌표 변환 객체를 생성합니다
+var geocoder = new daum.maps.services.Geocoder();
 
 $(function() {
+	
+	startPosition = new daum.maps.LatLng(${useInfoVO.startLatitude},${useInfoVO.startHardness});
+	endPosition = new daum.maps.LatLng(${useInfoVO.endLatitude},${useInfoVO.endHardness}); 
+
+	
+	startLon = ${useInfoVO.endHardness}; 
+	startLat = ${useInfoVO.endLatitude};
 	getMyLocation();
 	setOtherMarker(); 
 	
-	ckeck =	setInterval(getDriverLocationTset,1000);
+	//태스트용
+	ckeck =	setInterval(getDriverLocationTest,1000);
+	
+	//실재
+	/* ckeck =	setInterval(getDriverLocationDriving,1000); */
 	
 	daum.maps.event.addListener(myMarker, 'click', function() {
 	      // 마커 위에 인포윈도우를 표시합니다
@@ -119,70 +236,121 @@ $(function() {
 	});
 	
 	$(document).on("click", "#done", function() {
+		arrive();
 		
 	})
+
+	
+	$(document).on("click", "#modalOk", function() {
+		goHome(); 
+	})
+	
 	
 })
+function goHome() {
+	window.location.href="${pageContext.request.contextPath}/driving/goHome?lat="+lat+"&lon="+lon+"&fee="+fee+"&endAddress="+endAddress;
+}
 
-function getDriverLocationTset() {
-	lat = lat - 0.0001;
-	lon = lon - 0.0001;
-	
-	map.setCenter(new daum.maps.LatLng(lat,lon));
-	myMarker.setPosition(new daum.maps.LatLng(lat,lon));
-	myMarker.setMap(map);
-	/* setDriverLocation(); */
-	
-	myPosition = new daum.maps.LatLng(lat,lon);
-	
-	$("#distence").text(getDistance());
-	
-	var mousePosition = myPosition;
-	
-	// 그려지고 있는 선의 좌표 배열을 얻어옵니다
-    var path = clickLine.getPath();
 
-    var movepath = [path[path.length-1], mousePosition];
-    moveLine.setPath(movepath);    
-    moveLine.setMap(map);
-    
-    var distance = Math.round(clickLine.getLength() + moveLine.getLength()), // 선의 총 거리를 계산합니다
-    content = '<div class="dotOverlay distanceInfo">총거리 <span class="number">' + distance + '</span>m</div>'; // 커스텀오버레이에 추가될 내용입니다
 
-	// 거리정보를 지도에 표시합니다
-	
-    // 좌표 배열에 클릭한 위치를 추가합니다
-    path.push(myPosition);
-    
-    // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
-    clickLine.setPath(path);
+function getAddress() {
+	searchDetailAddrFromCoords(new daum.maps.LatLng(lat,lon),function(result, status) {
+		if (status === daum.maps.services.Status.OK) {
+			endAddress = result[0].address.address_name+"";
+			$("#address").text(endAddress);
+		}
+	})
+}
 
-    var distance = Math.round(clickLine.getLength());
-    displayCircleDot(myPosition, distance);
+
+function searchDetailAddrFromCoords(coords,callback) {
+    // 좌표로 행정동 주소 정보를 요청합니다
+	geocoder.coord2Address(coords.getLng(), coords.getLat(), callback);         
+}
+
+
+function arrive() {
+	if(confirm("목적지에 도착하셨나요?")){
+		
+		clearInterval(ckeck);
+		getAddress();
+		
+		
+		$("#last-nowDistence").text($("#nowDistence").text());
+	   	
+	   	$("#last-fee").text($("#fee").text());
+		
+	    modal.style.display = "block";
+	    ckeckTime =	setInterval(gotime,1000);
+	}
 	
 }
+function gotime() {
+	if ($("#s").text()==0) {
+		goHome();
+	}else{
+		$("#s").text($("#s").text()-1);
+	}
+}
+
+function getDriverLocationTest() {
+	lat = lat - 0.0001;
+	lon = lon - 0.0001;	
+	map.setCenter(new daum.maps.LatLng(lat,lon));
+	myMarker.setPosition(new daum.maps.LatLng(lat,lon));	
+	myPosition = new daum.maps.LatLng(lat,lon);	
+	$("#distence").text(getDistance());		
+    path = clickLine.getPath();
+    path.push(myPosition);
+    clickLine.setPath(path);
+    
+    
+    $("#nowDistence").text(Math.round(clickLine.getLength())/1000);
+    
+   	fee = ((Math.ceil(Math.round(clickLine.getLength())/100)) * myFee);
+   	$("#fee").text(fee);	
+     
+    if (getDistance() < 0.1) {
+    	arrive();
+		
+	}
+}
+
+//월래 함수
+function getDriverLocationDriving() {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(function(position) {
+			lat = position.coords.latitude; // 위도
+			lon = position.coords.longitude; // 경도
+			
+			map.setCenter(new daum.maps.LatLng(lat,lon));
+			myMarker.setPosition(new daum.maps.LatLng(lat,lon));	
+			myPosition = new daum.maps.LatLng(lat,lon);	
+			$("#distence").text(getDistance());		
+	 	    path = clickLine.getPath();
+		    path.push(myPosition);
+		    clickLine.setPath(path);
+		    
+		    $("#nowDistence").text(Math.round(clickLine.getLength())/1000);
+		    
+		    fee = (Math.ceil(Math.round(clickLine.getLength())/100)) * myFee;
+		   	$("#fee").text(fee);
+		    
+		    if (getDistance() < 0.01) {
+				arrive();
+			}
+		})
+	}
+	
+}
+
+
+
 function setOtherMarker() {
 	startMarker.setPosition(startPosition);
 	startMarker.setMap(map);
 	endMarker.setPosition(endPosition);
 	endMarker.setMap(map);			
-}
-
-
-function drawingLine() {	
- 	// 그려지고 있는 선의 좌표 배열을 얻어옵니다
-    path = clickLine.getPath();
-
-    // 좌표 배열에 클릭한 위치를 추가합니다
-    path.push(drawingPosition);
-    
-    // 다시 선에 좌표 배열을 설정하여 클릭 위치까지 선을 그리도록 설정합니다
-    clickLine.setPath(path);
-
-    var distance = Math.round(clickLine.getLength());
-    displayCircleDot(clickPosition, distance);
- 	
-	
 }
 
 
@@ -202,26 +370,14 @@ function getMyLocation() {
 			
 			$("#distence").text(getDistance());
 			
-			var drawingPosition = myPosition;
-			
 			clickLine = new daum.maps.Polyline({
 			    map: map, // 선을 표시할 지도입니다 
-			    path: [drawingPosition], // 선을 구성하는 좌표 배열입니다 클릭한 위치를 넣어줍니다
-			    strokeWeight: 3, // 선의 두께입니다 
+			    path: [myPosition], // 선을 구성하는 좌표 배열입니다 클릭한 위치를 넣어줍니다
+			    strokeWeight: 4, // 선의 두께입니다 
 			    strokeColor: '#db4040', // 선의 색깔입니다
 			    strokeOpacity: 1, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
 			    strokeStyle: 'solid' // 선의 스타일입니다
-			});
-			 
-				// 선이 그려지고 있을 때 마우스 움직임에 따라 선이 그려질 위치를 표시할 선을 생성합니다
-			moveLine = new daum.maps.Polyline({
-			    strokeWeight: 3, // 선의 두께입니다 
-			    strokeColor: '#db4040', // 선의 색깔입니다
-			    strokeOpacity: 0.5, // 선의 불투명도입니다 0에서 1 사이값이며 0에 가까울수록 투명합니다
-			    strokeStyle: 'solid' // 선의 스타일입니다    
-			});
-			
-			
+			});			
 		});
 		
 
@@ -233,11 +389,17 @@ function getMyLocation() {
 
 
 function getDistance() {
-	var distance = calculateDistance(lat, lon, startLat, startLon);
+	var distance = calculateDistance(lat, lon, startLat, startLon)+"";
 	var makeString = distance + "";
-	var splitString = makeString.split('.');				
-	var sumSting = splitString[0] + "." + splitString[1].substring( 0, 3 );
-	return sumSting+"km";
+	var splitString = makeString.split('.');
+	var sumStings;
+	if (splitString[1]==null) {
+		sumStings = splitString[0]
+	}else{
+		sumStings = splitString[0] + "." + splitString[1].substring(0,3);
+	}
+	
+	return sumStings;
 }
 
 

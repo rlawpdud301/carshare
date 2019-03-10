@@ -28,7 +28,7 @@
 		end_latitude, end_hardness
 		FROM carshare.use_info
 		WHERE u_member_no =
-		#{memberNo}
+		#{memberNo} and process='대기'
 	</select>
 
 	<select id="selectUseInfoByDriverNo" resultMap="result">
@@ -46,8 +46,46 @@
 	<update id="updateUseInfo">
 		UPDATE carshare.use_info
 		SET start_time=now(),
-		process='주행중', start_latitude=#{startLatitude}, start_hardness=#{startHardness}
+		process='주행중', start_latitude=#{startLatitude},
+		start_hardness=#{startHardness}
 		WHERE d_member_no =
-		#{dMemberNo.memberNo}
+		#{dMemberNo.memberNo} and process='대기'
 	</update>
+
+	<update id="lastUupdateUseInfo">
+		UPDATE carshare.use_info
+		SET end_time=now(),
+		process='주행완료', end_latitude=#{endLatitude},
+		end_hardness=#{endHardness} ,end_address=#{endAddress},fee=#{fee}
+		WHERE d_member_no =
+		#{dMemberNo.memberNo} and process='주행중'
+	</update>
+
+	<select id="getProcees" resultMap="result">
+		SELECT process
+		FROM
+		carshare.use_info
+		WHERE d_member_no =
+		#{driverNo} and process='주행중'
+	</select>
+
+	<sql id="whereForMap">
+		<where>
+			<if test="uMmemberNo != null">
+				u_member_no =#{uMmemberNo}
+			</if>
+			<if test="dMmemberNo != null">
+				and d_member_no =#{dMmemberNo}
+			</if>
+			and process='주행완료'
+		</where>
+	</sql>
+
+	<select id="selectDoneUseInfoByMap" resultMap="result">
+		SELECT use_no, u_member_no, d_member_no, start_time,
+		end_time, fee, process, start_address, start_latitude, start_hardness,
+		end_address, end_latitude, end_hardness
+		FROM carshare.use_info
+		<include refid="whereForMap"/>
+	</select>
 </mapper>

@@ -60,4 +60,28 @@ public class RouteDaoImpl implements RouteDAO {
 		return sqlSession.selectOne(namespace + ".findMyRouteuseOpponentNo",memberNo);
 	}
 
+	@Override
+	public List<RouteVO> selectFavorByMemberNo(int memberNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace + ".selectFavorByMemberNo",memberNo);
+	}
+
+	@Override
+	public String selectFavorLastNo() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".selectFavorLastNo");
+	}
+
+	@Override
+	public List<RouteVO> selectFavorRoutByMap(Map<String, Object> conditionMap) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace + ".selectFavorRoutByMap",conditionMap);
+	}
+
+	@Override
+	public RouteVO selectRoutByRouteNoA(String routeNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".selectRoutByRouteNoA",routeNo);
+	}
+
 }
