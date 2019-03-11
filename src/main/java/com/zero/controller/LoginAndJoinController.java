@@ -227,5 +227,27 @@ public class LoginAndJoinController {
 
 		return "redirect:/";
 	}
+	
+	
+	@RequestMapping(value = "myProfile", method = RequestMethod.GET)
+	public void myProfileGet(HttpSession session ,Model model ) {
+		logger.info("myProfile-get");
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo"); 
+
+		Map<String, Object> map = service.getMyProfile(dto.getMemberNo());
+		model.addAttribute("map", map);
+
+	}
+	
+	@RequestMapping(value = "updateMember", method = RequestMethod.POST)
+	public void updateMemberGet(HttpSession session ,Model model ,MemberVO memberVO) {
+		logger.info("updateMember-get");
+		
+		logger.info("memberVO------------------------------------"+memberVO);
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo"); 
+		
+	}
+	
+	
 
 }

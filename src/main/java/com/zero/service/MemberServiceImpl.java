@@ -66,6 +66,28 @@ public class MemberServiceImpl implements MemberService {
 		routeDAO.deleteRoutByRouteNo(memberNo+"");
 	}
 
+	@Override
+	@Transactional
+	public Map<String, Object> getMyProfile(int memberNo) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map = new HashMap<>();
+		
+		MemberVO memberVO = memberDAO.selectMemberByMemberNo(memberNo);
+		map.put("memberVO", memberVO);
+
+		map.put("carInfoVO", false);
+		map.put("licenseInfoVO", false);
+		
+		if (memberVO.isDriver()) {
+			CarInfoVO carInfoVO = carInfoDAO.selectCarInfoByMemberNo(memberNo);
+			LicenseInfoVO licenseInfoVO = licenseInfoDAO.selectLicenseInfoByMemberNo(memberNo);
+			
+			map.put("carInfoVO", carInfoVO);
+			map.put("licenseInfoVO", licenseInfoVO);
+		}	
+		return map;
+	}
+
 	
 
 }

@@ -12,4 +12,6 @@ public interface MemberService {
 	void addDriverUser(CarInfoVO carInfoVO, LicenseInfoVO licenseInfoVO);
 	MemberVO selectMemberByMemberNo(int memberNo);
 	void deletRoutByMemberNo(int memberNo);
+	Map<String, Object> getMyProfile(int memberNo);
+	
 }

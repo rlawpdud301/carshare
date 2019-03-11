@@ -61,10 +61,65 @@
 
 
 <script>
+var startAddress = "${routeVO.startAddress}";
+var startLatitude = ${routeVO.startLatitude};
+var startHardness = ${routeVO.startHardness};
+
+var endAddress = "${routeVO.endAddress}";
+var endLatitude = ${routeVO.endLatitude};
+var endHardness = ${routeVO.endHardness};
+
+var mapContainer = document.getElementById('map');
+var mapOption = { 
+    center: new daum.maps.LatLng(startLatitude, startHardness), 
+    level: 8 
+};
+
+
+var map = new daum.maps.Map(mapContainer, mapOption); 
+
+var startPosition = new daum.maps.LatLng(startLatitude, startHardness);
+
+var startMarker = new daum.maps.Marker({
+    position: startPosition
+});
+
+var startIwContent = '<div style="padding:5px;"><b style="color:blue">출발지<br></b>'+startAddress+'</div>';
+
+
+var startInfowindow = new daum.maps.InfoWindow({
+    position : startPosition, 
+    content : startIwContent 
+});
+  
+startInfowindow.open(map, startMarker); 
+
+
+var endPosition = new daum.maps.LatLng(endLatitude, endHardness);
+
+var endMarker = new daum.maps.Marker({
+    position: endPosition
+});
+
+var endIwContent = '<div style="padding:5px;"><b style="color:blue">도착지<br></b>'+endAddress+'</div>';
+
+
+var endInfowindow = new daum.maps.InfoWindow({
+    position : endPosition, 
+    content : endIwContent 
+});
+  
+endInfowindow.open(map, endMarker); 
+
 $(function() {
+	
+	startMarker.setMap(map);
+	endMarker.setMap(map);
+	
+	
 	$(document).on("click","#remove",function(){
-		if(confirm("정말 삭제 하시겠습니까?")){
-			/* location.href="${pageContext.request.contextPath }/removeFavorRout?routeNo="+${routeVO.routeNo}; */
+		if(confirm("정말 삭제 하시겠습니까?")){ 
+			location.href="${pageContext.request.contextPath }/removeFavorRout?routeNo=${routeVO.routeNo}";
 		}
 	})
 	$(document).on("click","#modified",function(){

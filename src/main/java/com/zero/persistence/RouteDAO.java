@@ -28,4 +28,6 @@ public interface RouteDAO {
 	List<RouteVO> selectFavorRoutByMap(Map<String, Object> conditionMap);
 
 	RouteVO selectRoutByRouteNoA(String routeNo);
+
+	void deleteFavorRouteByRouteNo(String routeNo);
 }

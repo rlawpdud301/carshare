@@ -312,7 +312,7 @@
 								<!-- Menu Footer-->
 								<li class="user-footer">
 									<div class="pull-left">
-										<a href="#" class="btn btn-default btn-flat">Profile</a>
+										<a id="profile" class="btn btn-default btn-flat">Profile</a>
 									</div>
 									<div class="pull-right">
 										<a id="signOut" class="btn btn-default btn-flat">Sign out</a>
@@ -590,6 +590,12 @@
 						}
 					})
 
+					$(document).on("click", "#profile", function() {
+						if (confirm("프로필 관리 페이지로이동하시겠습니까?")) {
+							location.href = '${pageContext.request.contextPath}/myProfile';
+						}
+					})
+
 					/* $(document).on("click","#history",function(){
 						$("#body").empty();
 						$("#body").append("<section class='content'><div class='row'><div class='col-sm-12'><div class='box'><div class='box-header with-border'><h3 class='box-title'>History 이용 내역</h3></div></div><div class='row'>aa</div><div class='row'>bb</div></div></section>"); 
@@ -656,4 +662,27 @@
 				function signOut() {
 					location.href = '${pageContext.request.contextPath}/signOut';
 				}
+				
+				
+				 /* function deleteCookie(cookieName) {
+				 	var expireDate = new Date();
+				  
+				  	//어제 날짜를 쿠키 소멸 날짜로 설정한다.
+				  	expireDate.setDate( expireDate.getDate() - 1 );
+				  	document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString() + "; path=/";
+				 }
+				 
+				 function getCookie() {
+					  var x, y;
+					  var val = document.cookie.split(';');
+
+					  for (var i = 0; i < val.length; i++) {
+					    x = val[i].substr(0, val[i].indexOf('='));
+					    y = val[i].substr(val[i].indexOf('=') + 1);
+					    x = x.replace(/^\s+|\s+$/g, ''); // 앞과 뒤의 공백 제거하기
+					    
+					  return unescape(y); // unescape로 디코딩 후 값 리턴
+					    
+					  }
+					} */
 			</script>

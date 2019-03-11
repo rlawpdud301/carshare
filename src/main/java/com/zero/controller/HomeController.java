@@ -118,7 +118,14 @@ public class HomeController {
 
 	}
 	
-	
+	@RequestMapping(value = "removeFavorRout", method = RequestMethod.GET)
+	public String removeFavorRoutGet(String routeNo) {
+		logger.info("removeFavorRout ----get");
+		
+		service.removeFavorRouteByRouteNo(routeNo); 
+
+		return "redirect:/favorRout"; 
+	}
 	
 	
 }

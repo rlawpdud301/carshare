@@ -73,6 +73,12 @@ public class HomeServiceImpl implements HomeService {
 		// TODO Auto-generated method stub
 		return routeDAO.selectRoutByRouteNoA(routeNo);
 	}
+
+	@Override
+	public void removeFavorRouteByRouteNo(String routeNo) {
+		// TODO Auto-generated method stub
+		routeDAO.deleteFavorRouteByRouteNo(routeNo);
+	}
 	
 	
 

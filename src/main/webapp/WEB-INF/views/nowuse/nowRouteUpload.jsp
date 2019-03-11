@@ -869,10 +869,24 @@ if (event.target == modal) {
 } */
 
 $(document).on("click","#modalOk",function(){
+	/* if (findRout()) {
 		
+	} */
 	$("#f1").submit();
 	
 })
+function findRout() {
+	$.ajax({
+		url : "${pageContext.request.contextPath}/nowuse/addFavorites",
+		type : "get",
+		dataType : "json",
+		success : function(data) {
+			console.log(data);
+			
+            
+		}
+	})
+}
 
 
 </script>

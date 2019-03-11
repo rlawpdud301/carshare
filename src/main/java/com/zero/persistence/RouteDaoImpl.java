@@ -84,4 +84,10 @@ public class RouteDaoImpl implements RouteDAO {
 		return sqlSession.selectOne(namespace + ".selectRoutByRouteNoA",routeNo);
 	}
 
+	@Override
+	public void deleteFavorRouteByRouteNo(String routeNo) {
+		// TODO Auto-generated method stub
+		sqlSession.delete(namespace + ".deleteFavorRouteByRouteNo",routeNo);
+	}
+
 }

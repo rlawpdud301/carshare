@@ -123,7 +123,7 @@
 	</select>
 
 	<sql id="whereForMap">
-		<where> 
+		<where>
 			<if test="uMmemberNo != null">
 				and left(Route_no, 2) = 'fu'
 				and member_no=#{uMmemberNo}
@@ -137,17 +137,26 @@
 
 	<select id="selectFavorRoutByMap" resultType="RouteVO">
 		SELECT Route_no, member_no, process, avgFee,
-		start_address, start_latitude, start_hardness, end_address,
-		end_latitude, end_hardness, opponent_no
+		start_address,
+		start_latitude, start_hardness, end_address,
+		end_latitude,
+		end_hardness, opponent_no
 		FROM carshare.route
-		<include refid="whereForMap"/>
+		<include refid="whereForMap" />
 	</select>
-	
+
 	<select id="selectRoutByRouteNoA" resultMap="result">
-		SELECT Route_no, member_no, process, avgFee,
-		start_address, start_latitude, start_hardness, end_address,
+		SELECT Route_no,
+		member_no, process, avgFee,
+		start_address, start_latitude,
+		start_hardness, end_address,
 		end_latitude, end_hardness, opponent_no
 		FROM carshare.route
 		WHERE Route_no=#{routeNo}
 	</select>
+
+	<delete id="deleteFavorRouteByRouteNo">
+		DELETE FROM carshare.route
+		WHERE Route_no=#{routeNo}
+	</delete>
 </mapper> 

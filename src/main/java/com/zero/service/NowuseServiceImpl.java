@@ -161,7 +161,7 @@ public class NowuseServiceImpl implements NowuseService {
 			routeNo = "ou" + (String.format("%04d", num));
 		}
 		routeVO.setRouteNo(routeNo);
-		routeVO.setProcess("ëŒ€ê¸°");
+		routeVO.setProcess("´ë±â");
 		routDao.insertRoute(routeVO);
 		
 		return routeVO;

@@ -89,7 +89,9 @@
 <script>
 $(function() {
 	$(document).on("click",".useThisUser",function(){
-		location.href="${pageContext.request.contextPath }/nowuse/nowRouteUploadForFavor?routeNo="+$(this).attr("data-RouteNo");
+		if(confirm("이경로로 등록 하시겠습니까?")){
+			location.href="${pageContext.request.contextPath }/nowuse/nowRouteUploadForFavor?routeNo="+$(this).attr("data-RouteNo");
+		}
 	})
 	$(document).on("click",".useThisDriver",function(){
 		alert("준비중");

@@ -15,5 +15,7 @@ public interface HomeService {
 
 	RouteVO selectRouteByRoutNo(String routeNo);
 
+	void removeFavorRouteByRouteNo(String routeNo);
+
 }
  

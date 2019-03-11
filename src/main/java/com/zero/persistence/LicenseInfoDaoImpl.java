@@ -20,4 +20,10 @@ public class LicenseInfoDaoImpl implements LicenseInfoDAO {
 		sqlSession.insert(namespace + ".insertLicenseInfo",licenseInfoVO);
 	}
 
+	@Override
+	public LicenseInfoVO selectLicenseInfoByMemberNo(int memberNo) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".selectLicenseInfoByMemberNo",memberNo);
+	}
+
 }
