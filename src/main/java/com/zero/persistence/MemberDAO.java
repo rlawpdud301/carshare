@@ -10,4 +10,5 @@ public interface MemberDAO {
 	void updateDirverApply(MemberVO memberNo);
 	MemberVO selectMemberByMemberNo(int memberNo);
 	void setDriverWhere(MemberVO memberVO);
+	void updateMemberByMember(MemberVO memberVO);
 }

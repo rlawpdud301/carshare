@@ -46,4 +46,11 @@ public class MemberDaoImpl implements MemberDAO {
 		sqlSession.update(namespace + ".setDriverWhere",memberVO);
 	}
 
+
+	@Override
+	public void updateMemberByMember(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		sqlSession.update(namespace + ".updateMemberByMember",memberVO);
+	}
+
 }

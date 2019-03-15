@@ -61,7 +61,27 @@
 
 	<update id="setDriverWhere">
 		UPDATE carshare.`member`
-		SET driver_latitude=#{driverLatitude}, driver_hardness=#{driverHardness}
-		WHERE member_no=#{memberNo};
+		SET
+		driver_latitude=#{driverLatitude}, driver_hardness=#{driverHardness}
+		WHERE member_no=#{memberNo}
+	</update>
+
+	<sql id="updateMemberWhere">
+		SET 
+		<if test="uIntro != null">
+			u_intro=#{uIntro}
+		</if>
+		<if test="uIntro != null">
+			nickname=#{uIntro}
+		</if>	
+		 jop='',
+		my_fee=0, email=''
+	</sql>
+
+
+	<update id="updateMemberByMember">
+		UPDATE carshare.`member`
+		
+		WHERE member_no=#{memberNo}
 	</update>
 </mapper>

@@ -13,5 +13,6 @@ public interface MemberService {
 	MemberVO selectMemberByMemberNo(int memberNo);
 	void deletRoutByMemberNo(int memberNo);
 	Map<String, Object> getMyProfile(int memberNo);
+	void updateMember(MemberVO memberVO);
 	
 }

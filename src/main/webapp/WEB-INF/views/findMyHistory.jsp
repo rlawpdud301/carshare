@@ -206,6 +206,8 @@ function getMemberInfo(memberNo) {
 		success : function(data) {
 			//홈컨ㅌ롤러 만들기
 			console.log(data);
+			$("#user_photo").empty();
+			$("#user_info").empty();
 			$("#user_photo").append("<img src='" + data.photo + "'>");
 			$("#user_info").append(data.nickname);
 			modal.style.display = "block";

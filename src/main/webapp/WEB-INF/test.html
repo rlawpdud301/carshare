@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+var looper;
+var degrees =90 ;
+
+var a =2;
+
+$(function () {
+	
+	var elem = document.getElementById("test");
+	
+	$(document).on('mousewheel', function(e) {	
+		
+		if (a > 2) {
+			elem.style.transform = "rotate("+degrees+"deg)";				
+			degrees = degrees + 90;	
+			a=0;
+		}
+		
+		
+		
+	})
+	
+	ckeck = setInterval(waiting, 1000);
+})
+
+function waiting() {
+	a = a + 1;
+}
+
+
+</script>
+<style>
+#wrap {
+	position: relative;
+	width: 100%;
+	height: 900px;
+	overflow: hidden;
+}
+
+#test {
+	width: 1000px;
+	height: 1000px;
+	position: absolute;
+	left: 30%;
+	bottom: -50%;
+	transition: 5s;
+}
+/* #test:hover{
+transform: rotate(90deg);
+} */
+</style>
+</head>
+<body>
+
+	<img id="img1" src="cog1.png" alt="cog1">
+	<div id="wrap">
+		<img id="test" alt=""
+			src="https://www.jqueryscript.net/images/jQuery-Plugin-For-Path-like-Wheel-Menu-Button-Wheel-Menu.jpg">
+	</div>
+
+	<script>/* rotateAnimation("img1",30); */</script>
+	<h2 style="width: 200px;" id="status"></h2>
+</body>
+</html>

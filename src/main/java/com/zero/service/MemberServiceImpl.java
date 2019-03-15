@@ -88,6 +88,12 @@ public class MemberServiceImpl implements MemberService {
 		return map;
 	}
 
+	@Override
+	public void updateMember(MemberVO memberVO) {
+		// TODO Auto-generated method stub
+		memberDAO.updateMemberByMember(memberVO);
+	}
+
 	
 
 }

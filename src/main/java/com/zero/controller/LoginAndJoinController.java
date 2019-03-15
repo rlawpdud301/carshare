@@ -244,7 +244,10 @@ public class LoginAndJoinController {
 		logger.info("updateMember-get");
 		
 		logger.info("memberVO------------------------------------"+memberVO);
-		LoginDTO dto = (LoginDTO) session.getAttribute("vo"); 
+		LoginDTO dto = (LoginDTO) session.getAttribute("vo");
+		memberVO.setMemberNo(dto.getMemberNo());
+		
+		service.updateMember(memberVO);
 		
 	}
 	

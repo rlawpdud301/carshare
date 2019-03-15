@@ -36,7 +36,7 @@
 											<td>${routeVO.routeNo}</td>
 											<td>${routeVO.startAddress}</td>
 											<td>${routeVO.endAddress}</td>
-											<td><button id="remove">삭제</button><button id="modified">수정</button></td>
+											<td><button id="remove">삭제</button><button id="modified">바로이용하기</button></td>
 										</tr>
 										<tr>
 											<td colspan="4">

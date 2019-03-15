@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>p_scroll</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="script/script.js"></script>
+  <link rel="stylesheet" href="css/p_scroll.css">
+</head>
+<body>
+  <div id="slider" class="p_scroll">
+    <ul class="clearfix">
+      <li class="p_scroll slide1">
+        <span class="titlebox1">
+          <img src="images/logowhite.png" alt="">
+        </span>
+      </li>
+      <li class="p_scroll slide2">
+        <span class="titlebox2">
+          STORY
+        </span>
+      </li>
+      <li class="p_scroll slide3">
+        <span class="titlebox3">
+          COLLECTION
+        </span>
+      </li>
+    </ul>
+  </div>
+  <div class="wheel">
+    <img id="wheel" src="images/wheel-pic.png" alt="wheel">
+    <script>rotateAnimation("wheel",30);</script>
+  </div>
+	
+<script>
+		
+		var wh = $(window).height();
+
+    $(".p_scroll").height(wh);
+		
+		$(function(){
+			var d = false;
+			$("html, body").on('mousewheel DOMMouseScroll', function(e) {
+				var E = e.originalEvent;
+				delta = 0;
+				if (E.detail) {
+						delta = E.detail * -40;
+				}else{
+						delta = E.wheelDelta;
+				};
+
+				var a = parseInt($("ul").css("left"));
+				var b = $("li").width();
+				var c = $('li').length;
+
+				if(delta < 0 && a > (c-1)*-b && !d){
+						// 마우스 휠을 아래로 내렸을 경우
+						d = true;
+						$('ul').stop().animate({
+								"left": a += -b
+						},1500,function(){
+								d = false;
+						});
+				};
+				
+				if(delta > 0 && a < 0 && !d){
+						// 마우스 휠을 위로 올렸을 경우
+						d = true;
+						$('ul').stop().animate({
+								"left": a += b
+						},1500,function(){
+								d = false;
+						});
+				};
+			});
+		});
+</script>
+</body>
+</html>

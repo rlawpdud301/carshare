@@ -37,7 +37,7 @@
 											<td>${status.count}</td>
 											<td>${result.startAddress}</td>
 											<td>${result.endAddress}</td>
-											<td><button class="useThisUser" data-RouteNo="${result.routeNo}">이경로 이용하기</button><button class="view" data-RouteNo="${result.routeNo}">상세정보(지도,수정,삭제)</button></td>
+											<td><button class="useThisUser" data-RouteNo="${result.routeNo}">이경로 이용하기</button><button class="view" data-RouteNo="${result.routeNo}">상세정보(지도,삭제)</button></td>
 										</tr>
 										
 									</c:forEach>
